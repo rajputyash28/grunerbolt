@@ -10,10 +10,17 @@ import EditFarmer from './components/farmers/EditFarmer';
 import KisaniDidiManagement from './components/kisani-didi/KisaniDidiManagement';
 import KisaniDidiProfile from './components/kisani-didi/KisaniDidiProfile';
 import TaskManagement from './components/tasks/TaskManagement';
+// FarmManager
 import FarmManagerManagement from './components/farm-managers/FarmManagerManagement';
 import FarmManagerProfile from './components/farm-managers/FarmManagerProfile';
 import AddFarmManager from './components/farm-managers/AddFarmManager';
 import EditFarmManager from './components/farm-managers/EditFarmManager';
+// FarmOperator
+import FarmOperatorManagement from './components/farm-operator/FarmOperatorManagement';
+import FarmOperatorProfile from './components/farm-operator/FarmOperatorProfile';
+import AddFarmOperator from './components/farm-operator/AddOperatorManager';
+import EditFarmOperator from './components/farm-operator/EditOperatorManager';
+//both are replicas operator and management 
 import AttendanceManagement from './components/attendance/AttendanceManagement';
 import CarbonReports from './components/carbon/CarbonReports';
 import BookingManagement from './components/bookings/BookingManagement';
@@ -54,10 +61,16 @@ function App() {
               <Route path="/kisani-didi/:id" element={<KisaniDidiProfile />} />
               <Route path="/kisani-didi/add" element={<AddKisaniDidi />} />
               <Route path="/kisani-didi/edit/:id" element={<EditKisaniDidi />} />
+              {/* this is farmer management */}
               <Route path="/farm-managers" element={<FarmManagerManagement />} />
               <Route path="/farm-managers/add" element={<AddFarmManager />} />
               <Route path="/farm-managers/edit/:id" element={<EditFarmManager />} />
               <Route path="/farm-managers/:id" element={<FarmManagerProfile />} />
+              {/* this is operator management */}
+              <Route path="/farm-operators" element={<FarmOperatorManagement/>}/>
+              <Route path="/farm-operators/add" element={<AddFarmOperator />}/>
+              <Route path="/farm-operators/edit/:id" element={<EditFarmOperator/>}/>
+              <Route path="/farm-operators/:id" element={<FarmOperatorProfile/>} />
               <Route path="/tasks" element={<TaskManagement />} />
               <Route path="/attendance" element={<AttendanceManagement />} />
               <Route path="/carbon-reports" element={<CarbonReports />} />

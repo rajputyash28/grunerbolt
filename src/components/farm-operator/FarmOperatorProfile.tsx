@@ -8,7 +8,7 @@ const FarmOperatorProfile = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
   const [isEditMode, setIsEditMode] = useState(false);
-  
+
   const [farmOperator, setFarmOperator] = useState({
     id: 1,
     name: 'Ravi Kumar',
@@ -51,29 +51,29 @@ const FarmOperatorProfile = () => {
       pinCode: '500001'
     },
     assignedTasks: [
-      { 
-        id: 1, 
-        title: 'Farmer Training on Organic Fertilizers', 
+      {
+        id: 1,
+        title: 'Farmer Training on Organic Fertilizers',
         location: 'Farm A, Ahmedabad',
-        assignedDate: '2024-01-20', 
+        assignedDate: '2024-01-20',
         dueDate: '2024-01-25',
-        status: 'Completed' 
+        status: 'Completed'
       },
-      { 
-        id: 2, 
-        title: 'Crop Health Inspection', 
+      {
+        id: 2,
+        title: 'Crop Health Inspection',
         location: 'Farm B, Ahmedabad',
-        assignedDate: '2024-01-22', 
+        assignedDate: '2024-01-22',
         dueDate: '2024-01-18',
-        status: 'In Progress' 
+        status: 'In Progress'
       },
-      { 
-        id: 3, 
-        title: 'Soil Testing Guidance', 
+      {
+        id: 3,
+        title: 'Soil Testing Guidance',
         location: 'Farm C, Ahmedabad',
-        assignedDate: '2024-01-18', 
+        assignedDate: '2024-01-18',
         dueDate: '2024-01-23',
-        status: 'Overdue' 
+        status: 'Overdue'
       }
     ],
     attendanceRecords: [
@@ -122,7 +122,7 @@ const FarmOperatorProfile = () => {
 
   const renderEditableField = (label, value, section, field, type = 'text') => {
     const currentValue = section ? editData[section]?.[field] || value : editData[field] || value;
-    
+
     return (
       <div>
         <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>{label}</span>
@@ -149,7 +149,7 @@ const FarmOperatorProfile = () => {
           <Phone className="w-5 h-5 text-gray-400" />
           <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Inter' }}>Personal Information & KYC Documents</h3>
         </div>
-        
+
         <div className="space-y-4">
           <h4 className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>Basic Details</h4>
           <div className="grid grid-cols-2 gap-4">
@@ -176,7 +176,7 @@ const FarmOperatorProfile = () => {
           <MapPin className="w-5 h-5 text-gray-400" />
           <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Inter' }}>Address Information</h3>
         </div>
-        
+
         <div className="space-y-4">
           {renderEditableField('Complete Address', farmOperator.addressInfo.completeAddress, 'addressInfo', 'completeAddress')}
           <div className="grid grid-cols-2 gap-4">
@@ -202,7 +202,7 @@ const FarmOperatorProfile = () => {
         </button>
       </div>
       <p className="text-sm text-gray-600 mb-4" style={{ fontFamily: 'Inter' }}>Complete list of all tasks assigned to this Krishi Didi</p>
-      
+
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
@@ -222,11 +222,10 @@ const FarmOperatorProfile = () => {
                 <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>{task.assignedDate}</td>
                 <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>{task.dueDate}</td>
                 <td className="py-3">
-                  <span className={`px-2 py-1 rounded text-xs font-medium ${
-                    task.status === 'Completed' ? 'bg-green-100 text-green-800' :
-                    task.status === 'In Progress' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-red-100 text-red-800'
-                  }`}>
+                  <span className={`px-2 py-1 rounded text-xs font-medium ${task.status === 'Completed' ? 'bg-green-100 text-green-800' :
+                      task.status === 'In Progress' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-red-100 text-red-800'
+                    }`}>
                     {task.status}
                   </span>
                 </td>
@@ -249,7 +248,7 @@ const FarmOperatorProfile = () => {
         </button>
       </div>
       <p className="text-sm text-gray-600 mb-4" style={{ fontFamily: 'Inter' }}>Daily attendance records with location and task details</p>
-      
+
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
@@ -267,9 +266,8 @@ const FarmOperatorProfile = () => {
                 <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>{record.checkIn}</td>
                 <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>{record.checkOut}</td>
                 <td className="py-3">
-                  <span className={`px-2 py-1 rounded text-xs font-medium ${
-                    record.status === 'Present' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                  }`}>
+                  <span className={`px-2 py-1 rounded text-xs font-medium ${record.status === 'Present' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                    }`}>
                     {record.status}
                   </span>
                 </td>
@@ -333,53 +331,58 @@ const FarmOperatorProfile = () => {
           </div>
         </div>
 
-        {/* Stats Cards and buttons */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {/* Always Visible Stat Cards */}
-          <div className="bg-white rounded-lg p-6 border border-gray-200">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-2 bg-blue-100 rounded-lg flex items-center justify-center">
-                <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+        {/* Stats Cards */}
+        <div className="flex gap-6">
+          {/* First Three Cards - Always Fixed Size */}
+          <div className="flex gap-6">
+            <div className="bg-white border border-gray-200 rounded-xl p-4 w-48 h-32">
+              <div className="flex items-start gap-3 h-full">
+                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                  <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-600 mb-1" style={{ fontFamily: 'Inter' }}>Total Tasks</p>
+                  <p className="text-2xl font-bold text-gray-900 mb-1" style={{ fontFamily: 'Inter' }}>{farmOperator.totalTasks}</p>
+                  <p className="text-xs text-gray-500 leading-tight" style={{ fontFamily: 'Inter' }}>
+                    {farmOperator.completedTasks} completed, {farmOperator.pendingTasks} pending
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Inter' }}>Total Tasks</p>
-                <p className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>{farmOperator.totalTasks}</p>
-                <p className="text-xs text-gray-500" style={{ fontFamily: 'Inter' }}>
-                  {farmOperator.completedTasks} completed, {farmOperator.pendingTasks} pending
-                </p>
+            </div>
+
+            <div className="bg-white border border-gray-200 rounded-xl p-4 w-48 h-32">
+              <div className="flex items-start gap-3 h-full">
+                <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-600 mb-1" style={{ fontFamily: 'Inter' }}>Completion Rate</p>
+                  <p className="text-2xl font-bold text-gray-900 mb-1" style={{ fontFamily: 'Inter' }}>{farmOperator.completionRate}%</p>
+                  <p className="text-xs text-gray-500 leading-tight" style={{ fontFamily: 'Inter' }}>1 overdue tasks</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white border border-gray-200 rounded-xl p-4 w-48 h-32">
+              <div className="flex items-start gap-3 h-full">
+                <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                  <Calendar className="w-4 h-4 text-purple-600" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-600 mb-1" style={{ fontFamily: 'Inter' }}>Working Days</p>
+                  <p className="text-2xl font-bold text-gray-900 mb-1" style={{ fontFamily: 'Inter' }}>{farmOperator.workingDays}</p>
+                  <p className="text-xs text-gray-500 leading-tight" style={{ fontFamily: 'Inter' }}>Total days since joining</p>
+                </div>
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-lg p-6 border border-gray-200">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                <CheckCircle className="w-5 h-5 text-green-600" />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Inter' }}>Completion Rate</p>
-                <p className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>{farmOperator.completionRate}%</p>
-                <p className="text-xs text-gray-500" style={{ fontFamily: 'Inter' }}>Previous tasks</p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white rounded-lg p-6 border border-gray-200">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                <Calendar className="w-5 h-5 text-purple-600" />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Inter' }}>Working Days</p>
-                <p className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>{farmOperator.workingDays}</p>
-                <p className="text-xs text-gray-500" style={{ fontFamily: 'Inter' }}>Total days since joining</p>
-              </div>
-            </div>
-          </div>
-          
-          {/* Attendance Record Card - Conditionally render on Attendance tab */}
+
+          {/* Fourth Card - Attendance Record (Only visible on Attendance tab) */}
           {activeTab === 'attendance' && (
-            <div className="bg-white rounded-lg p-6 border border-gray-200">
+            <div className="bg-white border border-gray-200 rounded-xl p-6 w-72 flex-shrink-0">
+              {/* Header */}
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Inter' }}>Attendance Record</h3>
                 <button className="p-2 text-blue-600 hover:text-blue-700">
@@ -389,49 +392,56 @@ const FarmOperatorProfile = () => {
                   </svg>
                 </button>
               </div>
-              
-              <div className="flex items-center justify-center mb-4">
-                <div className="relative w-32 h-32">
-                  <ResponsiveContainer width={128} height={128}>
+
+              {/* Main Content Area: Flex container for chart and details */}
+              <div className="flex items-center justify-start gap-6">
+                {/* Chart Section */}
+                <div className="relative w-28 h-28">
+                  <ResponsiveContainer width={112} height={112}>
                     <PieChart>
                       <Pie
                         data={[
-                          { name: 'Present', value: farmOperator.attendanceStats.present, color: '#3B82F6' },
-                          { name: 'Absent', value: farmOperator.attendanceStats.absent, color: '#EF4444' }
+                          { name: 'Present', value: 150, color: '#3B82F6' },
+                          { name: 'Absent', value: 50, color: '#8B5CF6' } // Changed color to purple
                         ]}
                         cx="50%"
                         cy="50%"
-                        innerRadius={35}
-                        outerRadius={55}
+                        innerRadius={25}
+                        outerRadius={45}
                         paddingAngle={2}
                         dataKey="value"
                       >
                         <Cell fill="#3B82F6" />
-                        <Cell fill="#EF4444" />
+                        <Cell fill="#8B5CF6" /> {/* Changed color to purple */}
                       </Pie>
                     </PieChart>
                   </ResponsiveContainer>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
-                      <p className="text-xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>
-                        {farmOperator.attendanceStats.present + farmOperator.attendanceStats.absent}
+                      <p className="text-lg font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>
+                        200
                       </p>
                       <p className="text-xs text-gray-600" style={{ fontFamily: 'Inter' }}>Total</p>
                     </div>
                   </div>
                 </div>
-              </div>
-              
-              <div className="flex justify-center gap-4">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                  <span className="text-xs text-gray-600" style={{ fontFamily: 'Inter' }}>Present</span>
-                  <span className="text-xs font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{farmOperator.attendanceStats.present}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                  <span className="text-xs text-gray-600" style={{ fontFamily: 'Inter' }}>Absent</span>
-                  <span className="text-xs font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{farmOperator.attendanceStats.absent}</span>
+
+                {/* Details Section (Present/Absent) */}
+                <div className="flex-1 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                      <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Present</span>
+                    </div>
+                    <span className="text-sm font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>150</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                      <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Absent</span>
+                    </div>
+                    <span className="text-sm font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>50</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -440,48 +450,45 @@ const FarmOperatorProfile = () => {
 
         {/* Tabs and Edit Button */}
         <div className="flex items-center justify-between">
-          <div className="flex space-x-1 bg-[#F1FCF0] rounded-lg p-1">
+          <div className="flex space-x-1 bg-green-50 rounded-lg p-1">
             <button
               onClick={() => setActiveTab('overview')}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
-                activeTab === 'overview'
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${activeTab === 'overview'
                   ? 'bg-white text-gray-900 shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
-              }`}
+                }`}
               style={{ fontFamily: 'Inter', fontSize: '13.02px' }}
             >
               Overview
             </button>
             <button
               onClick={() => setActiveTab('tasks')}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
-                activeTab === 'tasks'
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${activeTab === 'tasks'
                   ? 'bg-white text-gray-900 shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
-              }`}
+                }`}
               style={{ fontFamily: 'Inter', fontSize: '13.02px' }}
             >
               Assigned Tasks (3)
             </button>
             <button
               onClick={() => setActiveTab('attendance')}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
-                activeTab === 'attendance'
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${activeTab === 'attendance'
                   ? 'bg-white text-gray-900 shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
-              }`}
+                }`}
               style={{ fontFamily: 'Inter', fontSize: '13.02px' }}
             >
               Attendance Records
             </button>
           </div>
-          
+
           {/* Conditionally render Edit/Save/Cancel buttons */}
           {activeTab === 'overview' && (
             <div className="flex items-center gap-2">
               {isEditMode ? (
                 <>
-                  <button 
+                  <button
                     onClick={handleCancel}
                     className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 flex items-center gap-2"
                     style={{ fontFamily: 'Inter', fontSize: '13.02px', fontWeight: 600 }}
@@ -489,7 +496,7 @@ const FarmOperatorProfile = () => {
                     <X size={18} />
                     Cancel
                   </button>
-                  <button 
+                  <button
                     onClick={handleSave}
                     className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2"
                     style={{ fontFamily: 'Inter', fontSize: '13.02px', fontWeight: 600 }}
@@ -499,7 +506,7 @@ const FarmOperatorProfile = () => {
                   </button>
                 </>
               ) : (
-                <button 
+                <button
                   onClick={handleEdit}
                   className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2"
                   style={{ fontFamily: 'Inter', fontSize: '13.02px', fontWeight: 600 }}

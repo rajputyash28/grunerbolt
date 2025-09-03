@@ -1,4 +1,3 @@
-// farmermanagement.tsx
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Plus, MoreHorizontal, Edit, Ban, Trash, X, ChevronDown } from 'lucide-react';
@@ -11,6 +10,13 @@ const FarmerManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(4);
   const [filters, setFilters] = useState({
+    state: '',
+    district: '',
+    mandal: '',
+    landSizeFrom: '',
+    landSizeTo: ''
+  });
+  const [appliedFilters, setAppliedFilters] = useState({
     state: '',
     district: '',
     mandal: '',
@@ -32,13 +38,13 @@ const FarmerManagement = () => {
       farmer.basicDetails.mobileNumber.includes(searchTerm) ||
       farmer.memberId.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesState = filters.state === '' || farmer.addressInfo.state === filters.state;
-    const matchesDistrict = filters.district === '' || farmer.addressInfo.district === filters.district;
-    const matchesMandal = filters.mandal === '' || farmer.addressInfo.mandal === filters.mandal;
+    const matchesState = appliedFilters.state === '' || farmer.addressInfo.state === appliedFilters.state;
+    const matchesDistrict = appliedFilters.district === '' || farmer.addressInfo.district === appliedFilters.district;
+    const matchesMandal = appliedFilters.mandal === '' || farmer.addressInfo.mandal === appliedFilters.mandal;
     const landValue = getLandSizeValue(farmer.quickStats.totalLand);
-    const from = parseFloat(filters.landSizeFrom) || 0;
-    const to = parseFloat(filters.landSizeTo) || Number.POSITIVE_INFINITY;
-    const matchesLandSize = (filters.landSizeFrom === '' && filters.landSizeTo === '') ||
+    const from = parseFloat(appliedFilters.landSizeFrom) || 0;
+    const to = parseFloat(appliedFilters.landSizeTo) || Number.POSITIVE_INFINITY;
+    const matchesLandSize = (appliedFilters.landSizeFrom === '' && appliedFilters.landSizeTo === '') ||
       (landValue >= from && landValue <= to);
 
     return matchesSearch && matchesState && matchesDistrict && matchesMandal && matchesLandSize;
@@ -91,7 +97,6 @@ const FarmerManagement = () => {
 
   const handleFilterChange = (filterType: string, value: string) => {
     setFilters(prev => ({ ...prev, [filterType]: value }));
-    setCurrentPage(1);
   };
 
   const handleResetFilters = () => {
@@ -102,10 +107,18 @@ const FarmerManagement = () => {
       landSizeFrom: '',
       landSizeTo: ''
     });
+    setAppliedFilters({
+      state: '',
+      district: '',
+      mandal: '',
+      landSizeFrom: '',
+      landSizeTo: ''
+    });
     setCurrentPage(1);
   };
 
   const handleApplyFilters = () => {
+    setAppliedFilters({ ...filters });
     setShowFilterMenu(false);
     setCurrentPage(1);
   };
@@ -142,14 +155,14 @@ const FarmerManagement = () => {
         setShowActionMenu(null);
       }
     };
-    
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
-  const hasActiveFilters = Object.values(filters).some(filter => filter !== '');
+  const hasActiveFilters = Object.values(appliedFilters).some(filter => filter !== '');
 
   return (
     <div className="space-y-8 relative">
@@ -179,11 +192,10 @@ const FarmerManagement = () => {
             placeholder="Search by name, mobile, or member ID..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-[448px] pl-10 pr-4 py-2 border border-gray-300 rounded-lg  "
+            className="w-[448px] pl-10 pr-4 py-2 border border-gray-300 rounded-lg"
           />
         </div>
-        <div className='flex items-center justify-end mt-4 gap-3'>
-
+        <div className="flex items-center justify-end mt-4 gap-3">
           <button
             onClick={handleExportCSV}
             className="bg-white border font-bold border-black text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 flex items-center gap-2 transition-colors"
@@ -194,28 +206,28 @@ const FarmerManagement = () => {
           <div className="relative">
             <button
               onClick={() => setShowFilterMenu(!showFilterMenu)}
-              className={`flex items-center gap-2 px-4 py-2 transition-colors ${hasActiveFilters
-                  ? 'border-blue-500 bg-blue-50 text-blue-700'
-                  : 'border-gray-300 '
-                }`}
+              className={`flex items-center gap-2 px-4 py-2 transition-colors ${
+                hasActiveFilters ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-300'
+              }`}
             >
               <img src="/filter.svg" alt="Filter" />
             </button>
 
             {showFilterMenu && (
               <div className="absolute right-0 top-full mt-2 w-60 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-                <div className="p-4 space-y-4">
+                <div className="p-4 space-y-4 h-[390px]">
                   <div className="flex items-center justify-between">
                     <h3 className="font-medium text-gray-900">Filter by</h3>
                     <button
                       onClick={() => setShowFilterMenu(false)}
                       className="text-gray-400 hover:text-gray-600"
                     >
-                      <X size={19} className='text-[#000000]'/>
+                      <X size={19} className="text-[#000000]" />
                     </button>
                   </div>
 
                   <div className="space-y-4">
+                    {/* State Filter */}
                     <div className="relative">
                       <select
                         value={filters.state}
@@ -226,9 +238,13 @@ const FarmerManagement = () => {
                         <option value="Punjab">Punjab</option>
                         <option value="Haryana">Haryana</option>
                       </select>
-                      <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-400" size={20} />
+                      <ChevronDown
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-400"
+                        size={20}
+                      />
                     </div>
 
+                    {/* District Filter */}
                     <div className="relative">
                       <select
                         value={filters.district}
@@ -241,9 +257,13 @@ const FarmerManagement = () => {
                         <option value="Amritsar">Amritsar</option>
                         <option value="Panipat">Panipat</option>
                       </select>
-                      <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-400" size={20} />
+                      <ChevronDown
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-400"
+                        size={20}
+                      />
                     </div>
 
+                    {/* Mandal Filter */}
                     <div className="relative">
                       <select
                         value={filters.mandal}
@@ -261,10 +281,14 @@ const FarmerManagement = () => {
                         <option value="Mandal-4">Mandal-4</option>
                         <option value="Mandal-5">Mandal-5</option>
                       </select>
-                      <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-400" size={20} />
+                      <ChevronDown
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-400"
+                        size={20}
+                      />
                     </div>
 
-                    <div className='border rounded p-2'>
+                    {/* Land Size Filter */}
+                    <div className="border rounded p-2">
                       <label className="block text-sm font-medium text-gray-700 mb-1">Land size</label>
                       <div className="flex items-center gap-6">
                         <div className="flex items-center gap-2">
@@ -274,7 +298,7 @@ const FarmerManagement = () => {
                             placeholder=""
                             value={filters.landSizeFrom}
                             onChange={(e) => handleFilterChange('landSizeFrom', e.target.value)}
-                            className="w-[35px] h-[15px] px-3 py-2 border border-gray-300 rounded-md  focus:border-transparent no-spin"
+                            className="w-[35px] h-[15px] px-3 py-2 border border-gray-300 rounded-md focus:border-transparent no-spin"
                           />
                         </div>
                         <div className="flex items-center gap-1">
@@ -284,23 +308,23 @@ const FarmerManagement = () => {
                             placeholder=""
                             value={filters.landSizeTo}
                             onChange={(e) => handleFilterChange('landSizeTo', e.target.value)}
-                            className="w-[35px] h-[15px] px-3 py-2 border border-gray-300 rounded-md  focus:border-transparent no-spin"
+                            className="w-[35px] h-[15px] px-3 py-2 border border-gray-300 rounded-md focus:border-transparent no-spin"
                           />
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 pt-3 ">
+                  <div className="flex items-center gap-2 pt-3">
                     <button
                       onClick={handleResetFilters}
-                      className="flex-1 px-3 py-2 font-bold text-black-600 bg-white-100 border border-gray-300 rounded-md transition-colors"
+                      className="flex-1 px-3 py-2 font-bold text-black bg-white border border-gray-300 rounded-md transition-colors"
                     >
                       Reset
                     </button>
                     <button
                       onClick={handleApplyFilters}
-                      className="flex-1 px-3 py-2 bg-[#D9D9D9] font-bold text-black border border-gray-300 rounded-md  transition-colors"
+                      className="flex-1 px-3 py-2 bg-[#D9D9D9] font-bold text-black border border-gray-300 rounded-md transition-colors"
                     >
                       Apply
                     </button>
@@ -315,46 +339,55 @@ const FarmerManagement = () => {
       {hasActiveFilters && (
         <div className="flex items-center gap-2 text-sm">
           <span className="text-gray-600">Active filters:</span>
-          {filters.state && (
+          {appliedFilters.state && (
             <span key="state" className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded-md">
-              State: {filters.state}
-              <button
-                onClick={() => handleFilterChange('state', '')}
-                className="text-blue-600 hover:text-blue-800"
-              >
-                <X size={12} />
-              </button>
-            </span>
-          )}
-          {filters.district && (
-            <span key="district" className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded-md">
-              District: {filters.district}
-              <button
-                onClick={() => handleFilterChange('district', '')}
-                className="text-blue-600 hover:text-blue-800"
-              >
-                <X size={12} />
-              </button>
-            </span>
-          )}
-          {filters.mandal && (
-            <span key="mandal" className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded-md">
-              Mandal: {filters.mandal}
-              <button
-                onClick={() => handleFilterChange('mandal', '')}
-                className="text-blue-600 hover:text-blue-800"
-              >
-                <X size={12} />
-              </button>
-            </span>
-          )}
-          {(filters.landSizeFrom || filters.landSizeTo) && (
-            <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded-md">
-              Land size: {filters.landSizeFrom || ''} - {filters.landSizeTo || ''}
+              State: {appliedFilters.state}
               <button
                 onClick={() => {
-                  handleFilterChange('landSizeFrom', '');
-                  handleFilterChange('landSizeTo', '');
+                  setFilters(prev => ({ ...prev, state: '' }));
+                  setAppliedFilters(prev => ({ ...prev, state: '' }));
+                }}
+                className="text-blue-600 hover:text-blue-800"
+              >
+                <X size={12} />
+              </button>
+            </span>
+          )}
+          {appliedFilters.district && (
+            <span key="district" className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded-md">
+              District: {appliedFilters.district}
+              <button
+                onClick={() => {
+                  setFilters(prev => ({ ...prev, district: '' }));
+                  setAppliedFilters(prev => ({ ...prev, district: '' }));
+                }}
+                className="text-blue-600 hover:text-blue-800"
+              >
+                <X size={12} />
+              </button>
+            </span>
+          )}
+          {appliedFilters.mandal && (
+            <span key="mandal" className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded-md">
+              Mandal: {appliedFilters.mandal}
+              <button
+                onClick={() => {
+                  setFilters(prev => ({ ...prev, mandal: '' }));
+                  setAppliedFilters(prev => ({ ...prev, mandal: '' }));
+                }}
+                className="text-blue-600 hover:text-blue-800"
+              >
+                <X size={12} />
+              </button>
+            </span>
+          )}
+          {(appliedFilters.landSizeFrom || appliedFilters.landSizeTo) && (
+            <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded-md">
+              Land size: {appliedFilters.landSizeFrom || ''} - {appliedFilters.landSizeTo || ''}
+              <button
+                onClick={() => {
+                  setFilters(prev => ({ ...prev, landSizeFrom: '', landSizeTo: '' }));
+                  setAppliedFilters(prev => ({ ...prev, landSizeFrom: '', landSizeTo: '' }));
                 }}
                 className="text-blue-600 hover:text-blue-800"
               >
@@ -375,55 +408,38 @@ const FarmerManagement = () => {
         <table className="w-full">
           <thead>
             <tr className="border-b border-gray-200">
-              <th className="text-left py-4 pr-8 text-sm font-semibold text-gray-700 w-1/6">
-                Name
-              </th>
-              <th className="text-left py-4 pr-8 text-sm font-semibold text-gray-700 w-1/6">
-                Mobile
-              </th>
-              <th className="text-left py-4 pr-8 text-sm font-semibold text-gray-700 w-1/6">
-                Member ID
-              </th>
-              <th className="text-left py-4 pr-8 text-sm font-semibold text-gray-700 w-1/6">
-                Status
-              </th>
-              <th className="text-left py-4 pr-8 text-sm font-semibold text-gray-700 w-1/6">
-                Registered Date
-              </th>
-              <th className="text-right py-4 text-sm font-semibold text-gray-700 w-1/6">
-                Actions
-              </th>
+              <th className="text-left py-4 pr-8 text-sm font-semibold text-gray-700 w-1/6">Name</th>
+              <th className="text-left py-4 pr-8 text-sm font-semibold text-gray-700 w-1/6">Mobile</th>
+              <th className="text-left py-4 pr-8 text-sm font-semibold text-gray-700 w-1/6">Member ID</th>
+              <th className="text-left py-4 pr-8 text-sm font-semibold text-gray-700 w-1/6">Status</th>
+              <th className="text-left py-4 pr-8 text-sm font-semibold text-gray-700 w-1/6">Registered Date</th>
+              <th className="text-right py-4 text-sm font-semibold text-gray-700 w-1/6">Actions</th>
             </tr>
           </thead>
           <tbody>
             {currentFarmers.length > 0 ? (
               currentFarmers.map((farmer: Farmer, index: number) => (
-                <tr key={farmer.id} className={index < currentFarmers.length - 1 ? "border-b border-gray-100" : ""}>
+                <tr key={farmer.id} className={index < currentFarmers.length - 1 ? 'border-b border-gray-100' : ''}>
                   <td className="py-4 pr-8">
                     <button
                       onClick={() => handleViewProfile(farmer)}
-                      className="text-sm font-medium text-[#000000]-600 hover:text-blue-800 underline"
+                      className="text-sm font-medium text-[#000000] hover:text-blue-800 underline"
                     >
                       {farmer.name}
                     </button>
                   </td>
-                  <td className="py-4 pr-8 text-sm text-gray-600">
-                    {farmer.basicDetails.mobileNumber}
-                  </td>
-                  <td className="py-4 pr-8 text-sm text-gray-600">
-                    {farmer.memberId}
-                  </td>
+                  <td className="py-4 pr-8 text-sm text-gray-600">{farmer.basicDetails.mobileNumber}</td>
+                  <td className="py-4 pr-8 text-sm text-gray-600">{farmer.memberId}</td>
                   <td className="py-4 pr-8">
-                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${farmer.kycStatus === 'Active'
-                        ? 'bg-gray-100 text-[#000000]-800'
-                        : 'bg-gray-100 text-red[#000000]-800'
-                      }`}>
+                    <span
+                      className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                        farmer.kycStatus === 'Active' ? 'bg-gray-100 text-[#000000]' : 'bg-gray-100 text-red-800'
+                      }`}
+                    >
                       {farmer.kycStatus}
                     </span>
                   </td>
-                  <td className="py-4 pr-8 text-sm text-gray-600">
-                    {farmer.registeredDate}
-                  </td>
+                  <td className="py-4 pr-8 text-sm text-gray-600">{farmer.registeredDate}</td>
                   <td className="py-4 text-right relative">
                     <button
                       onClick={(e) => toggleActionMenu(farmer.id, e)}
@@ -433,7 +449,10 @@ const FarmerManagement = () => {
                       <MoreHorizontal size={16} />
                     </button>
                     {showActionMenu === farmer.id && (
-                      <div ref={actionMenuRef} className="absolute right-0 top-8 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                      <div
+                        ref={actionMenuRef}
+                        className="absolute right-0 top-8 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50"
+                      >
                         <div className="py-1">
                           <button
                             onClick={() => {
@@ -460,7 +479,7 @@ const FarmerManagement = () => {
                               handleDeleteFarmer(farmer);
                               setShowActionMenu(null);
                             }}
-                            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[#000000]-600 hover:bg-gray-100 transition-colors"
+                            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[#000000] hover:bg-gray-100 transition-colors"
                           >
                             <Trash size={16} />
                             Delete
@@ -483,7 +502,7 @@ const FarmerManagement = () => {
       </div>
 
       {totalEntries > 0 && (
-        <div className="flex items-center justify-between ">
+        <div className="flex items-center justify-between">
           <div className="font-semibold text-sm text-[#000000]">
             Showing {startIndex + 1} to {endIndex} of {totalEntries} entries
           </div>
@@ -492,7 +511,7 @@ const FarmerManagement = () => {
             <button
               onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
               disabled={currentPage === 1}
-              className="px-3 py-1 text-sm  rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-1 text-sm rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Previous
             </button>
@@ -513,10 +532,9 @@ const FarmerManagement = () => {
                 <button
                   key={pageNum}
                   onClick={() => setCurrentPage(pageNum)}
-                  className={`px-3 py-1 text-sm  transition-colors text-[#8A8A8A] ${pageNum === currentPage
-                      ? 'border rounded  border-[#000000] '
-                      : 'hover:bg-gray-50'
-                    }`}
+                  className={`px-3 py-1 text-sm transition-colors text-[#8A8A8A] ${
+                    pageNum === currentPage ? 'border rounded border-[#000000]' : 'hover:bg-gray-50'
+                  }`}
                 >
                   {pageNum}
                 </button>
@@ -526,7 +544,7 @@ const FarmerManagement = () => {
             <button
               onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
               disabled={currentPage === totalPages}
-              className="px-3 py-1 text-sm  rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-1 text-sm rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Next
             </button>

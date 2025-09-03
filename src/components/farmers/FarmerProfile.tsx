@@ -1,483 +1,6 @@
-// import { useParams, useNavigate } from 'react-router-dom';
-// import { ArrowLeft, Edit, MapPin, Users, Sprout, Tractor, Phone, CreditCard } from 'lucide-react';
-// import initialFarmerData from './farmerprofile'; // Import the provided farmer profile data
-
-// const FarmerProfile = () => {
-//   const { id } = useParams();
-//   const navigate = useNavigate();
-
-//   // Find the farmer based on the ID from the provided dummy data
-//   const farmer = initialFarmerData.find(f => f.id === parseInt(id || ''));
-
-//   // If farmer not found, show a message
-//   if (!farmer) {
-//     return (
-//       <div className="space-y-6">
-//         <div className="flex items-center gap-4">
-//           <button
-//             onClick={() => navigate('/farmers')}
-//             className="p-2 text-gray-400 hover:text-gray-600 rounded-lg border border-gray-300"
-//           >
-//             <ArrowLeft size={20} />
-//           </button>
-//           <div>
-//             <h1 className="text-2xl font-bold text-blue-600">Farmer Not Found</h1>
-//             <p className="text-gray-600">The requested farmer profile does not exist.</p>
-//           </div>
-//         </div>
-//         <button
-//           onClick={() => navigate('/farmers')}
-//           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-//         >
-//           Back to Farmers List
-//         </button>
-//       </div>
-//     );
-//   }
-
-//   const handleEdit = () => {
-//     navigate(`/farmers/edit/${farmer.id}`);
-//   };
-
-//   return (
-//     <div className="space-y-6">
-//       {/* Header */}
-//       <div className="flex items-center justify-between">
-//         <div className="flex items-center gap-4">
-//           <button
-//             onClick={() => navigate('/farmers')}
-//             className="p-2 text-gray-400 hover:text-gray-600 rounded-lg border border-gray-300"
-//           >
-//             <ArrowLeft size={20} />
-//           </button>
-//           <div>
-//             <h1 className="text-2xl font-bold text-blue-600">Farmer Profile</h1>
-//             <p className="text-gray-600">Complete Information for {farmer.name}</p>
-//           </div>
-//         </div>
-//         <button 
-//           onClick={handleEdit}
-//           className="bg-[#0A6802] text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2"
-//         >
-//           <Edit size={18}  />
-//           Edit Profile
-//         </button>
-//       </div>
-
-//       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-//         {/* Left Column - Profile Overview */}
-//         <div className="lg:col-span-1 space-y-6">
-//           {/* Profile Card */}
-//           <div className="bg-white rounded-lg p-6 border border-gray-200">
-//   <div className="text-center">
-//     <img
-//       src={farmer.profileImage}
-//       alt={farmer.name}
-//       className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
-//     />
-//     <h3 className="text-lg font-semibold text-gray-900">{farmer.name}</h3>
-//     <p className="text-sm text-gray-600">{farmer.memberId}</p>
-//     <span className="inline-block mt-2 px-3 py-1 bg-[#0A6802] font-bold text-white text-sm rounded-full">
-//       {farmer.kycStatus}
-//     </span>
-//     <div className="border-t border-gray-200 my-4"></div>
-//     <p className="text-sm text-gray-500 mt-2">Assigned Kisan Didi</p>
-//     <p className="text-sm font-medium text-blue-500 border border-gray-200 font-semibold rounded-md py-1 px-3 inline-block">{farmer.kd}</p>
-//   </div>
-// </div>
-
-//           {/* Quick Stats */}
-//           <div className="bg-white rounded-lg p-6 border border-gray-200">
-//             <h4 className="text-lg font-semibold text-gray-900 mb-4">Quick Stats</h4>
-//             <div className="space-y-3">
-//               <div className="flex justify-between items-center py-2 ">
-//                 <span className="text-gray-600">Total Land</span>
-//                 <span className="font-medium w-[150px]  px-3 py-1 rounded border">{farmer.quickStats.totalLand}</span>
-//               </div>
-//               <div className="flex justify-between items-center py-2 ">
-//                 <span className="text-gray-600">Family Members</span>
-//                 <span className="font-medium  w-[150px] px-3 py-1 rounded border">{farmer.quickStats.familyMembers}</span>
-//               </div>
-//               <div className="flex justify-between items-center py-2 ">
-//                 <span className="text-gray-600">Livestock</span>
-//                 <span className="font-medium w-[150px] px-3 py-1 rounded border">{farmer.quickStats.livestock}</span>
-//               </div>
-//               <div className="flex justify-between items-center py-2">
-//                 <span className="text-gray-600">Assets</span>
-//                 <span className="font-medium w-[150px]  px-3 py-1 rounded border">{farmer.quickStats.assets}</span>
-//               </div>
-//             </div>
-//           </div>
-
-//           {/* Family Details */}
-//           <div className="bg-white rounded-lg p-6 border border-gray-200">
-//             <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-//               <Users size={20} />
-//               Family Details
-//             </h4>
-//             <div className="space-y-4">
-//               <div className="grid grid-cols-2 gap-4">
-//                 <div>
-//                   <span className="text-sm text-gray-600 block mb-1">Total Adults</span>
-//                   <div className="  border border-gray-300 rounded px-3 py-2 ">
-//                     <span className="font-semibold text-black-800">{farmer.familyDetails.totalAdults}</span>
-//                   </div>
-//                 </div>
-//                 <div>
-//                   <span className="text-sm text-gray-600 block mb-1">Total Children</span>
-//                   <div className="  border border-gray-300 rounded px-3 py-2 ">
-//                     <span className="font-semibold text-black-800">{farmer.familyDetails.totalChildren}</span>
-//                   </div>
-//                 </div>
-//               </div>
-//               <div>
-//                 <span className="text-sm text-gray-600 block mb-1">Working Members</span>
-//                 <div className="  border border-gray-300 rounded px-3 py-2 w-[150px]">
-//                     <span className="font-semibold text-black-800">{farmer.familyDetails.workingMembers}</span>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-
-//           {/* Farm Machinery Details */}
-//           <div className="bg-white rounded-lg p-6 border border-gray-200">
-//             <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-//               <CreditCard size={20} />
-//               Farm Machinery Details
-//             </h4>
-//             <div className="space-y-4">
-//               <div className="grid grid-cols-3 gap-2">
-//                 <div>
-//                   <span className="text-sm text-gray-600 block mb-1">Tractor</span>
-//                   <div className="  border border-gray-300 rounded px-2 py-2 ">
-//                     <span className="font-semibold text-black-800">{farmer.farmMachineryDetails.tractor}</span>
-//                   </div>
-//                 </div>
-//                 <div>
-//                   <span className="text-sm text-gray-600 block mb-1">Harvester</span>
-//                   <div className="  border border-gray-300 rounded px-2 py-2 ">
-//                     <span className="font-semibold text-black-800">{farmer.farmMachineryDetails.harvester}</span>
-//                   </div>
-//                 </div>
-//                 <div>
-//                   <span className="text-sm text-gray-600 block mb-1">Truck</span>
-//                   <div className="  border border-gray-300 rounded px-2 py-2 ">
-//                     <span className="font-semibold text-black-800">{farmer.farmMachineryDetails.truck}</span>
-//                   </div>
-//                 </div>
-//               </div>
-//               <div className="grid grid-cols-2 gap-4">
-//                 <div>
-//                   <span className="text-sm text-gray-600 block mb-1">Plough</span>
-//                   <div className="  border border-gray-300 rounded px-2 py-2 ">
-//                     <span className="font-semibold text-black-800">{farmer.farmMachineryDetails.plough}</span>
-//                   </div>
-//                 </div>
-//                 <div>
-//                   <span className="text-sm text-gray-600 block mb-1">Sprayer</span>
-//                   <div className="  border border-gray-300 rounded px-2 py-2 ">
-//                     <span className="font-semibold text-black-800">{farmer.farmMachineryDetails.sprayer}</span>
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-
-//         {/* Right Column - Detailed Information */}
-//         <div className="lg:col-span-3 space-y-6">
-//           {/* Personal Information & KYC Documents */}
-//           <div className="bg-white rounded-lg p-6 border border-gray-200">
-//             <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center gap-2">
-//               <Phone size={20}/> Personal Information & KYC Documents
-//             </h3>
-            
-//             {/* Basic Details */}
-//             <div className="mb-6">
-//               <h4 className="text-md font-medium text-gray-700 mb-3">Basic Details</h4>
-//               <div className="space-y-3">
-//                 <div className="grid grid-cols-3 gap-4">
-//                   <div>
-//                     <label className="text-sm text-gray-600 font-bold block mb-1">Full Name</label>
-//                     <div className="w-full h-[40px] border border-gray-300 rounded flex items-center px-3">
-//                       <span className="text-sm text-black-800 font-semibold">{farmer.basicDetails.fullName}</span>
-//                     </div>
-//                   </div>
-//                   <div>
-//                     <label className="text-sm text-gray-600 font-bold block mb-1">Date of Birth</label>
-//                     <div className="w-full h-[40px] border border-gray-300 rounded  flex items-center px-3">
-//                       <span className="text-sm text-black-800 font-semibold">{farmer.basicDetails.dateOfBirth}</span>
-//                     </div>
-//                   </div>
-//                   <div>
-//                     <label className="text-sm text-gray-600 font-bold block mb-1">Gender</label>
-//                     <div className="w-full h-[40px] border border-gray-300 rounded   flex items-center px-3">
-//                       <span className="text-sm text-black-800 font-semibold">{farmer.basicDetails.gender}</span>
-//                     </div>
-//                   </div>
-//                 </div>
-                
-//                 <div className="grid grid-cols-3 gap-4">
-//                   <div>
-//                     <label className="text-sm text-gray-600 font-bold block mb-1">Mobile Number</label>
-//                     <div className="w-full h-[40px] border border-gray-300 rounded   flex items-center px-3">
-//                       <span className="text-sm text-black-800 font-semibold">{farmer.basicDetails.mobileNumber}</span>
-//                     </div>
-//                   </div>
-//                   <div>
-//                     <label className="text-sm text-gray-600 font-bold block mb-1">Email Address</label>
-//                     <div className="w-full h-[40px] border border-gray-300 rounded   flex items-center px-3">
-//                       <span className="text-sm text-black-800 font-semibold">{farmer.basicDetails.emailAddress}</span>
-//                     </div>
-//                   </div>
-//                   <div>
-//                     <label className="text-sm text-gray-600 font-bold block mb-1">Fathers Name</label>
-//                     <div className="w-full h-[40px] border border-gray-300 rounded   flex items-center px-3">
-//                       <span className="text-sm text-black-800 font-semibold">{farmer.basicDetails.fatherName}</span>
-//                     </div>
-//                   </div>
-//                 </div>
-
-//                 <div className="grid grid-cols-3 gap-4">
-//                   <div>
-//                     <label className="text-sm text-gray-600 font-bold block mb-1">Education</label>
-//                     <div className="w-full h-[40px] border border-gray-300 rounded   flex items-center px-3">
-//                       <span className="text-sm text-black-800 font-semibold">{farmer.basicDetails.education}</span>
-//                     </div>
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-
-//             {/* KYC Documents */}
-//             <div>
-//   <h4 className="text-md font-medium text-gray-700 mb-3">KYC Documents</h4>
-//   <div className="grid grid-cols-3 gap-4">
-//     <div>
-//       <div className="border border-gray-300 rounded-md p-3">
-//         <label className="text-sm text-gray-600 font-bold block mb-1">Aadhar Card</label>
-//         <span className="text-sm text-black-800 font-semibold">{farmer.kycDocuments.aadharCard}</span>
-//       </div>
-//     </div>
-//   </div>
-// </div>
-//           </div>
-
-//           {/* Address Information */}
-//           <div className="bg-white rounded-lg p-6 border border-gray-200">
-//             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-//               <MapPin size={20} />
-//               Address Information
-//             </h3>
-//             <div className="space-y-3">
-//               <div className="grid grid-cols-3 gap-4">
-//                 <div>
-//                   <label className="text-sm text-gray-600 font-bold block mb-1">Complete Address</label>
-//                   <div className="w-full h-[40px] border border-gray-300 rounded   flex items-center px-3">
-//                     <span className="text-sm text-black-800 font-semibold">{farmer.addressInfo.completeAddress}</span>
-//                   </div>
-//                 </div>
-//                 <div>
-//                   <label className="text-sm text-gray-600 font-bold block mb-1">Village</label>
-//                   <div className="w-full h-[40px] border border-gray-300 rounded   flex items-center px-3">
-//                     <span className="text-sm text-black-800 font-semibold">{farmer.addressInfo.village}</span>
-//                   </div>
-//                 </div>
-//                 <div>
-//                   <label className="text-sm text-gray-600 font-bold block mb-1">Mandal</label>
-//                   <div className="w-full h-[40px] border border-gray-300 rounded   flex items-center px-3">
-//                     <span className="text-sm text-black-800 font-semibold">{farmer.addressInfo.mandal}</span>
-//                   </div>
-//                 </div>
-//               </div>
-              
-//               <div className="grid grid-cols-3 gap-4">
-//                 <div>
-//                   <label className="text-sm text-gray-600 font-bold block mb-1">District</label>
-//                   <div className="w-full h-[40px] border border-gray-300 rounded   flex items-center px-3">
-//                     <span className="text-sm text-black-800 font-semibold">{farmer.addressInfo.district}</span>
-//                   </div>
-//                 </div>
-//                 <div>
-//                   <label className="text-sm text-gray-600 font-bold block mb-1">State</label>
-//                   <div className="w-full h-[40px] border border-gray-300 rounded   flex items-center px-3">
-//                     <span className="text-sm text-black-800 font-semibold">{farmer.addressInfo.state}</span>
-//                   </div>
-//                 </div>
-//                 <div>
-//                   <label className="text-sm text-gray-600 font-bold block mb-1">PIN Code</label>
-//                   <div className="w-full h-[40px] border border-gray-300 rounded   flex items-center px-3">
-//                     <span className="text-sm text-black-800 font-semibold">{farmer.addressInfo.pinCode}</span>
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-
-//           {/* Land Details */}
-//           <div className="bg-white rounded-lg p-6 border border-gray-200">
-//             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-//               <Tractor size={20} /> Land Details
-//             </h3>
-//             <div className="space-y-4">
-//               {farmer.landDetails.map((land, index) => (
-//                 <div key={index} className="border border-gray-200 rounded-lg p-4">
-//                   <div className="grid grid-cols-3 gap-4">
-//                     <div>
-//                       <label className="text-sm text-gray-600 font-bold block mb-1">Land name</label>
-//                       <div className="w-full h-[35px] border border-gray-300 rounded   flex items-center px-3">
-//                         <span className="text-sm text-black-800 font-semibold">{land.landName}</span>
-//                       </div>
-//                     </div>
-//                     <div>
-//                       <label className="text-sm text-gray-600 font-bold block mb-1">Land Details</label>
-//                       <div className="w-full h-[35px] border border-gray-300 rounded   flex items-center px-3">
-//                         <span className="text-sm text-black-800 font-semibold">{land.landDetails}</span>
-//                       </div>
-//                     </div>
-//                     <div>
-//                       <label className="text-sm text-gray-600 font-bold block mb-1">{land.ownLand ? 'Own Land' : 'Leased Land'}</label>
-//                       <div className="w-full h-[35px] border border-gray-300 rounded   flex items-center px-3">
-//                         <span className="text-sm text-black-800 font-semibold">{land.ownLand || land.leasedLand}</span>
-//                       </div>
-//                     </div>
-//                   </div>
-//                 </div>
-//               ))}
-//             </div>
-//           </div>
-
-//           {/* Crop Details */}
-//           <div className="bg-white rounded-lg p-6 border border-gray-200">
-//             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-//               <Sprout size={20} />
-//               Crop Details
-//             </h3>
-//             <div className="space-y-3">
-//               <div className="grid grid-cols-3 gap-4">
-//                 <div>
-//                   <label className="text-sm text-gray-600 font-bold block mb-1">Land Name</label>
-//                   <div className="w-full h-[40px] border border-gray-300 rounded   flex items-center px-3">
-//                     <span className="text-sm text-black-800 font-semibold">{farmer.cropDetails.landName}</span>
-//                   </div>
-//                 </div>
-//                 <div>
-//                   <label className="text-sm text-gray-600 font-bold block mb-1">Plot Number</label>
-//                   <div className="w-full h-[40px] border border-gray-300 rounded   flex items-center px-3">
-//                     <span className="text-sm text-black-800 font-semibold">{farmer.cropDetails.plotNumber}</span>
-//                   </div>
-//                 </div>
-//                 <div>
-//                   <label className="text-sm text-gray-600 font-bold block mb-1">Land area</label>
-//                   <div className="w-full h-[40px] border border-gray-300 rounded   flex items-center px-3">
-//                     <span className="text-sm text-black-800 font-semibold">{farmer.cropDetails.landArea}</span>
-//                   </div>
-//                 </div>
-//               </div>
-              
-//               <div className="grid grid-cols-3 gap-4">
-//                 <div>
-//                   <label className="text-sm text-gray-600 font-bold block mb-1">Crop Sown</label>
-//                   <div className="w-full h-[40px] border border-gray-300 rounded   flex items-center px-3">
-//                     <span className="text-sm text-black-800 font-semibold">{farmer.cropDetails.cropSown}</span>
-//                   </div>
-//                 </div>
-//                 <div>
-//                   <label className="text-sm text-gray-600 font-bold block mb-1">Variety</label>
-//                   <div className="w-full h-[40px] border border-gray-300 rounded   flex items-center px-3">
-//                     <span className="text-sm text-black-800 font-semibold">{farmer.cropDetails.variety}</span>
-//                   </div>
-//                 </div>
-//                 <div>
-//                   <label className="text-sm text-gray-600 font-bold block mb-1">Seed Variety</label>
-//                   <div className="w-full h-[40px] border border-gray-300 rounded   flex items-center px-3">
-//                     <span className="text-sm text-black-800 font-semibold">{farmer.cropDetails.seedVariety}</span>
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-
-//           {/* Livestock Details */}
-//           <div className="bg-white rounded-lg p-6 border border-gray-200">
-//             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-//               <Users size={20} /> Livestock Details
-//             </h3>
-            
-//             {/* Total Livestock Row */}
-//             <div className="mb-6">
-//               <div className="grid grid-cols-4 gap-4">
-//                 <div>
-//                   <label className="text-sm text-gray-600 font-bold block mb-1">Total Livestock</label>
-//                   <div className="w-full h-[40px] border border-gray-300 rounded   flex items-center px-3">
-//                     <span className="text-sm text-black-800 font-semibold">{farmer.livestockDetails.totalLivestock}</span>
-//                   </div>
-//                 </div>
-//                 <div>
-//                   <label className="text-sm text-gray-600 font-bold block mb-1">Cattle</label>
-//                   <div className="w-full h-[40px] border border-gray-300 rounded   flex items-center px-3">
-//                     <span className="text-sm text-black-800 font-semibold">{farmer.livestockDetails.cattle}</span>
-//                   </div>
-//                 </div>
-//                 <div>
-//                   <label className="text-sm text-gray-600 font-bold block mb-1">Poultry</label>
-//                   <div className="w-full h-[40px] border border-gray-300 rounded   flex items-center px-3">
-//                     <span className="text-sm text-black-800 font-semibold">{farmer.livestockDetails.poultry}</span>
-//                   </div>
-//                 </div>
-//                 <div>
-//                   <label className="text-sm text-gray-600 font-bold block mb-1">Small Animals</label>
-//                   <div className="w-full h-[40px] border border-gray-300 rounded   flex items-center px-3">
-//                     <span className="text-sm text-black-800 font-semibold">{farmer.livestockDetails.smallAnimals}</span>
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-
-//             {/* Detailed Breakdown */}
-//             <div>
-//               <h4 className="text-md font-medium text-gray-700 mb-3">Detailed Breakdown</h4>
-//               <div className="grid grid-cols-2 gap-6">
-//                 {farmer.livestockDetails.detailedBreakdown.map((category, index) => {
-//                   // Determine if this is the last item and if total categories is odd
-//                   const isLastAndOdd = index === farmer.livestockDetails.detailedBreakdown.length - 1 && 
-//                                        farmer.livestockDetails.detailedBreakdown.length % 2 !== 0;
-                  
-//                   return (
-//                     <div 
-//                       key={category.category} 
-//                       className={`border border-gray-200 rounded-lg p-4 ${isLastAndOdd ? 'col-span-2' : ''}`}
-//                     >
-//                       <h5 className="text-sm font-medium text-gray-700 mb-3">{category.category}</h5>
-//                       <div className="space-y-3">
-//                         {category.items.map((item, itemIndex) => (
-//                           <div key={itemIndex} className="flex justify-between items-center">
-//                             <span className="text-sm text-gray-600">{item.name}:</span>
-//                             <div className="w-16 h-[30px] border border-gray-300 rounded   flex items-center justify-center">
-//                               <span className="text-sm text-black-800 font-semibold">{item.count}</span>
-//                             </div>
-//                           </div>
-//                         ))}
-//                       </div>
-//                     </div>
-//                   );
-//                 })}
-//               </div>
-//             </div>
-//             </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default FarmerProfile;
-
-
-
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, MapPin, Users, Sprout, Tractor, Phone, CreditCard , Edit} from 'lucide-react';
+import { ArrowLeft, MapPin, Users, Sprout, Tractor, Phone, CreditCard, Edit } from 'lucide-react';
 import initialFarmerData, { Farmer } from './farmerprofile';
 
 const FarmerProfile = () => {
@@ -504,13 +27,29 @@ const FarmerProfile = () => {
     district: farmer?.addressInfo.district || '',
     state: farmer?.addressInfo.state || '',
     pinCode: farmer?.addressInfo.pinCode || '',
-    landOwnership: farmer?.landDetails[0]?.landDetails || '',
-    totalLand: farmer?.quickStats.totalLand.split(' ')[0] || '',
-    cropTypes: farmer?.cropDetails.variety || '',
+    landDetails: farmer?.landDetails.map(land => ({
+      landName: land.landName || '',
+      landOwnership: land.landDetails || '',
+      totalLand: land.ownLand?.split(' ')[0] || land.leasedLand?.split(' ')[0] || '',
+    })) || [{ landName: '', landOwnership: '', totalLand: '' }],
+    cropLandName: farmer?.cropDetails.landName || '',
+    plotNumber: farmer?.cropDetails.plotNumber || '',
+    cropLandArea: farmer?.cropDetails.landArea.split(' ')[0] || '',
+    cropSown: farmer?.cropDetails.cropSown || '',
+    cropVariety: farmer?.cropDetails.variety || '',
+    seedVariety: farmer?.cropDetails.seedVariety || '',
     livestockCount: String(farmer?.livestockDetails.totalLivestock || ''),
     cattle: String(farmer?.livestockDetails.cattle || ''),
     poultry: String(farmer?.livestockDetails.poultry || ''),
     smallAnimals: String(farmer?.livestockDetails.smallAnimals || ''),
+    livestockBreakdown: farmer?.livestockDetails.detailedBreakdown.map(category => ({
+      category: category.category,
+      items: category.items.map(item => ({
+        name: item.name,
+        count: String(item.count || ''),
+      })),
+    })) || [],
+    assets: String(farmer?.quickStats.assets || ''),
     totalAdults: String(farmer?.familyDetails.totalAdults || ''),
     totalChildren: String(farmer?.familyDetails.totalChildren || ''),
     workingMembers: String(farmer?.familyDetails.workingMembers || ''),
@@ -569,13 +108,29 @@ const FarmerProfile = () => {
       district: farmer.addressInfo.district,
       state: farmer.addressInfo.state,
       pinCode: farmer.addressInfo.pinCode,
-      landOwnership: farmer.landDetails[0]?.landDetails || '',
-      totalLand: farmer.quickStats.totalLand.split(' ')[0] || '',
-      cropTypes: farmer.cropDetails.variety,
+      landDetails: farmer.landDetails.map(land => ({
+        landName: land.landName || '',
+        landOwnership: land.landDetails || '',
+        totalLand: land.ownLand?.split(' ')[0] || land.leasedLand?.split(' ')[0] || '',
+      })),
+      cropLandName: farmer.cropDetails.landName,
+      plotNumber: farmer.cropDetails.plotNumber,
+      cropLandArea: farmer.cropDetails.landArea.split(' ')[0] || '',
+      cropSown: farmer.cropDetails.cropSown,
+      cropVariety: farmer.cropDetails.variety,
+      seedVariety: farmer.cropDetails.seedVariety,
       livestockCount: String(farmer.livestockDetails.totalLivestock),
       cattle: String(farmer.livestockDetails.cattle),
       poultry: String(farmer.livestockDetails.poultry),
       smallAnimals: String(farmer.livestockDetails.smallAnimals),
+      livestockBreakdown: farmer.livestockDetails.detailedBreakdown.map(category => ({
+        category: category.category,
+        items: category.items.map(item => ({
+          name: item.name,
+          count: String(item.count || ''),
+        })),
+      })),
+      assets: String(farmer.quickStats.assets),
       totalAdults: String(farmer.familyDetails.totalAdults),
       totalChildren: String(farmer.familyDetails.totalChildren),
       workingMembers: String(farmer.familyDetails.workingMembers),
@@ -587,8 +142,58 @@ const FarmerProfile = () => {
     });
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    if (name.startsWith('landDetails')) {
+      const [_, index, field] = name.split('.');
+      const updatedLandDetails = [...formData.landDetails];
+      updatedLandDetails[parseInt(index)] = {
+        ...updatedLandDetails[parseInt(index)],
+        [field]: value,
+      };
+      setFormData({
+        ...formData,
+        landDetails: updatedLandDetails,
+      });
+    } else if (name.startsWith('livestockBreakdown')) {
+      const [_, categoryIndex, itemIndex, field] = name.split('.');
+      const updatedBreakdown = [...formData.livestockBreakdown];
+      updatedBreakdown[parseInt(categoryIndex)].items[parseInt(itemIndex)] = {
+        ...updatedBreakdown[parseInt(categoryIndex)].items[parseInt(itemIndex)],
+        [field]: value,
+      };
+      // Update top-level livestock counts based on breakdown
+      const newCattle = updatedBreakdown
+        .filter(cat => cat.category === 'Cattle')
+        .reduce((sum, cat) => sum + cat.items.reduce((itemSum, item) => itemSum + Number(item.count || 0), 0), 0);
+      const newPoultry = updatedBreakdown
+        .filter(cat => cat.category === 'Poultry')
+        .reduce((sum, cat) => sum + cat.items.reduce((itemSum, item) => itemSum + Number(item.count || 0), 0), 0);
+      const newSmallAnimals = updatedBreakdown
+        .filter(cat => cat.category === 'Small Animals')
+        .reduce((sum, cat) => sum + cat.items.reduce((itemSum, item) => itemSum + Number(item.count || 0), 0), 0);
+      const newLivestockCount = newCattle + newPoultry + newSmallAnimals;
+      setFormData({
+        ...formData,
+        livestockBreakdown: updatedBreakdown,
+        cattle: String(newCattle),
+        poultry: String(newPoultry),
+        smallAnimals: String(newSmallAnimals),
+        livestockCount: String(newLivestockCount),
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Calculate total land from landDetails
+    const totalLandSum = formData.landDetails.reduce((sum, land) => sum + Number(land.totalLand || 0), 0);
 
     const updatedFarmer: Farmer = {
       ...farmer,
@@ -614,36 +219,39 @@ const FarmerProfile = () => {
         state: formData.state,
         pinCode: formData.pinCode,
       },
-      landDetails: [
-        {
-          landName: "Main Farm Land",
-          landDetails: formData.landOwnership,
-          ownLand: formData.landOwnership === 'Owned' ? `${formData.totalLand} Acres` : '',
-          leasedLand: formData.landOwnership === 'Leased' ? `${formData.totalLand} Acres` : '',
-        },
-      ],
+      landDetails: formData.landDetails.map(land => ({
+        landName: land.landName,
+        landDetails: land.landOwnership,
+        ownLand: land.landOwnership === 'Own' ? `${land.totalLand} Acres` : '',
+        leasedLand: land.landOwnership === 'Leased' ? `${land.totalLand} Acres` : '',
+      })),
       cropDetails: {
-        ...farmer.cropDetails,
-        landName: "Main Farm Land",
-        landArea: formData.totalLand ? `${formData.totalLand} acres` : '',
-        variety: formData.cropTypes,
+        landName: formData.cropLandName,
+        plotNumber: formData.plotNumber,
+        landArea: formData.cropLandArea ? `${formData.cropLandArea} acres` : '',
+        cropSown: formData.cropSown,
+        variety: formData.cropVariety,
+        seedVariety: formData.seedVariety,
       },
       livestockDetails: {
         totalLivestock: Number(formData.livestockCount),
         cattle: Number(formData.cattle),
         poultry: Number(formData.poultry),
         smallAnimals: Number(formData.smallAnimals),
-        detailedBreakdown: [
-          { category: "Cattle", items: [{ name: "Cows", count: Number(formData.cattle) || 0 }] },
-          { category: "Poultry", items: [{ name: "Chickens", count: Number(formData.poultry) || 0 }] },
-          { category: "Small Animals", items: [{ name: "Goats", count: Number(formData.smallAnimals) || 0 }] },
-        ],
+        detailedBreakdown: formData.livestockBreakdown.map(category => ({
+          category: category.category,
+          items: category.items.map(item => ({
+            name: item.name,
+            count: Number(item.count || 0),
+          })),
+        })),
       },
       quickStats: {
         ...farmer.quickStats,
-        totalLand: formData.totalLand ? `${formData.totalLand} acres` : '',
+        totalLand: `${totalLandSum} acres`,
         familyMembers: Number(formData.totalAdults || 0) + Number(formData.totalChildren || 0),
         livestock: Number(formData.livestockCount),
+        assets: Number(formData.assets),
       },
       familyDetails: {
         totalAdults: Number(formData.totalAdults),
@@ -664,13 +272,6 @@ const FarmerProfile = () => {
     // api.put(`/farmers/${farmer.id}`, updatedFarmer).then(() => navigate('/farmers'));
 
     setIsEditMode(false); // Exit edit mode
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
   };
 
   return (
@@ -726,18 +327,7 @@ const FarmerProfile = () => {
                 alt={farmer.name}
                 className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
               />
-              {isEditMode ? (
-                <input
-                  type="text"
-                  name="fullName"
-                  value={formData.fullName}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center"
-                  required
-                />
-              ) : (
-                <h3 className="text-lg font-semibold text-gray-900">{farmer.name}</h3>
-              )}
+              <h3 className="text-lg font-semibold text-gray-900">{farmer.name}</h3>
               <p className="text-sm text-gray-600">{farmer.memberId}</p>
               <span className="inline-block mt-2 px-3 py-1 bg-[#0A6802] font-bold text-white text-sm rounded-full">
                 {farmer.kycStatus}
@@ -759,10 +349,9 @@ const FarmerProfile = () => {
                 {isEditMode ? (
                   <input
                     type="number"
-                    name="totalLand"
-                    value={formData.totalLand}
-                    onChange={handleChange}
-                    className="w-[150px] px-3 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    value={formData.landDetails.reduce((sum, land) => sum + Number(land.totalLand || 0), 0)}
+                    className="w-[150px] px-3 py-1 border border-gray-300 rounded bg-gray-100"
+                    disabled
                   />
                 ) : (
                   <span className="font-medium w-[150px] px-3 py-1 rounded border">{farmer.quickStats.totalLand}</span>
@@ -774,8 +363,8 @@ const FarmerProfile = () => {
                   <input
                     type="number"
                     value={Number(formData.totalAdults || 0) + Number(formData.totalChildren || 0)}
-                    disabled
                     className="w-[150px] px-3 py-1 border border-gray-300 rounded bg-gray-100"
+                    disabled
                   />
                 ) : (
                   <span className="font-medium w-[150px] px-3 py-1 rounded border">{farmer.quickStats.familyMembers}</span>
@@ -797,7 +386,17 @@ const FarmerProfile = () => {
               </div>
               <div className="flex justify-between items-center py-2">
                 <span className="text-gray-600">Assets</span>
-                <span className="font-medium w-[150px] px-3 py-1 rounded border">{farmer.quickStats.assets}</span>
+                {isEditMode ? (
+                  <input
+                    type="number"
+                    name="assets"
+                    value={formData.assets}
+                    onChange={handleChange}
+                    className="w-[150px] px-3 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                ) : (
+                  <span className="font-medium w-[150px] px-3 py-1 rounded border">{farmer.quickStats.assets}</span>
+                )}
               </div>
             </div>
           </div>
@@ -1239,50 +838,60 @@ const FarmerProfile = () => {
               <Tractor size={20} /> Land Details
             </h3>
             <div className="space-y-4">
-              {farmer.landDetails.map((land, index) => (
+              {formData.landDetails.map((land, index) => (
                 <div key={index} className="border border-gray-200 rounded-lg p-4">
                   <div className="grid grid-cols-3 gap-4">
                     <div>
-                      <label className="text-sm text-gray-600 font-bold block mb-1">Land name</label>
-                      <div className="w-full h-[35px] border border-gray-300 rounded flex items-center px-3">
-                        <span className="text-sm text-black-800 font-semibold">{land.landName}</span>
-                      </div>
+                      <label className="text-sm text-gray-600 font-bold block mb-1">Land Name</label>
+                      {isEditMode ? (
+                        <input
+                          type="text"
+                          name={`landDetails.${index}.landName`}
+                          value={land.landName}
+                          onChange={handleChange}
+                          className="w-full h-[35px] px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                      ) : (
+                        <div className="w-full h-[35px] border border-gray-200 rounded flex items-center px-3">
+                          <span className="text-sm text-black-800 font-semibold">{land.landName}</span>
+                        </div>
+                      )}
                     </div>
                     <div>
                       <label className="text-sm text-gray-600 font-bold block mb-1">Land Details</label>
                       {isEditMode ? (
                         <select
-                          name="landOwnership"
-                          value={formData.landOwnership}
+                          name={`landDetails.${index}.landOwnership`}
+                          value={land.landOwnership}
                           onChange={handleChange}
                           className="w-full h-[35px] px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         >
                           <option value="">Select Ownership</option>
-                          <option value="Owned">Owned</option>
+                          <option value="Own">Own</option>
                           <option value="Leased">Leased</option>
                           <option value="Shared">Shared</option>
                         </select>
                       ) : (
-                        <div className="w-full h-[35px] border border-gray-300 rounded flex items-center px-3">
-                          <span className="text-sm text-black-800 font-semibold">{land.landDetails}</span>
+                        <div className="w-full h-[35px] border border-gray-200 rounded flex items-center px-3">
+                          <span className="text-sm text-black-800 font-semibold">{land.landOwnership}</span>
                         </div>
                       )}
                     </div>
                     <div>
                       <label className="text-sm text-gray-600 font-bold block mb-1">
-                        {land.ownLand ? 'Own Land' : 'Leased Land'}
+                        {land.landOwnership === 'Own' ? 'Own Land' : land.landOwnership === 'Leased' ? 'Leased Land' : 'Land Area'}
                       </label>
                       {isEditMode ? (
                         <input
                           type="number"
-                          name="totalLand"
-                          value={formData.totalLand}
+                          name={`landDetails.${index}.totalLand`}
+                          value={land.totalLand}
                           onChange={handleChange}
                           className="w-full h-[35px] px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         />
                       ) : (
-                        <div className="w-full h-[35px] border border-gray-300 rounded flex items-center px-3">
-                          <span className="text-sm text-black-800 font-semibold">{land.ownLand || land.leasedLand}</span>
+                        <div className="w-full h-[35px] border border-gray-200 rounded flex items-center px-3">
+                          <span className="text-sm text-black-800 font-semibold">{farmer.landDetails[index].ownLand || farmer.landDetails[index].leasedLand}</span>
                         </div>
                       )}
                     </div>
@@ -1302,28 +911,48 @@ const FarmerProfile = () => {
               <div className="grid grid-cols-3 gap-4">
                 <div>
                   <label className="text-sm text-gray-600 font-bold block mb-1">Land Name</label>
-                  <div className="w-full h-[40px] border border-gray-300 rounded flex items-center px-3">
-                    <span className="text-sm text-black-800 font-semibold">{farmer.cropDetails.landName}</span>
-                  </div>
-                </div>
-                <div>
-                  <label className="text-sm text-gray-600 font-bold block mb-1">Plot Number</label>
-                  <div className="w-full h-[40px] border border-gray-300 rounded flex items-center px-3">
-                    <span className="text-sm text-black-800 font-semibold">{farmer.cropDetails.plotNumber}</span>
-                  </div>
-                </div>
-                <div>
-                  <label className="text-sm text-gray-600 font-bold block mb-1">Land area</label>
                   {isEditMode ? (
                     <input
-                      type="number"
-                      name="totalLand"
-                      value={formData.totalLand}
+                      type="text"
+                      name="cropLandName"
+                      value={formData.cropLandName}
                       onChange={handleChange}
                       className="w-full h-[40px] px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   ) : (
-                    <div className="w-full h-[40px] border border-gray-300 rounded flex items-center px-3">
+                    <div className="w-full h-[40px] border border-gray-200 rounded flex items-center px-3">
+                      <span className="text-sm text-black-800 font-semibold">{farmer.cropDetails.landName}</span>
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <label className="text-sm text-gray-600 font-bold block mb-1">Plot Number</label>
+                  {isEditMode ? (
+                    <input
+                      type="text"
+                      name="plotNumber"
+                      value={formData.plotNumber}
+                      onChange={handleChange}
+                      className="w-full h-[40px] px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  ) : (
+                    <div className="w-full h-[40px] border border-gray-200 rounded flex items-center px-3">
+                      <span className="text-sm text-black-800 font-semibold">{farmer.cropDetails.plotNumber}</span>
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <label className="text-sm text-gray-600 font-bold block mb-1">Land Area</label>
+                  {isEditMode ? (
+                    <input
+                      type="number"
+                      name="cropLandArea"
+                      value={formData.cropLandArea}
+                      onChange={handleChange}
+                      className="w-full h-[40px] px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  ) : (
+                    <div className="w-full h-[40px] border border-gray-200 rounded flex items-center px-3">
                       <span className="text-sm text-black-800 font-semibold">{farmer.cropDetails.landArea}</span>
                     </div>
                   )}
@@ -1333,31 +962,51 @@ const FarmerProfile = () => {
               <div className="grid grid-cols-3 gap-4">
                 <div>
                   <label className="text-sm text-gray-600 font-bold block mb-1">Crop Sown</label>
-                  <div className="w-full h-[40px] border border-gray-300 rounded flex items-center px-3">
-                    <span className="text-sm text-black-800 font-semibold">{farmer.cropDetails.cropSown}</span>
-                  </div>
+                  {isEditMode ? (
+                    <input
+                      type="text"
+                      name="cropSown"
+                      value={formData.cropSown}
+                      onChange={handleChange}
+                      className="w-full h-[40px] px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  ) : (
+                    <div className="w-full h-[40px] border border-gray-200 rounded flex items-center px-3">
+                      <span className="text-sm text-black-800 font-semibold">{farmer.cropDetails.cropSown}</span>
+                    </div>
+                  )}
                 </div>
                 <div>
                   <label className="text-sm text-gray-600 font-bold block mb-1">Variety</label>
                   {isEditMode ? (
                     <input
                       type="text"
-                      name="cropTypes"
-                      value={formData.cropTypes}
+                      name="cropVariety"
+                      value={formData.cropVariety}
                       onChange={handleChange}
                       className="w-full h-[40px] px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   ) : (
-                    <div className="w-full h-[40px] border border-gray-300 rounded flex items-center px-3">
+                    <div className="w-full h-[40px] border border-gray-200 rounded flex items-center px-3">
                       <span className="text-sm text-black-800 font-semibold">{farmer.cropDetails.variety}</span>
                     </div>
                   )}
                 </div>
                 <div>
                   <label className="text-sm text-gray-600 font-bold block mb-1">Seed Variety</label>
-                  <div className="w-full h-[40px] border border-gray-300 rounded flex items-center px-3">
-                    <span className="text-sm text-black-800 font-semibold">{farmer.cropDetails.seedVariety}</span>
-                  </div>
+                  {isEditMode ? (
+                    <input
+                      type="text"
+                      name="seedVariety"
+                      value={formData.seedVariety}
+                      onChange={handleChange}
+                      className="w-full h-[40px] px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  ) : (
+                    <div className="w-full h-[40px] border border-gray-200 rounded flex items-center px-3">
+                      <span className="text-sm text-black-800 font-semibold">{farmer.cropDetails.seedVariety}</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -1383,7 +1032,7 @@ const FarmerProfile = () => {
                       className="w-full h-[40px] px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   ) : (
-                    <div className="w-full h-[40px] border border-gray-300 rounded flex items-center px-3">
+                    <div className="w-full h-[40px] border border-gray-200 rounded flex items-center px-3">
                       <span className="text-sm text-black-800 font-semibold">{farmer.livestockDetails.totalLivestock}</span>
                     </div>
                   )}
@@ -1399,7 +1048,7 @@ const FarmerProfile = () => {
                       className="w-full h-[40px] px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   ) : (
-                    <div className="w-full h-[40px] border border-gray-300 rounded flex items-center px-3">
+                    <div className="w-full h-[40px] border border-gray-200 rounded flex items-center px-3">
                       <span className="text-sm text-black-800 font-semibold">{farmer.livestockDetails.cattle}</span>
                     </div>
                   )}
@@ -1415,7 +1064,7 @@ const FarmerProfile = () => {
                       className="w-full h-[40px] px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   ) : (
-                    <div className="w-full h-[40px] border border-gray-300 rounded flex items-center px-3">
+                    <div className="w-full h-[40px] border border-gray-200 rounded flex items-center px-3">
                       <span className="text-sm text-black-800 font-semibold">{farmer.livestockDetails.poultry}</span>
                     </div>
                   )}
@@ -1431,7 +1080,7 @@ const FarmerProfile = () => {
                       className="w-full h-[40px] px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   ) : (
-                    <div className="w-full h-[40px] border border-gray-300 rounded flex items-center px-3">
+                    <div className="w-full h-[40px] border border-gray-200 rounded flex items-center px-3">
                       <span className="text-sm text-black-800 font-semibold">{farmer.livestockDetails.smallAnimals}</span>
                     </div>
                   )}
@@ -1443,10 +1092,10 @@ const FarmerProfile = () => {
             <div>
               <h4 className="text-md font-medium text-gray-700 mb-3">Detailed Breakdown</h4>
               <div className="grid grid-cols-2 gap-6">
-                {farmer.livestockDetails.detailedBreakdown.map((category, index) => {
+                {formData.livestockBreakdown.map((category, categoryIndex) => {
                   const isLastAndOdd =
-                    index === farmer.livestockDetails.detailedBreakdown.length - 1 &&
-                    farmer.livestockDetails.detailedBreakdown.length % 2 !== 0;
+                    categoryIndex === formData.livestockBreakdown.length - 1 &&
+                    formData.livestockBreakdown.length % 2 !== 0;
                   return (
                     <div
                       key={category.category}
@@ -1460,25 +1109,13 @@ const FarmerProfile = () => {
                             {isEditMode ? (
                               <input
                                 type="number"
-                                name={
-                                  category.category === 'Cattle'
-                                    ? 'cattle'
-                                    : category.category === 'Poultry'
-                                    ? 'poultry'
-                                    : 'smallAnimals'
-                                }
-                                value={
-                                  category.category === 'Cattle'
-                                    ? formData.cattle
-                                    : category.category === 'Poultry'
-                                    ? formData.poultry
-                                    : formData.smallAnimals
-                                }
+                                name={`livestockBreakdown.${categoryIndex}.${itemIndex}.count`}
+                                value={item.count}
                                 onChange={handleChange}
                                 className="w-16 h-[30px] px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                               />
                             ) : (
-                              <div className="w-16 h-[30px] border border-gray-300 rounded flex items-center justify-center">
+                              <div className="w-16 h-[30px] border border-gray-200 rounded flex items-center justify-center">
                                 <span className="text-sm text-black-800 font-semibold">{item.count}</span>
                               </div>
                             )}

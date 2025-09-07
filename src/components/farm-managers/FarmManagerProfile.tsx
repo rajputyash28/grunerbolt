@@ -1,496 +1,879 @@
-import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Edit, Phone, MapPin, Calendar, CheckCircle, Clock } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { ArrowLeft, Edit, Save, X } from 'lucide-react';
+import ProfileHeader from './profile/ProfileHeader';
+import ProfileStatsCards from './profile/ProfileStatsCards';
+import ProfileOverview from './profile/ProfileOverview';
+import TaskAssignment from './profile/TaskAssignment';
+import AttendanceHistory from './profile/AttendanceHistory';
+import AttendanceChart from './profile/AttendanceChart';
+import ConfirmationDialog from './shared/ConfirmationDialog';
 
-const FarmManagerProfile = () => {
-  const { id } = useParams();
+// Define interfaces for data structures
+interface FarmManager {
+  id: number;
+  name: string;
+  memberId: string;
+  mobile: string;
+  location: string;
+  status: 'Active' | 'Inactive' | 'Pending' | 'Rejected';
+  assignedTasks: string;
+  joinedDate: string;
+  profileImage: string;
+  // Personal Information
+  fullName: string;
+  dateOfBirth: string;
+  gender: string;
+  email: string;
+  fathersName: string;
+  education: string;
+  alternativeMobile: string;
+  // KYC Documents
+  aadharCard: string;
+  // Address Information
+  completeAddress: string;
+  village: string;
+  district: string;
+  state: string;
+  mandal: string;
+  pinCode: string;
+  // Bank Details
+  bankName: string;
+  accountNumber: string;
+  ifscCode: string;
+  tasks?: Task[];
+  attendanceRecords?: AttendanceRecord[];
+  attendanceStats?: AttendanceStats;
+}
+
+interface Task {
+  id: number;
+  title: string;
+  location: string;
+  assignedDate: string;
+  dueDate: string;
+  status: string;
+  priority: string;
+  description: string;
+  notes: string;
+}
+
+interface AttendanceRecord {
+  date: string;
+  checkIn: string;
+  checkOut: string;
+  status: string;
+  taskTitle: string;
+  taskDescription: string;
+  checkInLocation: string;
+  checkOutLocation: string;
+  notes: string;
+  workingHours: string;
+  checkInImage: string | null;
+  checkOutImage: string | null;
+}
+
+interface AttendanceStats {
+  present: number;
+  absent: number;
+  total: number;
+}
+
+interface TaskFilters {
+  status: string;
+}
+
+interface AttendanceFilters {
+  status: string;
+  period: string;
+}
+
+// Utility type to filter keys of FarmManager that are string or number
+type EditableFieldKeys = Extract<
+  keyof FarmManager,
+  'id' | 'name' | 'memberId' | 'mobile' | 'location' | 'status' | 'assignedTasks' | 'joinedDate' | 'profileImage' |
+  'fullName' | 'dateOfBirth' | 'gender' | 'email' | 'fathersName' | 'education' | 'alternativeMobile' |
+  'aadharCard' | 'completeAddress' | 'village' | 'district' | 'state' | 'mandal' | 'pinCode' |
+  'bankName' | 'accountNumber' | 'ifscCode'
+>;
+
+const FarmManagerProfile: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('overview');
+  const [searchParams] = useSearchParams();
+  const [activeTab, setActiveTab] = useState<'overview' | 'tasks' | 'attendance'>('overview');
+  const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
-  const farmManager = {
-    id: 1,
-    name: 'Ravi Kumar',
-    memberId: 'MEM-F-2024-001',
-    mobile: '+91 9876543220',
-    location: 'Ahmedabad, Gujarat',
-    status: 'Active',
-    joinedDate: '2024-01-10',
+  // Check if this is a pending approval or edit mode
+  const isPendingApproval = searchParams.get('pending') === 'true';
+  const isEditFromManagement = searchParams.get('edit') === 'true';
+
+  // Modal and dialog states
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedRecord, setSelectedRecord] = useState<AttendanceRecord | null>(null);
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState<boolean>(false);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [showApproveDialog, setShowApproveDialog] = useState<boolean>(false);
+  const [showRejectDialog, setShowRejectDialog] = useState<boolean>(false);
+
+  // Filter states
+  const [showTaskFilter, setShowTaskFilter] = useState<boolean>(false);
+  const [showAttendanceFilter, setShowAttendanceFilter] = useState<boolean>(false);
+  const [taskFilters, setTaskFilters] = useState<TaskFilters>({ status: '' });
+  const [appliedTaskFilters, setAppliedTaskFilters] = useState<TaskFilters>({ status: '' });
+  const [attendanceFilters, setAttendanceFilters] = useState<AttendanceFilters>({ status: '', period: '' });
+  const [appliedAttendanceFilters, setAppliedAttendanceFilters] = useState<AttendanceFilters>({ status: '', period: '' });
+
+  // Modal handlers
+  const openModal = (record: AttendanceRecord) => {
+    setSelectedRecord(record);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedRecord(null);
+    setIsModalOpen(false);
+  };
+
+  const openTaskModal = (task: Task) => {
+    setSelectedTask(task);
+    setIsTaskModalOpen(true);
+  };
+
+  const closeTaskModal = () => {
+    setSelectedTask(null);
+    setIsTaskModalOpen(false);
+  };
+
+  // Farm manager data
+  const [farmManager, setFarmManager] = useState<FarmManager>({
+    id: id ? parseInt(id) : 1,
+    name: isPendingApproval ? 'Kavita Singh' : 'Ravi Sharma',
+    memberId: isPendingApproval ? 'MEM-KD-2024-101' : 'MEM-KD-2024-001',
+    mobile: isPendingApproval ? '+91 9876543220' : '+91 9785432110',
+    location: isPendingApproval ? 'Bihar, Patna, Boring Road' : 'Rajasthan, Jaipur, Sangaria',
+    status: isPendingApproval ? 'Pending' : 'Active',
+    assignedTasks: isPendingApproval ? '0/0' : '10/12',
+    joinedDate: isPendingApproval ? '2024-03-15' : '2024-01-10',
     profileImage: 'https://images.pexels.com/photos/1139743/pexels-photo-1139743.jpeg?auto=compress&cs=tinysrgb&w=150',
-    totalTasks: 12,
-    completedTasks: 8,
-    pendingTasks: 3,
-    overdueTasks: 1,
-    completionRate: 67,
-    workingDays: 45,
-    attendanceStats: {
+    // Personal Information
+    fullName: isPendingApproval ? 'Kavita Singh' : 'Rajesh Kumar',
+    dateOfBirth: isPendingApproval ? '1988-03-15' : '1985-06-15',
+    gender: isPendingApproval ? 'Female' : 'Male',
+    email: isPendingApproval ? 'kavita.singh@email.com' : 'rajesh.kumar@email.com',
+    fathersName: isPendingApproval ? 'Ram Singh' : 'Ramesh Kumar',
+    education: isPendingApproval ? 'Graduate' : '12th Pass',
+    alternativeMobile: isPendingApproval ? '+91 9876543221' : '+91 9876543210',
+    // KYC Documents
+    aadharCard: isPendingApproval ? '**** **** **** 1012' : '**** **** **** 9012',
+    // Address Information
+    completeAddress: isPendingApproval ? 'House No 456, Gandhi Road' : 'House No 123, Main Street',
+    village: isPendingApproval ? 'Patna City' : 'Rampur',
+    district: isPendingApproval ? 'Patna' : 'Hyderabad',
+    state: isPendingApproval ? 'Bihar' : 'Telangana',
+    mandal: isPendingApproval ? 'Boring Road' : 'Secunderabad',
+    pinCode: isPendingApproval ? '800001' : '500001',
+    // Bank Details
+    bankName: isPendingApproval ? 'Bank of India' : 'State Bank of India',
+    accountNumber: isPendingApproval ? '**** **** 1012' : '**** **** 1220',
+    ifscCode: isPendingApproval ? 'BKID0001012' : 'SBIN0000123',
+    tasks: isPendingApproval ? [] : [
+      {
+        id: 1,
+        title: 'Farmer Training on Organic Fertilizers',
+        location: 'Farm A, Jaipur',
+        assignedDate: '2024-01-20',
+        dueDate: '2024-01-25',
+        status: 'Completed',
+        priority: 'High',
+        description: 'Conduct comprehensive training session for farmers on organic fertilizer usage and benefits.',
+        notes: 'Training materials provided. Ensure all farmers receive certificates.',
+      },
+      {
+        id: 2,
+        title: 'Crop Health Inspection',
+        location: 'Farm B, Jaipur',
+        assignedDate: '2024-01-22',
+        dueDate: '2024-01-18',
+        status: 'In Progress',
+        priority: 'Medium',
+        description: 'Inspect crop health and identify potential diseases or pest issues.',
+        notes: 'Focus on wheat and rice crops. Take samples if necessary.',
+      },
+      {
+        id: 3,
+        title: 'Soil Testing Guidance',
+        location: 'Farm C, Jaipur',
+        assignedDate: '2024-01-18',
+        dueDate: '2024-01-23',
+        status: 'Overdue',
+        priority: 'High',
+        description: 'Guide farmers through soil testing process and interpretation of results.',
+        notes: 'Bring soil testing kits and pH meters.',
+      },
+    ],
+    attendanceRecords: isPendingApproval ? [] : [
+      {
+        date: '2024-01-25',
+        checkIn: '09:00 AM',
+        checkOut: '06:00 PM',
+        status: 'Present',
+        taskTitle: 'Farmer Training on Organic Fertilizers',
+        taskDescription: 'Conducted training session on organic fertilizer usage',
+        checkInLocation: 'Village Sangaria, Jaipur',
+        checkOutLocation: 'Jaipur, Rajasthan',
+        notes: 'Successfully completed training session for 25 farmers',
+        workingHours: '09:00 Hrs',
+        checkInImage: null,
+        checkOutImage: null,
+      },
+      {
+        date: '2024-01-24',
+        checkIn: '09:15 AM',
+        checkOut: '05:45 PM',
+        status: 'Present',
+        taskTitle: 'Crop Health Inspection',
+        taskDescription: 'Inspected crop health in assigned fields',
+        checkInLocation: 'Village Sangaria, Jaipur',
+        checkOutLocation: 'Jaipur, Rajasthan',
+        notes: 'Found minor pest issues in wheat crops',
+        workingHours: '08:30 Hrs',
+        checkInImage: null,
+        checkOutImage: null,
+      },
+    ],
+    attendanceStats: isPendingApproval ? { present: 0, absent: 0, total: 0 } : {
       present: 200,
       absent: 50,
-      total: 250
+      total: 250,
     },
-    basicDetails: {
-      fullName: 'Rajesh Kumar',
-      dateOfBirth: '1985-06-15',
-      gender: 'Male',
-      mobileNumber: '+91 9876543210',
-      emailAddress: 'rajesh.kumar@email.com',
-      fatherName: 'Ramesh Kumar',
-      education: '12th Pass'
-    },
-    kycDocuments: {
-      aadharCard: '****-****-0012'
-    },
-    addressInfo: {
-      completeAddress: 'House No 123, Main Street',
-      village: 'Rampur',
-      mandal: 'Secunderabad',
-      district: 'Hyderabad',
-      state: 'Telangana',
-      pinCode: '500001'
-    },
-    assignedTasks: [
-      { 
-        id: 1, 
-        title: 'Farmer Training on Organic Fertilizers', 
-        location: 'Farm A, Ahmedabad',
-        assignedDate: '2024-01-20', 
-        dueDate: '2024-01-25',
-        status: 'Completed' 
-      },
-      { 
-        id: 2, 
-        title: 'Crop Health Inspection', 
-        location: 'Farm B, Ahmedabad',
-        assignedDate: '2024-01-22', 
-        dueDate: '2024-01-18',
-        status: 'In Progress' 
-      },
-      { 
-        id: 3, 
-        title: 'Soil Testing Guidance', 
-        location: 'Farm C, Ahmedabad',
-        assignedDate: '2024-01-18', 
-        dueDate: '2024-01-23',
-        status: 'Overdue' 
-      }
-    ],
-    attendanceRecords: [
-      { date: '2024-01-25', checkIn: '09:00 AM', checkOut: '06:00 PM', status: 'Present' },
-      { date: '2024-01-24', checkIn: '09:15 AM', checkOut: '05:45 PM', status: 'Present' },
-      { date: '2024-01-23', checkIn: '09:30 AM', checkOut: '05:15 PM', status: 'Present' },
-      { date: '2024-01-22', checkIn: 'N/A', checkOut: 'N/A', status: 'Absent' },
-      { date: '2024-01-21', checkIn: '08:45 AM', checkOut: '05:30 PM', status: 'Present' }
-    ]
+  });
+
+  const [editData, setEditData] = useState<Partial<FarmManager>>({});
+
+  // Set edit mode if coming from management page
+  useEffect(() => {
+    if (isEditFromManagement) {
+      setIsEditMode(true);
+      setEditData({ ...farmManager });
+    }
+  }, [isEditFromManagement, farmManager]);
+
+  // Filter handlers
+  const handleTaskFilterChange = (field: keyof TaskFilters, value: string) => {
+    setTaskFilters((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
+  const resetTaskFilters = () => {
+    setTaskFilters({ status: '' });
+    setAppliedTaskFilters({ status: '' });
+  };
+
+  const applyTaskFilters = () => {
+    setAppliedTaskFilters({ ...taskFilters });
+    setShowTaskFilter(false);
+  };
+
+  const handleAttendanceFilterChange = (field: keyof AttendanceFilters, value: string) => {
+    setAttendanceFilters((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const resetAttendanceFilters = () => {
+    setAttendanceFilters({ status: '', period: '' });
+    setAppliedAttendanceFilters({ status: '', period: '' });
+  };
+
+  const applyAttendanceFilters = () => {
+    setAppliedAttendanceFilters({ ...attendanceFilters });
+    setShowAttendanceFilter(false);
+  };
+
+
+  // Edit handlers
   const handleEdit = () => {
-    navigate(`/farm-managers/edit/${id}`);
+    // TODO: Integrate API call for editing farm manager profile
+    // API Endpoint: PUT /api/farm-managers/{id}
+    // Example: await updateFarmManagerProfile(farmManager.id, formData);
+    setEditData({ ...farmManager });
+    setIsEditMode(true);
   };
 
-  const renderOverview = () => (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      {/* Personal Information & KYC Documents */}
-      <div className="bg-white rounded-lg p-6 border border-gray-200">
-        <div className="flex items-center gap-2 mb-4">
-          <Phone className="w-5 h-5 text-gray-400" />
-          <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Inter' }}>Personal Information & KYC Documents</h3>
-        </div>
-        
-        <div className="space-y-4">
-          <h4 className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>Basic Details</h4>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Full Name</span>
-              <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{farmManager.basicDetails.fullName}</p>
-            </div>
-            <div>
-              <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Date of Birth</span>
-              <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{farmManager.basicDetails.dateOfBirth}</p>
-            </div>
-            <div>
-              <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Gender</span>
-              <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{farmManager.basicDetails.gender}</p>
-            </div>
-            <div>
-              <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Mobile Number</span>
-              <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{farmManager.basicDetails.mobileNumber}</p>
-            </div>
-            <div>
-              <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Email Address</span>
-              <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{farmManager.basicDetails.emailAddress}</p>
-            </div>
-            <div>
-              <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Father's Name</span>
-              <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{farmManager.basicDetails.fatherName}</p>
-            </div>
-            <div>
-              <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Education</span>
-              <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{farmManager.basicDetails.education}</p>
-            </div>
-            <div>
-              <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Alternative Mobile Number</span>
-              <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{farmManager.basicDetails.mobileNumber}</p>
-            </div>
-          </div>
+  const handleCancel = () => {
+    // TODO: Integrate API call for canceling farm manager profile changes
+    // API Endpoint: GET /api/farm-managers/{id} (to reset data)
+    // Example: await resetFarmManagerProfile(farmManager.id);
+    setEditData({});
+    setIsEditMode(false);
+  };
 
-          <div className="pt-4 border-t border-gray-200">
-            <h4 className="font-medium text-gray-900 mb-3" style={{ fontFamily: 'Inter' }}>KYC Documents</h4>
-            <div>
-              <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Aadhar Card</span>
-              <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{farmManager.kycDocuments.aadharCard}</p>
-            </div>
-          </div>
-        </div>
-      </div>
+  const handleSave = () => {
+    // TODO: Integrate API call for saving farm manager profile changes
+    // API Endpoint: PUT /api/farm-managers/{id}
+    // Example: await saveFarmManagerProfile(farmManager.id, editData);
+    setFarmManager({ ...farmManager, ...editData });
+    setIsEditMode(false);
+    setEditData({});
+  };
 
-      {/* Address Information */}
-      <div className="bg-white rounded-lg p-6 border border-gray-200">
-        <div className="flex items-center gap-2 mb-4">
-          <MapPin className="w-5 h-5 text-gray-400" />
-          <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Inter' }}>Address Information</h3>
-        </div>
-        
-        <div className="space-y-4">
-          <div>
-            <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Complete Address</span>
-            <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{farmManager.addressInfo.completeAddress}</p>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Village</span>
-              <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{farmManager.addressInfo.village}</p>
-            </div>
-            <div>
-              <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>District</span>
-              <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{farmManager.addressInfo.district}</p>
-            </div>
-            <div>
-              <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>State</span>
-              <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{farmManager.addressInfo.state}</p>
-            </div>
-            <div>
-              <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Mandal</span>
-              <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{farmManager.addressInfo.mandal}</p>
-            </div>
-            <div>
-              <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>PIN Code</span>
-              <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{farmManager.addressInfo.pinCode}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  const handleInputChange = (field: EditableFieldKeys, value: string | number) => {
+    setEditData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
 
-  const renderAssignedTasks = () => (
-    <div className="bg-white rounded-lg p-6 border border-gray-200">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Inter' }}>Task Assignment History</h3>
-        <button className="p-2 text-gray-400 hover:text-gray-600">
-          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 019 17v-5.586L3.293 6.707A1 1 0 013 6V4z" />
-          </svg>
-        </button>
-      </div>
-      <p className="text-sm text-gray-600 mb-4" style={{ fontFamily: 'Inter' }}>Complete list of all tasks assigned to this Krishi Didi</p>
-      
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-gray-200">
-              <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>Task Title</th>
-              <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>Location</th>
-              <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>Assigned Date</th>
-              <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>Due Date</th>
-              <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {farmManager.assignedTasks.map((task) => (
-              <tr key={task.id} className="border-b border-gray-100">
-                <td className="py-3 text-sm font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{task.title}</td>
-                <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>{task.location}</td>
-                <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>{task.assignedDate}</td>
-                <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>{task.dueDate}</td>
-                <td className="py-3">
-                  <span className={`px-2 py-1 rounded text-xs font-medium ${
-                    task.status === 'Completed' ? 'bg-green-100 text-green-800' :
-                    task.status === 'In Progress' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-red-100 text-red-800'
-                  }`}>
-                    {task.status}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
+  // Status toggle handler
+  const handleToggleStatus = (newStatus: 'Active' | 'Inactive') => {
+    // TODO: Integrate API call for toggling farm manager status
+    // API Endpoint: PUT /api/farm-managers/{id}/status
+    // Example: await toggleFarmManagerStatus(farmManager.id, newStatus);
+    setFarmManager(prev => ({
+      ...prev,
+      status: newStatus
+    }));
+  };
 
-  const renderAttendanceRecords = () => (
-    <div className="space-y-6">
-      {/* Attendance Chart */}
-      <div className="bg-white rounded-lg p-6 border border-gray-200">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Inter' }}>Attendance Record</h3>
-          <button className="p-2 text-blue-600 hover:text-blue-700">
-            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-              <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
-            </svg>
-          </button>
-        </div>
-        
-        <div className="flex items-center justify-center">
-          <div className="relative w-48 h-48">
-            <svg className="w-48 h-48 transform -rotate-90" viewBox="0 0 100 100">
-              {/* Background circle */}
-              <circle
-                cx="50"
-                cy="50"
-                r="40"
-                stroke="#E5E7EB"
-                strokeWidth="8"
-                fill="none"
-              />
-              {/* Present arc */}
-              <circle
-                cx="50"
-                cy="50"
-                r="40"
-                stroke="#3B82F6"
-                strokeWidth="8"
-                fill="none"
-                strokeDasharray={`${(farmManager.attendanceStats.present / farmManager.attendanceStats.total) * 251.2} 251.2`}
-                strokeLinecap="round"
-              />
-              {/* Absent arc */}
-              <circle
-                cx="50"
-                cy="50"
-                r="40"
-                stroke="#EF4444"
-                strokeWidth="8"
-                fill="none"
-                strokeDasharray={`${(farmManager.attendanceStats.absent / farmManager.attendanceStats.total) * 251.2} 251.2`}
-                strokeDashoffset={`-${(farmManager.attendanceStats.present / farmManager.attendanceStats.total) * 251.2}`}
-                strokeLinecap="round"
-              />
-            </svg>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center">
-                <p className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>
-                  {farmManager.attendanceStats.present}
-                </p>
-                <p className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Total</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div className="flex justify-center gap-6 mt-4">
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-            <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Present</span>
-            <span className="text-sm font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{farmManager.attendanceStats.present}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-            <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Absent</span>
-            <span className="text-sm font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{farmManager.attendanceStats.absent}</span>
-          </div>
-        </div>
-      </div>
+  // Approval handlers
+  const handleApprove = () => {
+    setShowApproveDialog(true);
+  };
 
-      {/* Attendance History */}
-      <div className="bg-white rounded-lg p-6 border border-gray-200">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Inter' }}>Attendance History</h3>
-          <button className="p-2 text-gray-400 hover:text-gray-600">
-            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 019 17v-5.586L3.293 6.707A1 1 0 013 6V4z" />
-            </svg>
-          </button>
-        </div>
-        <p className="text-sm text-gray-600 mb-4" style={{ fontFamily: 'Inter' }}>Daily attendance records with location and task details</p>
-        
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-200">
-                <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>Date</th>
-                <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>Check In</th>
-                <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>Check Out</th>
-                <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {farmManager.attendanceRecords.map((record, index) => (
-                <tr key={index} className="border-b border-gray-100">
-                  <td className="py-3 text-sm text-gray-900" style={{ fontFamily: 'Inter' }}>{record.date}</td>
-                  <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>{record.checkIn}</td>
-                  <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>{record.checkOut}</td>
-                  <td className="py-3">
-                    <span className={`px-2 py-1 rounded text-xs font-medium ${
-                      record.status === 'Present' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                    }`}>
-                      {record.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  );
+  const handleReject = () => {
+    setShowRejectDialog(true);
+  };
+
+  const confirmApprove = () => {
+    console.log('Approving farm manager:', farmManager.id);
+    
+    // TODO: Integrate API call for approving farm manager from profile
+    // API Endpoint: PUT /api/farm-managers/{id}/approve
+    // Example: await approveFarmManager(farmManager.id);
+    
+    // Update the farm manager status to Active
+    setFarmManager(prev => ({
+      ...prev,
+      status: 'Active'
+    }));
+    
+    // Store the approval in localStorage so the management component can pick it up
+    const approvalData = {
+      id: farmManager.id,
+      action: 'approve',
+      timestamp: Date.now()
+    };
+    localStorage.setItem('farmManagerApproval', JSON.stringify(approvalData));
+    
+    // Close dialog and navigate back to farm managers list
+    setShowApproveDialog(false);
+    navigate('/farm-managers');
+  };
+
+  const confirmReject = () => {
+    console.log('Rejecting farm manager:', farmManager.id);
+    
+    // TODO: Integrate API call for rejecting farm manager from profile
+    // API Endpoint: PUT /api/farm-managers/{id}/reject
+    // Example: await rejectFarmManager(farmManager.id);
+    
+    // Update the farm manager status to Rejected (this will hide them from lists)
+    setFarmManager(prev => ({
+      ...prev,
+      status: 'Rejected'
+    }));
+    
+    // Store the rejection in localStorage so the management component can pick it up
+    const rejectionData = {
+      id: farmManager.id,
+      action: 'reject',
+      timestamp: Date.now()
+    };
+    localStorage.setItem('farmManagerRejection', JSON.stringify(rejectionData));
+    
+    // Close dialog and navigate back to farm managers list
+    setShowRejectDialog(false);
+    navigate('/farm-managers');
+  };
+
+
+
+
 
   return (
-    <div className="space-y-6" style={{ fontFamily: 'Inter' }}>
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() => navigate('/farm-managers')}
-            className="p-2 text-gray-400 hover:text-gray-600 rounded-lg border border-gray-300"
-          >
-            <ArrowLeft size={20} />
-          </button>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>Farm Manager Profile</h1>
+    <div className="" style={{ fontFamily: 'Inter' }}>
+      <div className="max-w-full mx-auto space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => navigate('/farm-managers')}
+              className="p-2 text-gray-400 hover:text-gray-600 rounded-lg border border-gray-300"
+            >
+              <ArrowLeft size={20} />
+            </button>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>
+                {isPendingApproval ? 'Pending Farm Manager Profile' : 'Farm Manager Profile'}
+              </h1>
+            </div>
           </div>
         </div>
-        <button 
-          onClick={handleEdit}
-          className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2"
-          style={{ fontFamily: 'Inter', fontSize: '13.02px', fontWeight: 600 }}
-        >
-          <Edit size={18} />
-          Edit Profile
-        </button>
-      </div>
 
-      {/* Profile Header */}
-      <div className="bg-white rounded-lg p-6 border border-gray-200">
-        <div className="flex items-center gap-4">
-          <img
-            src={farmManager.profileImage}
-            alt={farmManager.name}
-            className="w-16 h-16 rounded-full object-cover"
+        {/* Profile Header */}
+        <ProfileHeader 
+          farmManager={farmManager} 
+          isPendingApproval={isPendingApproval} 
+          onToggleStatus={handleToggleStatus}
+          onApprove={handleApprove}
+          onReject={handleReject}
+        />
+
+        {/* Stats Cards Row */}
+        <div className="relative min-h-[128px]">
+          <div className="flex gap-6 min-w-full">
+            <div className="flex gap-6 flex-grow">
+              <ProfileStatsCards farmManager={farmManager} activeTab={activeTab} isPendingApproval={isPendingApproval} />
+            </div>
+
+            {activeTab === 'attendance' && farmManager.attendanceStats && !isPendingApproval && (
+              <AttendanceChart attendanceStats={farmManager.attendanceStats} />
+            )}
+          </div>
+        </div>
+
+        {!isPendingApproval && (
+          <>
+            <br />
+            <br />
+          </>
+        )}
+
+        <div className="flex items-center justify-between">
+          <div className="flex space-x-1 bg-green-50 rounded-lg p-1">
+            <button
+              onClick={() => setActiveTab('overview')}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
+                activeTab === 'overview' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Overview
+            </button>
+            <button
+              onClick={() => setActiveTab('tasks')}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
+                activeTab === 'tasks' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Assigned Tasks ({isPendingApproval ? 0 : farmManager.tasks?.length || 0})
+            </button>
+            <button
+              onClick={() => setActiveTab('attendance')}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
+                activeTab === 'attendance' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Attendance Records
+            </button>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {!isPendingApproval && activeTab === 'overview' && (
+              <>
+                {isEditMode ? (
+                  <>
+                    <button
+                      onClick={handleCancel}
+                      className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 flex items-center gap-2"
+                    >
+                      <X size={18} />
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleSave}
+                      className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2"
+                    >
+                      <Save size={18} />
+                      Save
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={handleEdit}
+                    className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2"
+                  >
+                    <Edit size={18} />
+                    Edit Profile
+                  </button>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+
+        {activeTab === 'overview' && (
+          <ProfileOverview
+            farmManager={farmManager}
+            isEditMode={isEditMode}
+            editData={editData}
+            handleInputChange={handleInputChange}
           />
-          <div className="flex-1">
-            <h2 className="text-xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>{farmManager.name}</h2>
-            <div className="flex items-center gap-4 mt-2">
-              <div className="flex items-center gap-1">
-                <Phone size={16} className="text-gray-400" />
-                <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>{farmManager.mobile}</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}># {farmManager.memberId}</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <MapPin size={16} className="text-gray-400" />
-                <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>{farmManager.location}</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <Calendar size={16} className="text-gray-400" />
-                <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Joined {farmManager.joinedDate}</span>
-              </div>
-            </div>
-          </div>
-          <span className="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full font-medium">
-            {farmManager.status}
-          </span>
-        </div>
-      </div>
+        )}
+        {activeTab === 'tasks' && (
+          <TaskAssignment
+            tasks={farmManager.tasks || []}
+            isPendingApproval={isPendingApproval}
+            showTaskFilter={showTaskFilter}
+            setShowTaskFilter={setShowTaskFilter}
+            taskFilters={taskFilters}
+            appliedTaskFilters={appliedTaskFilters}
+            handleTaskFilterChange={handleTaskFilterChange}
+            resetTaskFilters={resetTaskFilters}
+            applyTaskFilters={applyTaskFilters}
+            openTaskModal={openTaskModal}
+          />
+        )}
+        {activeTab === 'attendance' && (
+          <AttendanceHistory
+            attendanceRecords={farmManager.attendanceRecords || []}
+            isPendingApproval={isPendingApproval}
+            showAttendanceFilter={showAttendanceFilter}
+            setShowAttendanceFilter={setShowAttendanceFilter}
+            attendanceFilters={attendanceFilters}
+            appliedAttendanceFilters={appliedAttendanceFilters}
+            handleAttendanceFilterChange={handleAttendanceFilterChange}
+            resetAttendanceFilters={resetAttendanceFilters}
+            applyAttendanceFilters={applyAttendanceFilters}
+            openModal={openModal}
+          />
+        )}
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white rounded-lg p-6 border border-gray-200">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-              <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Inter' }}>Total Tasks</p>
-              <p className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>{farmManager.totalTasks}</p>
-              <p className="text-xs text-gray-500" style={{ fontFamily: 'Inter' }}>
-                {farmManager.completedTasks} completed, {farmManager.pendingTasks} pending
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white rounded-lg p-6 border border-gray-200">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-              <CheckCircle className="w-5 h-5 text-green-600" />
-            </div>
-            <div>
-              <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Inter' }}>Completion Rate</p>
-              <p className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>{farmManager.completionRate}%</p>
-              <p className="text-xs text-gray-500" style={{ fontFamily: 'Inter' }}>Previous tasks</p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white rounded-lg p-6 border border-gray-200">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-              <Calendar className="w-5 h-5 text-purple-600" />
-            </div>
-            <div>
-              <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Inter' }}>Working Days</p>
-              <p className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>{farmManager.workingDays}</p>
-              <p className="text-xs text-gray-500" style={{ fontFamily: 'Inter' }}>Total days since joining</p>
-            </div>
-          </div>
-        </div>
-      </div>
+        {isTaskModalOpen && selectedTask && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white rounded-lg shadow-lg w-[600px] p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-semibold">Task Details</h2>
+                <button onClick={closeTaskModal} className="text-gray-500 hover:text-gray-700 text-2xl">
+                  &times;
+                </button>
+              </div>
 
-      {/* Tabs */}
-      <div className="flex space-x-1 bg-gray-100 rounded-lg p-1">
-        <button
-          onClick={() => setActiveTab('overview')}
-          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-            activeTab === 'overview'
-              ? 'bg-white text-gray-900 shadow-sm'
-              : 'text-gray-600 hover:text-gray-900'
-          }`}
-          style={{ fontFamily: 'Inter', fontSize: '13.02px' }}
-        >
-          Overview
-        </button>
-        <button
-          onClick={() => setActiveTab('tasks')}
-          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-            activeTab === 'tasks'
-              ? 'bg-white text-gray-900 shadow-sm'
-              : 'text-gray-600 hover:text-gray-900'
-          }`}
-          style={{ fontFamily: 'Inter', fontSize: '13.02px' }}
-        >
-          Assigned Tasks (3)
-        </button>
-        <button
-          onClick={() => setActiveTab('attendance')}
-          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-            activeTab === 'attendance'
-              ? 'bg-white text-gray-900 shadow-sm'
-              : 'text-gray-600 hover:text-gray-900'
-          }`}
-          style={{ fontFamily: 'Inter', fontSize: '13.02px' }}
-        >
-          Attendance Records
-        </button>
-      </div>
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Task Title</label>
+                    <input
+                      type="text"
+                      value={selectedTask.title}
+                      readOnly
+                      className="w-full border rounded-lg p-2 text-sm bg-gray-100"
+                    />
+                  </div>
 
-      {/* Tab Content */}
-      {activeTab === 'overview' && renderOverview()}
-      {activeTab === 'tasks' && renderAssignedTasks()}
-      {activeTab === 'attendance' && renderAttendanceRecords()}
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Location</label>
+                    <input
+                      type="text"
+                      value={selectedTask.location}
+                      readOnly
+                      className="w-full border rounded-lg p-2 text-sm bg-gray-100"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Assigned Date</label>
+                    <input
+                      type="text"
+                      value={selectedTask.assignedDate}
+                      readOnly
+                      className="w-full border rounded-lg p-2 text-sm bg-gray-100"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Due Date</label>
+                    <input
+                      type="text"
+                      value={selectedTask.dueDate}
+                      readOnly
+                      className="w-full border rounded-lg p-2 text-sm bg-gray-100"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Status</label>
+                    <input
+                      type="text"
+                      value={selectedTask.status}
+                      readOnly
+                      className="w-full border rounded-lg p-2 text-sm bg-gray-100"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Priority</label>
+                    <input
+                      type="text"
+                      value={selectedTask.priority}
+                      readOnly
+                      className="w-full border rounded-lg p-2 text-sm bg-gray-100"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1">Description</label>
+                  <textarea
+                    value={selectedTask.description}
+                    readOnly
+                    className="w-full border rounded-lg p-2 text-sm bg-gray-100 h-20 resize-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1">Notes</label>
+                  <textarea
+                    value={selectedTask.notes}
+                    readOnly
+                    className="w-full border rounded-lg p-2 text-sm bg-gray-100 h-16 resize-none"
+                  />
+                </div>
+              </div>
+
+              <div className="mt-6 flex justify-end">
+                <button
+                  onClick={closeTaskModal}
+                  className="px-5 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {isModalOpen && selectedRecord && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white rounded-lg shadow-lg w-[800px] p-6">
+              <div className="flex justify-center items-center mb-6 relative">
+                <h2 className="text-xl font-semibold" style={{ fontFamily: 'Inter' }}>
+                  Attendance History ({selectedRecord.date})
+                </h2>
+                <button onClick={closeModal} className="absolute right-0 text-gray-500 hover:text-gray-700 text-2xl">
+                  &times;
+                </button>
+              </div>
+
+              <div className="grid grid-cols-2 gap-6 mb-6">
+                {/* Left Column */}
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                      Date
+                    </label>
+                    <input
+                      type="text"
+                      value={selectedRecord.date}
+                      readOnly
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
+                      style={{ fontFamily: 'Inter' }}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                      Task Title
+                    </label>
+                    <input
+                      type="text"
+                      value={selectedRecord.taskTitle}
+                      readOnly
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
+                      style={{ fontFamily: 'Inter' }}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                      Check-In Time
+                    </label>
+                    <input
+                      type="text"
+                      value={selectedRecord.checkIn}
+                      readOnly
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
+                      style={{ fontFamily: 'Inter' }}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                      Check-In Location
+                    </label>
+                    <input
+                      type="text"
+                      value={selectedRecord.checkInLocation}
+                      readOnly
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
+                      style={{ fontFamily: 'Inter' }}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                      Notes
+                    </label>
+                    <input
+                      type="text"
+                      value={selectedRecord.notes}
+                      readOnly
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
+                      style={{ fontFamily: 'Inter' }}
+                    />
+                  </div>
+                </div>
+
+                {/* Right Column */}
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                      Task Description
+                    </label>
+                    <input
+                      type="text"
+                      value={selectedRecord.taskDescription}
+                      readOnly
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
+                      style={{ fontFamily: 'Inter' }}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                      Check-Out Time
+                    </label>
+                    <input
+                      type="text"
+                      value={selectedRecord.checkOut}
+                      readOnly
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
+                      style={{ fontFamily: 'Inter' }}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                      Check-Out Location
+                    </label>
+                    <input
+                      type="text"
+                      value={selectedRecord.checkOutLocation}
+                      readOnly
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
+                      style={{ fontFamily: 'Inter' }}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                      Working Hours
+                    </label>
+                    <input
+                      type="text"
+                      value={selectedRecord.workingHours}
+                      readOnly
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
+                      style={{ fontFamily: 'Inter' }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Image Placeholders - Left Side */}
+              <div className="flex gap-6 mb-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2" style={{ fontFamily: 'Inter' }}>
+                    Check-In Image
+                  </label>
+                  <div className="w-32 h-32 border border-gray-300 rounded-lg flex items-center justify-center bg-gray-50">
+                    {selectedRecord.checkInImage ? (
+                      <img
+                        src={selectedRecord.checkInImage}
+                        alt="Check-In"
+                        className="w-full h-full object-cover rounded-lg"
+                      />
+                    ) : (
+                      <span className="text-gray-400 text-sm" style={{ fontFamily: 'Inter' }}>No Image</span>
+                    )}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2" style={{ fontFamily: 'Inter' }}>
+                    Check-Out Image
+                  </label>
+                  <div className="w-32 h-32 border border-gray-300 rounded-lg flex items-center justify-center bg-gray-50">
+                    {selectedRecord.checkOutImage ? (
+                      <img
+                        src={selectedRecord.checkOutImage}
+                        alt="Check-Out"
+                        className="w-full h-full object-cover rounded-lg"
+                      />
+                    ) : (
+                      <span className="text-gray-400 text-sm" style={{ fontFamily: 'Inter' }}>No Image</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons - Right Side Only */}
+              <div className="flex justify-end gap-3">
+                <button
+                  onClick={() => {
+                    alert('Marked as Absent');
+                    closeModal();
+                  }}
+                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                  style={{ fontFamily: 'Inter', fontSize: '13.02px', fontWeight: 600 }}
+                >
+                  Absent
+                </button>
+                <button
+                  onClick={() => {
+                    alert('Marked as Present');
+                    closeModal();
+                  }}
+                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                  style={{ fontFamily: 'Inter', fontSize: '13.02px', fontWeight: 600 }}
+                >
+                  Present
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Confirmation Dialogs */}
+        <ConfirmationDialog
+          isOpen={showApproveDialog}
+          onClose={() => setShowApproveDialog(false)}
+          onConfirm={confirmApprove}
+          title="Approve User"
+          message="Are you sure you want to Approve this User"
+        />
+
+        <ConfirmationDialog
+          isOpen={showRejectDialog}
+          onClose={() => setShowRejectDialog(false)}
+          onConfirm={confirmReject}
+          title="Reject User"
+          message="Are you sure you want to Reject this User"
+        />
+      </div>
     </div>
   );
 };

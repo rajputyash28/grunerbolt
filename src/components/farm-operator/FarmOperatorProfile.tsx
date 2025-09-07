@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, Edit, Phone, MapPin, Calendar, CheckCircle, Save, X } from 'lucide-react';
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import { ArrowLeft, Edit, Save, X } from 'lucide-react';
+import ProfileHeader from './profile/ProfileHeader';
+import ProfileStatsCards from './profile/ProfileStatsCards';
+import ProfileOverview from './profile/ProfileOverview';
+import TaskAssignment from './profile/TaskAssignment';
+import AttendanceHistory from './profile/AttendanceHistory';
+import AttendanceChart from './profile/AttendanceChart';
+import ConfirmationDialog from './shared/ConfirmationDialog';
 
 // Define interfaces for data structures
 interface FarmOperator {
@@ -10,10 +16,31 @@ interface FarmOperator {
   memberId: string;
   mobile: string;
   location: string;
-  status: 'Active' | 'Inactive' | 'Pending';
+  status: 'Active' | 'Inactive' | 'Pending' | 'Rejected';
   assignedTasks: string;
   joinedDate: string;
   profileImage: string;
+  // Personal Information
+  fullName: string;
+  dateOfBirth: string;
+  gender: string;
+  email: string;
+  fathersName: string;
+  education: string;
+  alternativeMobile: string;
+  // KYC Documents
+  aadharCard: string;
+  // Address Information
+  completeAddress: string;
+  village: string;
+  district: string;
+  state: string;
+  mandal: string;
+  pinCode: string;
+  // Bank Details
+  bankName: string;
+  accountNumber: string;
+  ifscCode: string;
   tasks?: Task[];
   attendanceRecords?: AttendanceRecord[];
   attendanceStats?: AttendanceStats;
@@ -64,7 +91,10 @@ interface AttendanceFilters {
 // Utility type to filter keys of FarmOperator that are string or number
 type EditableFieldKeys = Extract<
   keyof FarmOperator,
-  'id' | 'name' | 'memberId' | 'mobile' | 'location' | 'status' | 'assignedTasks' | 'joinedDate' | 'profileImage'
+  'id' | 'name' | 'memberId' | 'mobile' | 'location' | 'status' | 'assignedTasks' | 'joinedDate' | 'profileImage' |
+  'fullName' | 'dateOfBirth' | 'gender' | 'email' | 'fathersName' | 'education' | 'alternativeMobile' |
+  'aadharCard' | 'completeAddress' | 'village' | 'district' | 'state' | 'mandal' | 'pinCode' |
+  'bankName' | 'accountNumber' | 'ifscCode'
 >;
 
 const FarmOperatorProfile: React.FC = () => {
@@ -90,7 +120,9 @@ const FarmOperatorProfile: React.FC = () => {
   const [showTaskFilter, setShowTaskFilter] = useState<boolean>(false);
   const [showAttendanceFilter, setShowAttendanceFilter] = useState<boolean>(false);
   const [taskFilters, setTaskFilters] = useState<TaskFilters>({ status: '' });
+  const [appliedTaskFilters, setAppliedTaskFilters] = useState<TaskFilters>({ status: '' });
   const [attendanceFilters, setAttendanceFilters] = useState<AttendanceFilters>({ status: '', period: '' });
+  const [appliedAttendanceFilters, setAppliedAttendanceFilters] = useState<AttendanceFilters>({ status: '', period: '' });
 
   // Modal handlers
   const openModal = (record: AttendanceRecord) => {
@@ -124,6 +156,27 @@ const FarmOperatorProfile: React.FC = () => {
     assignedTasks: isPendingApproval ? '0/0' : '10/12',
     joinedDate: isPendingApproval ? '2024-03-15' : '2024-01-10',
     profileImage: 'https://images.pexels.com/photos/1139743/pexels-photo-1139743.jpeg?auto=compress&cs=tinysrgb&w=150',
+    // Personal Information
+    fullName: isPendingApproval ? 'Kavita Singh' : 'Rajesh Kumar',
+    dateOfBirth: isPendingApproval ? '1988-03-15' : '1985-06-15',
+    gender: isPendingApproval ? 'Female' : 'Male',
+    email: isPendingApproval ? 'kavita.singh@email.com' : 'rajesh.kumar@email.com',
+    fathersName: isPendingApproval ? 'Ram Singh' : 'Ramesh Kumar',
+    education: isPendingApproval ? 'Graduate' : '12th Pass',
+    alternativeMobile: isPendingApproval ? '+91 9876543221' : '+91 9876543210',
+    // KYC Documents
+    aadharCard: isPendingApproval ? '**** **** **** 1012' : '**** **** **** 9012',
+    // Address Information
+    completeAddress: isPendingApproval ? 'House No 456, Gandhi Road' : 'House No 123, Main Street',
+    village: isPendingApproval ? 'Patna City' : 'Rampur',
+    district: isPendingApproval ? 'Patna' : 'Hyderabad',
+    state: isPendingApproval ? 'Bihar' : 'Telangana',
+    mandal: isPendingApproval ? 'Boring Road' : 'Secunderabad',
+    pinCode: isPendingApproval ? '800001' : '500001',
+    // Bank Details
+    bankName: isPendingApproval ? 'Bank of India' : 'State Bank of India',
+    accountNumber: isPendingApproval ? '**** **** 1012' : '**** **** 1220',
+    ifscCode: isPendingApproval ? 'BKID0001012' : 'SBIN0000123',
     tasks: isPendingApproval ? [] : [
       {
         id: 1,
@@ -216,9 +269,11 @@ const FarmOperatorProfile: React.FC = () => {
 
   const resetTaskFilters = () => {
     setTaskFilters({ status: '' });
+    setAppliedTaskFilters({ status: '' });
   };
 
   const applyTaskFilters = () => {
+    setAppliedTaskFilters({ ...taskFilters });
     setShowTaskFilter(false);
   };
 
@@ -231,39 +286,36 @@ const FarmOperatorProfile: React.FC = () => {
 
   const resetAttendanceFilters = () => {
     setAttendanceFilters({ status: '', period: '' });
+    setAppliedAttendanceFilters({ status: '', period: '' });
   };
 
   const applyAttendanceFilters = () => {
+    setAppliedAttendanceFilters({ ...attendanceFilters });
     setShowAttendanceFilter(false);
   };
 
-  // Filter functions
-  const filteredTasks = (farmOperator.tasks || []).filter((task) => {
-    if (taskFilters.status && task.status !== taskFilters.status) {
-      return false;
-    }
-    return true;
-  });
-
-  const filteredAttendanceRecords = (farmOperator.attendanceRecords || []).filter((record) => {
-    if (attendanceFilters.status && record.status !== attendanceFilters.status) {
-      return false;
-    }
-    return true;
-  });
 
   // Edit handlers
   const handleEdit = () => {
+    // TODO: Integrate API call for editing farm operator profile
+    // API Endpoint: PUT /api/farm-operators/{id}
+    // Example: await updateFarmOperatorProfile(farmOperator.id, formData);
     setEditData({ ...farmOperator });
     setIsEditMode(true);
   };
 
   const handleCancel = () => {
+    // TODO: Integrate API call for canceling farm operator profile changes
+    // API Endpoint: GET /api/farm-operators/{id} (to reset data)
+    // Example: await resetFarmOperatorProfile(farmOperator.id);
     setEditData({});
     setIsEditMode(false);
   };
 
   const handleSave = () => {
+    // TODO: Integrate API call for saving farm operator profile changes
+    // API Endpoint: PUT /api/farm-operators/{id}
+    // Example: await saveFarmOperatorProfile(farmOperator.id, editData);
     setFarmOperator({ ...farmOperator, ...editData });
     setIsEditMode(false);
     setEditData({});
@@ -273,6 +325,17 @@ const FarmOperatorProfile: React.FC = () => {
     setEditData((prev) => ({
       ...prev,
       [field]: value,
+    }));
+  };
+
+  // Status toggle handler
+  const handleToggleStatus = (newStatus: 'Active' | 'Inactive') => {
+    // TODO: Integrate API call for toggling farm operator status
+    // API Endpoint: PUT /api/farm-operators/{id}/status
+    // Example: await toggleFarmOperatorStatus(farmOperator.id, newStatus);
+    setFarmOperator(prev => ({
+      ...prev,
+      status: newStatus
     }));
   };
 
@@ -286,492 +349,60 @@ const FarmOperatorProfile: React.FC = () => {
   };
 
   const confirmApprove = () => {
-    console.log('Approving user:', farmOperator.id);
+    console.log('Approving farm operator:', farmOperator.id);
+    
+    // TODO: Integrate API call for approving farm operator from profile
+    // API Endpoint: PUT /api/farm-operators/{id}/approve
+    // Example: await approveFarmOperator(farmOperator.id);
+    
+    // Update the farm operator status to Active
+    setFarmOperator(prev => ({
+      ...prev,
+      status: 'Active'
+    }));
+    
+    // Store the approval in localStorage so the management component can pick it up
+    const approvalData = {
+      id: farmOperator.id,
+      action: 'approve',
+      timestamp: Date.now()
+    };
+    localStorage.setItem('farmOperatorApproval', JSON.stringify(approvalData));
+    
+    // Close dialog and navigate back to farm operators list
     setShowApproveDialog(false);
     navigate('/farm-operators');
   };
 
   const confirmReject = () => {
-    console.log('Rejecting user:', farmOperator.id);
+    console.log('Rejecting farm operator:', farmOperator.id);
+    
+    // TODO: Integrate API call for rejecting farm operator from profile
+    // API Endpoint: PUT /api/farm-operators/{id}/reject
+    // Example: await rejectFarmOperator(farmOperator.id);
+    
+    // Update the farm operator status to Rejected (this will hide them from lists)
+    setFarmOperator(prev => ({
+      ...prev,
+      status: 'Rejected'
+    }));
+    
+    // Store the rejection in localStorage so the management component can pick it up
+    const rejectionData = {
+      id: farmOperator.id,
+      action: 'reject',
+      timestamp: Date.now()
+    };
+    localStorage.setItem('farmOperatorRejection', JSON.stringify(rejectionData));
+    
+    // Close dialog and navigate back to farm operators list
     setShowRejectDialog(false);
     navigate('/farm-operators');
   };
 
-  const renderEditableField = (
-    label: string,
-    value: string,
-    field: EditableFieldKeys,
-    type: string = 'text'
-  ) => {
-    const currentValue = editData[field] !== undefined ? String(editData[field]) : value;
 
-    return (
-      <div>
-        <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
-          {label}
-        </span>
-        {isEditMode ? (
-          <input
-            type={type}
-            value={currentValue}
-            onChange={(e) => handleInputChange(field, type === 'number' ? Number(e.target.value) : e.target.value)}
-            className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
-            style={{ fontFamily: 'Inter' }}
-          />
-        ) : (
-          <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>
-            {value}
-          </p>
-        )}
-      </div>
-    );
-  };
 
-  const renderOverview = () => (
-    <div className="bg-white rounded-lg p-6 border border-gray-200">
-      <div className="flex items-center gap-2 mb-4">
-        <Phone className="w-5 h-5 text-gray-400" />
-        <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Inter' }}>
-          Profile Information
-        </h3>
-      </div>
 
-      <div className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
-          {renderEditableField('Name', farmOperator.name, 'name')}
-          {renderEditableField('Member ID', farmOperator.memberId, 'memberId')}
-          {renderEditableField('Mobile', farmOperator.mobile, 'mobile', 'tel')}
-          {renderEditableField('Location', farmOperator.location, 'location')}
-          {renderEditableField('Joined Date', farmOperator.joinedDate, 'joinedDate', 'date')}
-          {renderEditableField('ID', farmOperator.id.toString(), 'id', 'number')}
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderAssignedTasks = () => (
-    <div className="bg-white rounded-lg p-6 border border-gray-200">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Inter' }}>
-          Task Assignment History
-        </h3>
-        {!isPendingApproval && (
-          <div className="relative">
-            <button
-              onClick={() => setShowTaskFilter(!showTaskFilter)}
-              className="p-2 text-gray-400 hover:text-gray-600"
-            >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 019 17v-5.586L3.293 6.707A1 1 0 013 6V4z" />
-              </svg>
-            </button>
-
-            {showTaskFilter && (
-              <div className="absolute right-0 top-full mt-2 w-60 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-                <div className="p-4 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-medium text-gray-900">Filter by</h3>
-                    <button
-                      onClick={() => setShowTaskFilter(false)}
-                      className="text-gray-400 hover:text-gray-600"
-                    >
-                      <X size={19} />
-                    </button>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
-                      <div className="space-y-2">
-                        <label className="flex items-center">
-                          <input
-                            type="radio"
-                            name="taskStatus"
-                            value=""
-                            checked={taskFilters.status === ''}
-                            onChange={(e) => handleTaskFilterChange('status', e.target.value)}
-                            className="mr-2"
-                          />
-                          <span className="text-sm">All</span>
-                        </label>
-                        <label className="flex items-center">
-                          <input
-                            type="radio"
-                            name="taskStatus"
-                            value="Completed"
-                            checked={taskFilters.status === 'Completed'}
-                            onChange={(e) => handleTaskFilterChange('status', e.target.value)}
-                            className="mr-2"
-                          />
-                          <span className="text-sm">Completed</span>
-                        </label>
-                        <label className="flex items-center">
-                          <input
-                            type="radio"
-                            name="taskStatus"
-                            value="In Progress"
-                            checked={taskFilters.status === 'In Progress'}
-                            onChange={(e) => handleTaskFilterChange('status', e.target.value)}
-                            className="mr-2"
-                          />
-                          <span className="text-sm">In Progress</span>
-                        </label>
-                        <label className="flex items-center">
-                          <input
-                            type="radio"
-                            name="taskStatus"
-                            value="Overdue"
-                            checked={taskFilters.status === 'Overdue'}
-                            onChange={(e) => handleTaskFilterChange('status', e.target.value)}
-                            className="mr-2"
-                          />
-                          <span className="text-sm">Overdue</span>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2 pt-3">
-                    <button
-                      onClick={resetTaskFilters}
-                      className="flex-1 px-3 py-2 font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-                    >
-                      Reset
-                    </button>
-                    <button
-                      onClick={applyTaskFilters}
-                      className="flex-1 px-3 py-2 bg-gray-200 font-medium text-gray-800 border border-gray-300 rounded-md hover:bg-gray-300"
-                    >
-                      Apply
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-
-      {isPendingApproval ? (
-        <div className="text-center py-12">
-          <div className="text-gray-500 mb-2">
-            <svg className="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-              />
-            </svg>
-          </div>
-          <p className="text-gray-600" style={{ fontFamily: 'Inter' }}>
-            No tasks assigned yet
-          </p>
-          <p className="text-sm text-gray-500 mt-1" style={{ fontFamily: 'Inter' }}>
-            Tasks will be available after approval
-          </p>
-        </div>
-      ) : (
-        <>
-          <p className="text-sm text-gray-600 mb-4" style={{ fontFamily: 'Inter' }}>
-            Complete list of all tasks assigned to this Farm Operator
-          </p>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
-                    Title
-                  </th>
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
-                    Location
-                  </th>
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
-                    Assigned Date
-                  </th>
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
-                    Due Date
-                  </th>
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
-                    Status
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredTasks.map((task) => (
-                  <tr key={task.id} className="border-b border-gray-100">
-                    <td
-                      className="py-3 text-sm font-medium text-blue-600 cursor-pointer hover:underline"
-                      style={{ fontFamily: 'Inter' }}
-                      onClick={() => openTaskModal(task)}
-                    >
-                      {task.title}
-                    </td>
-                    <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
-                      {task.location}
-                    </td>
-                    <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
-                      {task.assignedDate}
-                    </td>
-                    <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
-                      {task.dueDate}
-                    </td>
-                    <td className="py-3">
-                      <span
-                        className={`px-2 py-1 rounded text-xs font-medium ${
-                          task.status === 'Completed'
-                            ? 'bg-green-100 text-green-800'
-                            : task.status === 'In Progress'
-                            ? 'bg-yellow-100 text-yellow-800'
-                            : 'bg-red-100 text-red-800'
-                        }`}
-                      >
-                        {task.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </>
-      )}
-    </div>
-  );
-
-  const renderAttendanceRecords = () => (
-    <div className="bg-white rounded-lg p-6 border border-gray-200">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Inter' }}>
-          Attendance History
-        </h3>
-        {!isPendingApproval && (
-          <div className="relative">
-            <button
-              onClick={() => setShowAttendanceFilter(!showAttendanceFilter)}
-              className="p-2 text-gray-400 hover:text-gray-600"
-            >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 019 17v-5.586L3.293 6.707A1 1 0 013 6V4z" />
-              </svg>
-            </button>
-
-            {showAttendanceFilter && (
-              <div className="absolute right-0 top-full mt-2 w-60 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-                <div className="p-4 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-medium text-gray-900">Filter by</h3>
-                    <button
-                      onClick={() => setShowAttendanceFilter(false)}
-                      className="text-gray-400 hover:text-gray-600"
-                    >
-                      <X size={19} />
-                    </button>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
-                      <div className="space-y-2">
-                        <label className="flex items-center">
-                          <input
-                            type="radio"
-                            name="attendanceStatus"
-                            value=""
-                            checked={attendanceFilters.status === ''}
-                            onChange={(e) => handleAttendanceFilterChange('status', e.target.value)}
-                            className="mr-2"
-                          />
-                          <span className="text-sm">All</span>
-                        </label>
-                        <label className="flex items-center">
-                          <input
-                            type="radio"
-                            name="attendanceStatus"
-                            value="Present"
-                            checked={attendanceFilters.status === 'Present'}
-                            onChange={(e) => handleAttendanceFilterChange('status', e.target.value)}
-                            className="mr-2"
-                          />
-                          <span className="text-sm">Present</span>
-                        </label>
-                        <label className="flex items-center">
-                          <input
-                            type="radio"
-                            name="attendanceStatus"
-                            value="Absent"
-                            checked={attendanceFilters.status === 'Absent'}
-                            onChange={(e) => handleAttendanceFilterChange('status', e.target.value)}
-                            className="mr-2"
-                          />
-                          <span className="text-sm">Absent</span>
-                        </label>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Period</label>
-                      <div className="space-y-2">
-                        <button
-                          onClick={() => handleAttendanceFilterChange('period', 'Weekly')}
-                          className={`w-full text-left px-3 py-2 rounded border ${
-                            attendanceFilters.period === 'Weekly'
-                              ? 'bg-blue-50 border-blue-300 text-blue-800'
-                              : 'bg-white border-gray-300 text-gray-700'
-                          }`}
-                        >
-                          Weekly
-                        </button>
-                        <button
-                          onClick={() => handleAttendanceFilterChange('period', 'Monthly')}
-                          className={`w-full text-left px-3 py-2 rounded border ${
-                            attendanceFilters.period === 'Monthly'
-                              ? 'bg-blue-50 border-blue-300 text-blue-800'
-                              : 'bg-white border-gray-300 text-gray-700'
-                          }`}
-                        >
-                          Monthly
-                        </button>
-                        <button
-                          onClick={() => handleAttendanceFilterChange('period', 'Last Six Months')}
-                          className={`w-full text-left px-3 py-2 rounded border ${
-                            attendanceFilters.period === 'Last Six Months'
-                              ? 'bg-blue-50 border-blue-300 text-blue-800'
-                              : 'bg-white border-gray-300 text-gray-700'
-                          }`}
-                        >
-                          Last Six Months
-                        </button>
-                        <button
-                          onClick={() => handleAttendanceFilterChange('period', 'Customize Date')}
-                          className={`w-full text-left px-3 py-2 rounded border ${
-                            attendanceFilters.period === 'Customize Date'
-                              ? 'bg-blue-50 border-blue-300 text-blue-800'
-                              : 'bg-white border-gray-300 text-gray-700'
-                          }`}
-                        >
-                          Customize Date
-                        </button>
-                      </div>
-
-                      {attendanceFilters.period === 'Customize Date' && (
-                        <div className="mt-3 flex gap-2">
-                          <div className="flex-1">
-                            <input
-                              type="date"
-                              placeholder="From"
-                              className="w-full px-2 py-1 text-xs border border-gray-300 rounded"
-                            />
-                          </div>
-                          <div className="flex-1">
-                            <input
-                              type="date"
-                              placeholder="TO"
-                              className="w-full px-2 py-1 text-xs border border-gray-300 rounded"
-                            />
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2 pt-3">
-                    <button
-                      onClick={resetAttendanceFilters}
-                      className="flex-1 px-3 py-2 font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-                    >
-                      Reset
-                    </button>
-                    <button
-                      onClick={applyAttendanceFilters}
-                      className="flex-1 px-3 py-2 bg-gray-200 font-medium text-gray-800 border border-gray-300 rounded-md hover:bg-gray-300"
-                    >
-                      Apply
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-
-      {isPendingApproval ? (
-        <div className="text-center py-12">
-          <div className="text-gray-500 mb-2">
-            <svg className="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </div>
-          <p className="text-gray-600" style={{ fontFamily: 'Inter' }}>
-            No attendance records yet
-          </p>
-          <p className="text-sm text-gray-500 mt-1" style={{ fontFamily: 'Inter' }}>
-            Records will be available after approval
-          </p>
-        </div>
-      ) : (
-        <>
-          <p className="text-sm text-gray-600 mb-4" style={{ fontFamily: 'Inter' }}>
-            Daily attendance records with location and task details
-          </p>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
-                    Date
-                  </th>
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
-                    Check In
-                  </th>
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
-                    Check Out
-                  </th>
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
-                    Status
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredAttendanceRecords.map((record, index) => (
-                  <tr key={index} className="border-b border-gray-100">
-                    <td
-                      className="py-3 text-sm text-blue-600 cursor-pointer underline"
-                      style={{ fontFamily: 'Inter' }}
-                      onClick={() => openModal(record)}
-                    >
-                      {record.date}
-                    </td>
-                    <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
-                      {record.checkIn}
-                    </td>
-                    <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
-                      {record.checkOut}
-                    </td>
-                    <td className="py-3">
-                      <span
-                        className={`px-2 py-1 rounded text-xs font-medium ${
-                          record.status === 'Present' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                        }`}
-                      >
-                        {record.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </>
-      )}
-    </div>
-  );
 
   return (
     <div className="" style={{ fontFamily: 'Inter' }}>
@@ -794,188 +425,26 @@ const FarmOperatorProfile: React.FC = () => {
         </div>
 
         {/* Profile Header */}
-        <div className="bg-white rounded-lg p-6 border border-gray-200">
-          <div className="flex items-center gap-4">
-            <img
-              src={farmOperator.profileImage}
-              alt={farmOperator.name}
-              className="w-16 h-16 rounded-full object-cover"
-            />
-            <div className="flex-1">
-              <h2 className="text-xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>
-                {farmOperator.name}
-              </h2>
-              <div className="flex items-center gap-4 mt-2">
-                <div className="flex items-center gap-1">
-                  <Phone size={16} className="text-gray-400" />
-                  <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
-                    {farmOperator.mobile}
-                  </span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
-                    # {farmOperator.memberId}
-                  </span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <MapPin size={16} className="text-gray-400" />
-                  <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
-                    {farmOperator.location}
-                  </span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Calendar size={16} className="text-gray-400" />
-                  <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
-                    {isPendingApproval ? 'Applied' : 'Joined'} {farmOperator.joinedDate}
-                  </span>
-                </div>
-              </div>
-            </div>
-            <span
-              className={`px-3 py-1 text-sm rounded-full font-medium ${
-                farmOperator.status === 'Active'
-                  ? 'bg-green-100 text-green-800'
-                  : farmOperator.status === 'Pending'
-                  ? 'bg-yellow-100 text-yellow-800'
-                  : 'bg-red-100 text-red-800'
-              }`}
-            >
-              {farmOperator.status}
-            </span>
-          </div>
-        </div>
+        <ProfileHeader 
+          farmOperator={farmOperator} 
+          isPendingApproval={isPendingApproval} 
+          onToggleStatus={handleToggleStatus}
+          onApprove={handleApprove}
+          onReject={handleReject}
+        />
 
         {/* Stats Cards Row */}
-        {!isPendingApproval && (
-          <div className="relative min-h-[128px]">
-            <div className="flex gap-6 min-w-full">
-              <div className="flex gap-6 flex-grow">
-                <div className="bg-white border border-gray-200 rounded-xl p-4 w-72 h-44 flex flex-col justify-between">
-                  <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
-                      <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-600 mb-1">Total Tasks</p>
-                      <p className="text-2xl font-bold text-gray-900 mb-1">{farmOperator.assignedTasks}</p>
-                      <p className="text-xs text-gray-500 leading-tight">Task completion status</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white border border-gray-200 rounded-xl p-4 w-72 h-44 flex flex-col justify-between">
-                  <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
-                      <CheckCircle className="w-4 h-4 text-green-600" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-600 mb-1">Completion Rate</p>
-                      <p className="text-2xl font-bold text-gray-900 mb-1">
-                        {farmOperator.tasks
-                          ? Math.round(
-                              (farmOperator.tasks.filter((t) => t.status === 'Completed').length /
-                                farmOperator.tasks.length) *
-                                100
-                            ) || 0
-                          : 0}
-                        %
-                      </p>
-                      <p className="text-xs text-gray-500 leading-tight">
-                        {farmOperator.tasks?.filter((t) => t.status === 'Overdue').length || 0} overdue tasks
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white border border-gray-200 rounded-xl p-4 w-72 h-44 flex flex-col justify-between">
-                  <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
-                      <Calendar className="w-4 h-4 text-purple-600" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-600 mb-1">Working Days</p>
-                      <p className="text-2xl font-bold text-gray-900 mb-1">
-                        {farmOperator.attendanceStats?.total || 0}
-                      </p>
-                      <p className="text-xs text-gray-500 leading-tight">Total days since joining</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {activeTab === 'attendance' && farmOperator.attendanceStats && (
-                <div className="absolute top-0 right-0 bg-white border border-gray-200 rounded-xl p-6 w-[520px] h-[300px] shadow-lg z-10 mr-17">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-semibold text-gray-900">Attendance Record</h3>
-                    <button className="p-2 text-blue-600 hover:text-blue-700">
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                        <path
-                          fillRule="evenodd"
-                          d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-
-                  <div className="flex items-center justify-start gap-6">
-                    <div className="relative w-36 h-36">
-                      <ResponsiveContainer width={144} height={144}>
-                        <PieChart>
-                          <Pie
-                            data={[
-                              { name: 'Present', value: farmOperator.attendanceStats.present, color: '#3B82F6' },
-                              { name: 'Absent', value: farmOperator.attendanceStats.absent, color: '#8B5CF6' },
-                            ]}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={35}
-                            outerRadius={60}
-                            paddingAngle={2}
-                            dataKey="value"
-                          >
-                            <Cell fill="#3B82F6" />
-                            <Cell fill="#8B5CF6" />
-                          </Pie>
-                        </PieChart>
-                      </ResponsiveContainer>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-center">
-                          <p className="text-lg font-bold text-gray-900">{farmOperator.attendanceStats.total}</p>
-                          <p className="text-sm text-gray-600">Total</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex-1 space-y-3">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                          <span className="text-sm text-gray-600">Present</span>
-                        </div>
-                        <span className="text-base font-medium text-gray-900">
-                          {farmOperator.attendanceStats.present}
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-                          <span className="text-sm text-gray-600">Absent</span>
-                        </div>
-                        <span className="text-base font-medium text-gray-900">
-                          {farmOperator.attendanceStats.absent}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
+        <div className="relative min-h-[128px]">
+          <div className="flex gap-6 min-w-full">
+            <div className="flex gap-6 flex-grow">
+              <ProfileStatsCards farmOperator={farmOperator} activeTab={activeTab} isPendingApproval={isPendingApproval} />
             </div>
+
+            {activeTab === 'attendance' && farmOperator.attendanceStats && !isPendingApproval && (
+              <AttendanceChart attendanceStats={farmOperator.attendanceStats} />
+            )}
           </div>
-        )}
+        </div>
 
         {!isPendingApproval && (
           <>
@@ -994,84 +463,94 @@ const FarmOperatorProfile: React.FC = () => {
             >
               Overview
             </button>
-            {!isPendingApproval && (
-              <>
-                <button
-                  onClick={() => setActiveTab('tasks')}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
-                    activeTab === 'tasks' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  Assigned Tasks ({farmOperator.tasks?.length || 0})
-                </button>
-                <button
-                  onClick={() => setActiveTab('attendance')}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
-                    activeTab === 'attendance' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  Attendance Records
-                </button>
-              </>
-            )}
+            <button
+              onClick={() => setActiveTab('tasks')}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
+                activeTab === 'tasks' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Assigned Tasks ({isPendingApproval ? 0 : farmOperator.tasks?.length || 0})
+            </button>
+            <button
+              onClick={() => setActiveTab('attendance')}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
+                activeTab === 'attendance' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Attendance Records
+            </button>
           </div>
 
           <div className="flex items-center gap-2">
-            {isPendingApproval ? (
+            {!isPendingApproval && activeTab === 'overview' && (
               <>
-                <button
-                  onClick={handleReject}
-                  className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 flex items-center gap-2"
-                >
-                  <X size={18} />
-                  Reject
-                </button>
-                <button
-                  onClick={handleApprove}
-                  className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2"
-                >
-                  <CheckCircle size={18} />
-                  Approve
-                </button>
-              </>
-            ) : (
-              activeTab === 'overview' && (
-                <>
-                  {isEditMode ? (
-                    <>
-                      <button
-                        onClick={handleCancel}
-                        className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 flex items-center gap-2"
-                      >
-                        <X size={18} />
-                        Cancel
-                      </button>
-                      <button
-                        onClick={handleSave}
-                        className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2"
-                      >
-                        <Save size={18} />
-                        Save
-                      </button>
-                    </>
-                  ) : (
+                {isEditMode ? (
+                  <>
                     <button
-                      onClick={handleEdit}
+                      onClick={handleCancel}
+                      className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 flex items-center gap-2"
+                    >
+                      <X size={18} />
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleSave}
                       className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2"
                     >
-                      <Edit size={18} />
-                      Edit Profile
+                      <Save size={18} />
+                      Save
                     </button>
-                  )}
-                </>
-              )
+                  </>
+                ) : (
+                  <button
+                    onClick={handleEdit}
+                    className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2"
+                  >
+                    <Edit size={18} />
+                    Edit Profile
+                  </button>
+                )}
+              </>
             )}
           </div>
         </div>
 
-        {activeTab === 'overview' && renderOverview()}
-        {activeTab === 'tasks' && !isPendingApproval && renderAssignedTasks()}
-        {activeTab === 'attendance' && !isPendingApproval && renderAttendanceRecords()}
+        {activeTab === 'overview' && (
+          <ProfileOverview
+            farmOperator={farmOperator}
+            isEditMode={isEditMode}
+            editData={editData}
+            handleInputChange={handleInputChange}
+          />
+        )}
+        {activeTab === 'tasks' && (
+          <TaskAssignment
+            tasks={farmOperator.tasks || []}
+            isPendingApproval={isPendingApproval}
+            showTaskFilter={showTaskFilter}
+            setShowTaskFilter={setShowTaskFilter}
+            taskFilters={taskFilters}
+            appliedTaskFilters={appliedTaskFilters}
+            handleTaskFilterChange={handleTaskFilterChange}
+            resetTaskFilters={resetTaskFilters}
+            applyTaskFilters={applyTaskFilters}
+            openTaskModal={openTaskModal}
+          />
+        )}
+        {activeTab === 'attendance' && (
+          <AttendanceHistory
+            attendanceRecords={farmOperator.attendanceRecords || []}
+            isPendingApproval={isPendingApproval}
+            showAttendanceFilter={showAttendanceFilter}
+            setShowAttendanceFilter={setShowAttendanceFilter}
+            attendanceFilters={attendanceFilters}
+            appliedAttendanceFilters={appliedAttendanceFilters}
+            handleAttendanceFilterChange={handleAttendanceFilterChange}
+            resetAttendanceFilters={resetAttendanceFilters}
+            applyAttendanceFilters={applyAttendanceFilters}
+            openModal={openModal}
+          />
+        )}
 
         {isTaskModalOpen && selectedTask && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -1180,99 +659,147 @@ const FarmOperatorProfile: React.FC = () => {
         {isModalOpen && selectedRecord && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="bg-white rounded-lg shadow-lg w-[800px] p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold">Attendance Details</h2>
-                <button onClick={closeModal} className="text-gray-500 hover:text-gray-700 text-2xl">
+              <div className="flex justify-center items-center mb-6 relative">
+                <h2 className="text-xl font-semibold" style={{ fontFamily: 'Inter' }}>
+                  Attendance History ({selectedRecord.date})
+                </h2>
+                <button onClick={closeModal} className="absolute right-0 text-gray-500 hover:text-gray-700 text-2xl">
                   &times;
                 </button>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1">Task Title</label>
-                  <input
-                    type="text"
-                    value={selectedRecord.taskTitle}
-                    readOnly
-                    className="w-full border rounded-lg p-2 text-sm bg-gray-100"
-                  />
+              <div className="grid grid-cols-2 gap-6 mb-6">
+                {/* Left Column */}
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                      Date
+                    </label>
+                    <input
+                      type="text"
+                      value={selectedRecord.date}
+                      readOnly
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
+                      style={{ fontFamily: 'Inter' }}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                      Task Title
+                    </label>
+                    <input
+                      type="text"
+                      value={selectedRecord.taskTitle}
+                      readOnly
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
+                      style={{ fontFamily: 'Inter' }}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                      Check-In Time
+                    </label>
+                    <input
+                      type="text"
+                      value={selectedRecord.checkIn}
+                      readOnly
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
+                      style={{ fontFamily: 'Inter' }}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                      Check-In Location
+                    </label>
+                    <input
+                      type="text"
+                      value={selectedRecord.checkInLocation}
+                      readOnly
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
+                      style={{ fontFamily: 'Inter' }}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                      Notes
+                    </label>
+                    <input
+                      type="text"
+                      value={selectedRecord.notes}
+                      readOnly
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
+                      style={{ fontFamily: 'Inter' }}
+                    />
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium mb-1">Task Description</label>
-                  <input
-                    type="text"
-                    value={selectedRecord.taskDescription}
-                    readOnly
-                    className="w-full border rounded-lg p-2 text-sm bg-gray-100"
-                  />
-                </div>
+                {/* Right Column */}
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                      Task Description
+                    </label>
+                    <input
+                      type="text"
+                      value={selectedRecord.taskDescription}
+                      readOnly
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
+                      style={{ fontFamily: 'Inter' }}
+                    />
+                  </div>
 
-                <div>
-                  <label className="block text-sm font-medium mb-1">Check-In Time</label>
-                  <input
-                    type="text"
-                    value={selectedRecord.checkIn}
-                    readOnly
-                    className="w-full border rounded-lg p-2 text-sm bg-gray-100"
-                  />
-                </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                      Check-Out Time
+                    </label>
+                    <input
+                      type="text"
+                      value={selectedRecord.checkOut}
+                      readOnly
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
+                      style={{ fontFamily: 'Inter' }}
+                    />
+                  </div>
 
-                <div>
-                  <label className="block text-sm font-medium mb-1">Check-Out Time</label>
-                  <input
-                    type="text"
-                    value={selectedRecord.checkOut}
-                    readOnly
-                    className="w-full border rounded-lg p-2 text-sm bg-gray-100"
-                  />
-                </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                      Check-Out Location
+                    </label>
+                    <input
+                      type="text"
+                      value={selectedRecord.checkOutLocation}
+                      readOnly
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
+                      style={{ fontFamily: 'Inter' }}
+                    />
+                  </div>
 
-                <div>
-                  <label className="block text-sm font-medium mb-1">Check-In Location</label>
-                  <input
-                    type="text"
-                    value={selectedRecord.checkInLocation}
-                    readOnly
-                    className="w-full border rounded-lg p-2 text-sm bg-gray-100"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-1">Check-Out Location</label>
-                  <input
-                    type="text"
-                    value={selectedRecord.checkOutLocation}
-                    readOnly
-                    className="w-full border rounded-lg p-2 text-sm bg-gray-100"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-1">Notes</label>
-                  <input
-                    type="text"
-                    value={selectedRecord.notes}
-                    readOnly
-                    className="w-full border rounded-lg p-2 text-sm bg-gray-100"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-1">Working Hours</label>
-                  <input
-                    type="text"
-                    value={selectedRecord.workingHours}
-                    readOnly
-                    className="w-full border rounded-lg p-2 text-sm bg-gray-100"
-                  />
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                      Working Hours
+                    </label>
+                    <input
+                      type="text"
+                      value={selectedRecord.workingHours}
+                      readOnly
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
+                      style={{ fontFamily: 'Inter' }}
+                    />
+                  </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 mt-4">
+              {/* Image Placeholders - Left Side */}
+              <div className="flex gap-6 mb-6">
                 <div>
-                  <label className="block text-sm font-medium mb-1">Check-In Image</label>
-                  <div className="w-24 h-24 border rounded-lg flex items-center justify-center bg-gray-100">
+                  <label className="block text-sm font-medium text-gray-700 mb-2" style={{ fontFamily: 'Inter' }}>
+                    Check-In Image
+                  </label>
+                  <div className="w-32 h-32 border border-gray-300 rounded-lg flex items-center justify-center bg-gray-50">
                     {selectedRecord.checkInImage ? (
                       <img
                         src={selectedRecord.checkInImage}
@@ -1280,14 +807,16 @@ const FarmOperatorProfile: React.FC = () => {
                         className="w-full h-full object-cover rounded-lg"
                       />
                     ) : (
-                      <span className="text-gray-400 text-sm">No Image</span>
+                      <span className="text-gray-400 text-sm" style={{ fontFamily: 'Inter' }}>No Image</span>
                     )}
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1">Check-Out Image</label>
-                  <div className="w-24 h-24 border rounded-lg flex items-center justify-center bg-gray-100">
+                  <label className="block text-sm font-medium text-gray-700 mb-2" style={{ fontFamily: 'Inter' }}>
+                    Check-Out Image
+                  </label>
+                  <div className="w-32 h-32 border border-gray-300 rounded-lg flex items-center justify-center bg-gray-50">
                     {selectedRecord.checkOutImage ? (
                       <img
                         src={selectedRecord.checkOutImage}
@@ -1295,81 +824,55 @@ const FarmOperatorProfile: React.FC = () => {
                         className="w-full h-full object-cover rounded-lg"
                       />
                     ) : (
-                      <span className="text-gray-400 text-sm">No Image</span>
+                      <span className="text-gray-400 text-sm" style={{ fontFamily: 'Inter' }}>No Image</span>
                     )}
                   </div>
                 </div>
               </div>
 
-              <div className="mt-6 flex justify-end gap-3">
+              {/* Action Buttons - Right Side Only */}
+              <div className="flex justify-end gap-3">
                 <button
                   onClick={() => {
-                    alert('Rejected');
+                    alert('Marked as Absent');
                     closeModal();
                   }}
-                  className="px-5 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                  style={{ fontFamily: 'Inter', fontSize: '13.02px', fontWeight: 600 }}
                 >
-                  Reject
+                  Absent
                 </button>
                 <button
                   onClick={() => {
-                    alert('Approved');
+                    alert('Marked as Present');
                     closeModal();
                   }}
-                  className="px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                  style={{ fontFamily: 'Inter', fontSize: '13.02px', fontWeight: 600 }}
                 >
-                  Approve
+                  Present
                 </button>
               </div>
             </div>
           </div>
         )}
 
-        {showApproveDialog && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-white rounded-lg shadow-lg p-6 w-96">
-              <h2 className="text-xl font-semibold mb-4 text-center">Approve User</h2>
-              <p className="text-gray-600 mb-6 text-center">Are you sure you want to Approve this User</p>
-              <div className="flex gap-4">
-                <button
-                  onClick={() => setShowApproveDialog(false)}
-                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
-                >
-                  No
-                </button>
-                <button
-                  onClick={confirmApprove}
-                  className="flex-1 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800"
-                >
-                  Yes
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+        {/* Confirmation Dialogs */}
+        <ConfirmationDialog
+          isOpen={showApproveDialog}
+          onClose={() => setShowApproveDialog(false)}
+          onConfirm={confirmApprove}
+          title="Approve User"
+          message="Are you sure you want to Approve this User"
+        />
 
-        {showRejectDialog && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-white rounded-lg shadow-lg p-6 w-96">
-              <h2 className="text-xl font-semibold mb-4 text-center">Reject User</h2>
-              <p className="text-gray-600 mb-6 text-center">Are you sure you want to Reject this User</p>
-              <div className="flex gap-4">
-                <button
-                  onClick={() => setShowRejectDialog(false)}
-                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
-                >
-                  No
-                </button>
-                <button
-                  onClick={confirmReject}
-                  className="flex-1 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800"
-                >
-                  Yes
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+        <ConfirmationDialog
+          isOpen={showRejectDialog}
+          onClose={() => setShowRejectDialog(false)}
+          onConfirm={confirmReject}
+          title="Reject User"
+          message="Are you sure you want to Reject this User"
+        />
       </div>
     </div>
   );

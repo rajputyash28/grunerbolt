@@ -83,7 +83,6 @@ export interface Farmer {
   memberId: string;
   kycStatus: string;
   kd: string;
-  status: 'Active' | 'Inactive' | 'Pending' | 'Rejected';
   profileImage: string;
   basicDetails: BasicDetails;
   kycDocuments: KycDocuments;
@@ -103,7 +102,6 @@ const initialfarmer: Farmer[] = [
     memberId: "MEM-F-2024-001",
     kycStatus: "Active",
     kd: "KD-2024-045",
-    status: "Active",
     profileImage: "https://images.pexels.com/photos/1139743/pexels-photo-1139743.jpeg?auto=compress&cs=tinysrgb&w=150",
     basicDetails: {
       fullName: "Rajesh Kumar",
@@ -200,7 +198,6 @@ const initialfarmer: Farmer[] = [
     memberId: "MEM-F-2024-002",
     kycStatus: "Inactive",
     kd: "KD-2024-046",
-    status: "Inactive",
     profileImage: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=150",
     basicDetails: {
       fullName: "Sunita Devi",

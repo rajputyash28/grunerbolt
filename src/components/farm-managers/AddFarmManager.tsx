@@ -28,7 +28,7 @@ const AddFarmManager = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Adding new Farm Manager:', formData);
-    navigate('/farm-managers');
+    navigate('/farm-Managers');
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -44,7 +44,7 @@ const AddFarmManager = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button
-            onClick={() => navigate('/farm-managers')}
+            onClick={() => navigate('/farm-Managers')}
             className="p-2 text-gray-400 hover:text-gray-600 rounded-lg border border-gray-300"
           >
             <ArrowLeft size={20} />
@@ -286,7 +286,7 @@ const AddFarmManager = () => {
         <div className="flex justify-end gap-3">
           <button
             type="button"
-            onClick={() => navigate('/farm-managers')}
+            onClick={() => navigate('/farm-Managers')}
             className="px-6 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
             style={{ fontFamily: 'Inter', fontSize: '13.02px' }}
           >

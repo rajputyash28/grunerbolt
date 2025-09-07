@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save } from 'lucide-react';
 
-const EditFarmManager = () => {
+const AddFarmOperator = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
   const [formData, setFormData] = useState({
     name: '',
     mobile: '',
@@ -26,35 +25,10 @@ const EditFarmManager = () => {
     aadharNumber: ''
   });
 
-  // Mock data for editing - in real app, fetch from API
-  useEffect(() => {
-    const mockData = {
-      name: 'Ravi Kumar',
-      mobile: '+91 9876543220',
-      email: 'ravi.kumar@gmail.com',
-      dateOfBirth: '1985-06-15',
-      gender: 'Male',
-      education: '12th Pass',
-      experience: '5',
-      address: 'House No 123, Main Street',
-      village: 'Rampur',
-      mandal: 'Secunderabad',
-      district: 'Hyderabad',
-      state: 'Telangana',
-      pinCode: '500001',
-      bankName: 'State Bank of India',
-      accountNumber: '1234567890',
-      ifscCode: 'SBIN0000123',
-      panNumber: 'ABCDE1234F',
-      aadharNumber: '****-****-0012'
-    };
-    setFormData(mockData);
-  }, [id]);
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Updating Farm Manager:', formData);
-    navigate('/farm-Managers');
+    console.log('Adding new Farm Operator:', formData);
+    navigate('/farm-Operators');
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -70,14 +44,14 @@ const EditFarmManager = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button
-            onClick={() => navigate('/farm-Managers')}
+            onClick={() => navigate('/farm-Operators')}
             className="p-2 text-gray-400 hover:text-gray-600 rounded-lg border border-gray-300"
           >
             <ArrowLeft size={20} />
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>Edit Farm Manager</h1>
-            <p className="text-gray-600" style={{ fontFamily: 'Inter' }}>Update Farm Manager information</p>
+            <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>Add New Farm Operator</h1>
+            <p className="text-gray-600" style={{ fontFamily: 'Inter' }}>Register a new Farm Operator in the system</p>
           </div>
         </div>
       </div>
@@ -312,7 +286,7 @@ const EditFarmManager = () => {
         <div className="flex justify-end gap-3">
           <button
             type="button"
-            onClick={() => navigate('/farm-Managers')}
+            onClick={() => navigate('/farm-Operators')}
             className="px-6 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
             style={{ fontFamily: 'Inter', fontSize: '13.02px' }}
           >
@@ -324,7 +298,7 @@ const EditFarmManager = () => {
             style={{ fontFamily: 'Inter', fontSize: '13.02px', fontWeight: 600 }}
           >
             <Save size={18} />
-            Update Farm Manager
+            Save Farm Operator
           </button>
         </div>
       </form>
@@ -332,4 +306,4 @@ const EditFarmManager = () => {
   );
 };
 
-export default EditFarmManager;
+export default AddFarmOperator;

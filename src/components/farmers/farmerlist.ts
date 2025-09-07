@@ -10,7 +10,8 @@ const farmers = [
     "state": "Punjab",
     "district": "Ludhiana",
     "mandal": "Ludhiana-I",
-    "landSize": "5-10 acres"
+    "landSize": "5-10 acres",
+    "totalLandSize": 7.5 // Average of 5 and 10
   },
   {
     "id": 2,
@@ -23,7 +24,8 @@ const farmers = [
     "state": "Haryana",
     "district": "Karnal",
     "mandal": "Karnal-II",
-    "landSize": "2-5 acres"
+    "landSize": "2-5 acres",
+    "totalLandSize": 3.5 // Average of 2 and 5
   },
   {
     "id": 3,
@@ -36,7 +38,8 @@ const farmers = [
     "state": "Punjab",
     "district": "Amritsar",
     "mandal": "Amritsar-I",
-    "landSize": "10+ acres"
+    "landSize": "10+ acres",
+    "totalLandSize": 10 // Assuming minimum of 10 for simplicity
   },
   {
     "id": 4,
@@ -49,7 +52,8 @@ const farmers = [
     "state": "Haryana",
     "district": "Panipat",
     "mandal": "Panipat-I",
-    "landSize": "1-2 acres"
+    "landSize": "1-2 acres",
+    "totalLandSize": 1.5 // Average of 1 and 2
   },
   {
     "id": 5,
@@ -62,7 +66,8 @@ const farmers = [
     "state": "Rajasthan",
     "district": "Jaipur",
     "mandal": "Sanganer",
-    "landSize": "5-10 acres"
+    "landSize": "5-10 acres",
+    "totalLandSize": 7.5 // Average of 5 and 10
   },
   {
     "id": 6,
@@ -75,8 +80,9 @@ const farmers = [
     "state": "Rajasthan",
     "district": "Udaipur",
     "mandal": "Girwa",
-    "landSize": "2-5 acres"
+    "landSize": "2-5 acres",
+    "totalLandSize": 3.5 // Average of 2 and 5
   },
-]
+];
 
 export default farmers;

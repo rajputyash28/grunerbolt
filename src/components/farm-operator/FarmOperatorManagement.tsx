@@ -28,7 +28,28 @@ const FarmOperatorManagement = () => {
   const [activeTab, setActiveTab] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [showActionMenu, setShowActionMenu] = useState<number | null>(null);
+  const [showFilterMenu, setShowFilterMenu] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState<number | null>(null);
+  const [showApproveDialog, setShowApproveDialog] = useState<number | null>(null);
+  const [showRejectDialog, setShowRejectDialog] = useState<number | null>(null);
   const actionMenuRef = useRef<HTMLDivElement>(null);
+
+  // Filter states
+  const [filters, setFilters] = useState({
+    state: '',
+    district: '',
+    mandal: '',
+    landSizeFrom: '',
+    landSizeTo: ''
+  });
+
+  const [appliedFilters, setAppliedFilters] = useState({
+    state: '',
+    district: '',
+    mandal: '',
+    landSizeFrom: '',
+    landSizeTo: ''
+  });
 
   const allFarmOperators: FarmOperator[] = [
     {
@@ -115,34 +136,89 @@ const FarmOperatorManagement = () => {
     }
   ];
 
-  const handleViewProfile = (Operator: FarmOperator) => {
-    navigate(`/farm-Operators/${Operator.id}`);
+  const handleViewProfile = (operator: FarmOperator) => {
+    navigate(`/farm-operators/${operator.id}`);
   };
 
-  const handleEdit = (Operator: FarmOperator) => {
-    navigate(`/farm-Operators/edit/${Operator.id}`);
+  const handleViewPendingProfile = (approval: PendingApproval) => {
+    navigate(`/farm-operators/${approval.id}?pending=true`);
+  };
+
+  const handleEdit = (operator: FarmOperator) => {
+    navigate(`/farm-operators/${operator.id}?edit=true`);
   };
 
   const handleAddNew = () => {
-    navigate('/farm-Operators/add');
+    navigate('/farm-operators/add');
   };
 
   const handleApprove = (approval: PendingApproval) => {
-    console.log('Approving:', approval);
+    setShowApproveDialog(approval.id);
   };
 
   const handleReject = (approval: PendingApproval) => {
-    console.log('Rejecting:', approval);
+    setShowRejectDialog(approval.id);
   };
 
   const handleReview = (approval: PendingApproval) => {
-    console.log('Reviewing:', approval);
+    handleViewPendingProfile(approval);
   };
 
-  const toggleActionMenu = (OperatorId: number, e: React.MouseEvent) => {
-    e.stopPropagation();
-    setShowActionMenu(showActionMenu === OperatorId ? null : OperatorId);
+  const handleDelete = (operatorId: number) => {
+    setShowDeleteDialog(operatorId);
   };
+
+  const confirmDelete = () => {
+    console.log('Deleting operator:', showDeleteDialog);
+    setShowDeleteDialog(null);
+  };
+
+  const confirmApprove = () => {
+    console.log('Approving:', showApproveDialog);
+    setShowApproveDialog(null);
+  };
+
+  const confirmReject = () => {
+    console.log('Rejecting:', showRejectDialog);
+    setShowRejectDialog(null);
+  };
+
+  const toggleActionMenu = (operatorId: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowActionMenu(showActionMenu === operatorId ? null : operatorId);
+  };
+
+  // Filter functions
+  const handleFilterChange = (field: string, value: string) => {
+    setFilters(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleResetFilters = () => {
+    setFilters({
+      state: '',
+      district: '',
+      mandal: '',
+      landSizeFrom: '',
+      landSizeTo: ''
+    });
+    setAppliedFilters({
+      state: '',
+      district: '',
+      mandal: '',
+      landSizeFrom: '',
+      landSizeTo: ''
+    });
+  };
+
+  const handleApplyFilters = () => {
+    setAppliedFilters({ ...filters });
+    setShowFilterMenu(false);
+  };
+
+  const hasActiveFilters = Object.values(appliedFilters).some(value => value !== '');
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -159,10 +235,10 @@ const FarmOperatorManagement = () => {
   }, []);
 
   const filteredData = activeTab === 'all' 
-    ? allFarmOperators.filter(Operator =>
-        Operator.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        Operator.mobile.includes(searchTerm) ||
-        Operator.memberId.toLowerCase().includes(searchTerm.toLowerCase())
+    ? allFarmOperators.filter(operator =>
+        operator.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        operator.mobile.includes(searchTerm) ||
+        operator.memberId.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : pendingApprovals.filter(approval =>
         approval.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -184,11 +260,11 @@ const FarmOperatorManagement = () => {
         >
           <Plus size={20} />
           Add New Farm Operator
- asas       </button>
+        </button>
       </div>
 
-      {/* Stats Cards - Applied exact style specifications */}
-      <div className="flex gap-4" style={{ marginTop: '10px', marginLeft: '' }}>
+      {/* Stats Cards */}
+      <div className="flex gap-4" style={{ marginTop: '10px' }}>
         <div className="bg-white border border-gray-200 rounded-xl" style={{ 
           width: '279px', 
           height: '119px', 
@@ -252,7 +328,7 @@ const FarmOperatorManagement = () => {
         </button>
       </div>
 
-      {/* Search */}
+      {/* Search and Filter */}
       <div className="flex items-center gap-4">
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
@@ -261,16 +337,211 @@ const FarmOperatorManagement = () => {
             placeholder="Search by name, mobile, or member ID..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-[500px] pl-10 pr-4 py-2 border border-gray-300 rounded-lg "
+            className="w-[500px] pl-10 pr-4 py-2 border border-gray-300 rounded-lg"
             style={{ fontFamily: 'Inter', fontSize: '13.02px' }}
           />
         </div>
+        
+        {/* Filter Button */}
+        <div className="relative">
+          <button 
+            onClick={() => setShowFilterMenu(!showFilterMenu)}
+            className="p-2 text-gray-400 hover:text-gray-600 border border-gray-300 rounded-lg"
+          >
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 019 17v-5.586L3.293 6.707A1 1 0 013 6V4z" />
+            </svg>
+          </button>
+          
+          {showFilterMenu && (
+            <div className="absolute right-0 top-full mt-2 w-60 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+              <div className="p-4 space-y-4 h-[390px]">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-medium text-gray-900">Filter by</h3>
+                  <button
+                    onClick={() => setShowFilterMenu(false)}
+                    className="text-gray-400 hover:text-gray-600"
+                  >
+                    <X size={19} className="text-[#000000]" />
+                  </button>
+                </div>
+
+                <div className="space-y-4">
+                  {/* State Filter */}
+                  <div className="relative">
+                    <select
+                      value={filters.state}
+                      onChange={(e) => handleFilterChange('state', e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md appearance-none bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                      <option value="">States</option>
+                      <option value="Punjab">Punjab</option>
+                      <option value="Haryana">Haryana</option>
+                      <option value="Rajasthan">Rajasthan</option>
+                    </select>
+                    <ChevronDown
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-400"
+                      size={20}
+                    />
+                  </div>
+
+                  {/* District Filter */}
+                  <div className="relative">
+                    <select
+                      value={filters.district}
+                      onChange={(e) => handleFilterChange('district', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md appearance-none bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                      <option value="">Districts</option>
+                      <option value="Ludhiana">Ludhiana</option>
+                      <option value="Karnal">Karnal</option>
+                      <option value="Amritsar">Amritsar</option>
+                      <option value="Panipat">Panipat</option>
+                      <option value="Jaipur">Jaipur</option>
+                      <option value="Udaipur">Udaipur</option>
+                    </select>
+                    <ChevronDown
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-400"
+                      size={20}
+                    />
+                  </div>
+
+                  {/* Mandal Filter */}
+                  <div className="relative">
+                    <select
+                      value={filters.mandal}
+                      onChange={(e) => handleFilterChange('mandal', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md appearance-none bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                      <option value="">Mandals</option>
+                      <option value="Ludhiana-I">Ludhiana-I</option>
+                      <option value="Karnal-II">Karnal-II</option>
+                      <option value="Amritsar-I">Amritsar-I</option>
+                      <option value="Panipat-I">Panipat-I</option>
+                      <option value="Sanganer">Sanganer</option>
+                      <option value="Girwa">Girwa</option>
+                    </select>
+                    <ChevronDown
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-400"
+                      size={20}
+                    />
+                  </div>
+
+                  {/* Land Size Filter */}
+                  <div className="border rounded p-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Land size</label>
+                    <div className="flex items-center gap-6">
+                      <div className="flex items-center gap-2">
+                        <label className="whitespace-nowrap">From</label>
+                        <input
+                          type="number"
+                          placeholder=""
+                          value={filters.landSizeFrom}
+                          onChange={(e) => handleFilterChange('landSizeFrom', e.target.value)}
+                          className="w-[35px] h-[15px] px-3 py-2 border border-gray-300 rounded-md focus:border-transparent no-spin"
+                        />
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <label className="whitespace-nowrap">To</label>
+                        <input
+                          type="number"
+                          placeholder=""
+                          value={filters.landSizeTo}
+                          onChange={(e) => handleFilterChange('landSizeTo', e.target.value)}
+                          className="w-[35px] h-[15px] px-3 py-2 border border-gray-300 rounded-md focus:border-transparent no-spin"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 pt-3">
+                  <button
+                    onClick={handleResetFilters}
+                    className="flex-1 px-3 py-2 font-bold text-black bg-white border border-gray-300 rounded-md transition-colors"
+                  >
+                    Reset
+                  </button>
+                  <button
+                    onClick={handleApplyFilters}
+                    className="flex-1 px-3 py-2 bg-[#D9D9D9] font-bold text-black border border-gray-300 rounded-md transition-colors"
+                  >
+                    Apply
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
+
+      {/* Active Filters Display */}
+      {hasActiveFilters && (
+        <div className="flex items-center gap-2 text-sm">
+          <span className="text-gray-600">Active filters:</span>
+          {appliedFilters.state && (
+            <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded-md">
+              State: {appliedFilters.state}
+              <button
+                onClick={() => {
+                  setFilters(prev => ({ ...prev, state: '' }));
+                  setAppliedFilters(prev => ({ ...prev, state: '' }));
+                }}
+                className="text-blue-600 hover:text-blue-800"
+              >
+                <X size={12} />
+              </button>
+            </span>
+          )}
+          {appliedFilters.district && (
+            <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded-md">
+              District: {appliedFilters.district}
+              <button
+                onClick={() => {
+                  setFilters(prev => ({ ...prev, district: '' }));
+                  setAppliedFilters(prev => ({ ...prev, district: '' }));
+                }}
+                className="text-blue-600 hover:text-blue-800"
+              >
+                <X size={12} />
+              </button>
+            </span>
+          )}
+          {appliedFilters.mandal && (
+            <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded-md">
+              Mandal: {appliedFilters.mandal}
+              <button
+                onClick={() => {
+                  setFilters(prev => ({ ...prev, mandal: '' }));
+                  setAppliedFilters(prev => ({ ...prev, mandal: '' }));
+                }}
+                className="text-blue-600 hover:text-blue-800"
+              >
+                <X size={12} />
+              </button>
+            </span>
+          )}
+          {(appliedFilters.landSizeFrom || appliedFilters.landSizeTo) && (
+            <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded-md">
+              Land Size: {appliedFilters.landSizeFrom || '0'} - {appliedFilters.landSizeTo || '∞'}
+              <button
+                onClick={() => {
+                  setFilters(prev => ({ ...prev, landSizeFrom: '', landSizeTo: '' }));
+                  setAppliedFilters(prev => ({ ...prev, landSizeFrom: '', landSizeTo: '' }));
+                }}
+                className="text-blue-600 hover:text-blue-800"
+              >
+                <X size={12} />
+              </button>
+            </span>
+          )}
+        </div>
+      )}
 
       {/* Table */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
         <table className="w-full">
-          <thead className=' border-b'>
+          <thead className="border-b">
             <tr>
               <th className="px-6 py-3 text-left" style={{ 
                 fontFamily: 'Inter', 
@@ -346,11 +617,11 @@ const FarmOperatorManagement = () => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {activeTab === 'all' ? (
-              (filteredData as FarmOperator[]).map((Operator) => (
-                <tr key={Operator.id} className="hover:bg-gray-50">
+              (filteredData as FarmOperator[]).map((operator) => (
+                <tr key={operator.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <button
-                      onClick={() => handleViewProfile(Operator)}
+                      onClick={() => handleViewProfile(operator)}
                       className="text-sm font-semibold hover:text-blue-600 underline"
                       style={{ 
                         fontFamily: 'Inter', 
@@ -360,7 +631,7 @@ const FarmOperatorManagement = () => {
                         textDecoration: 'underline'
                       }}
                     >
-                      {Operator.name}
+                      {operator.name}
                     </button>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
@@ -369,15 +640,7 @@ const FarmOperatorManagement = () => {
                     fontWeight: 400,
                     color: '#4A5565'
                   }}>
-                    {Operator.memberId}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
-                    fontFamily: 'Inter', 
-                    fontSize: '13.02px', 
-                    fontWeight: 400,
-                    color: '##4A5565'
-                  }}>
-                    {Operator.mobile}
+                    {operator.memberId}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
                     fontFamily: 'Inter', 
@@ -385,13 +648,21 @@ const FarmOperatorManagement = () => {
                     fontWeight: 400,
                     color: '#4A5565'
                   }}>
-                    {Operator.location}
+                    {operator.mobile}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
+                    fontFamily: 'Inter', 
+                    fontSize: '13.02px', 
+                    fontWeight: 400,
+                    color: '#4A5565'
+                  }}>
+                    {operator.location}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                      Operator.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                      operator.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                     }`}>
-                    {Operator.status}
+                      {operator.status}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
@@ -400,34 +671,24 @@ const FarmOperatorManagement = () => {
                     fontWeight: 400,
                     color: '#4A5565'
                   }}>
-                    {Operator.assignedTasks}
+                    {operator.assignedTasks}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right relative">
                     <div className="flex justify-center">
                       <button
-                        onClick={(e) => toggleActionMenu(Operator.id, e)}
+                        onClick={(e) => toggleActionMenu(operator.id, e)}
                         className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
                         title="More Actions"
                       >
                         <MoreHorizontal size={16} />
                       </button>
                     </div>
-                    {showActionMenu === Operator.id && (
+                    {showActionMenu === operator.id && (
                       <div ref={actionMenuRef} className="absolute right-6 top-10 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
                         <div className="py-1">
                           <button
                             onClick={() => {
-                              handleViewProfile(Operator);
-                              setShowActionMenu(null);
-                            }}
-                            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
-                          >
-                            <Eye size={16} />
-                            View Details
-                          </button>
-                          <button
-                            onClick={() => {
-                              handleEdit(Operator);
+                              handleEdit(operator);
                               setShowActionMenu(null);
                             }}
                             className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
@@ -436,11 +697,23 @@ const FarmOperatorManagement = () => {
                             Edit
                           </button>
                           <button
-                            onClick={() => setShowActionMenu(null)}
+                            onClick={() => {
+                              setShowActionMenu(null);
+                            }}
                             className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
                           >
                             <Ban size={16} />
                             Block
+                          </button>
+                          <button
+                            onClick={() => {
+                              handleDelete(operator.id);
+                              setShowActionMenu(null);
+                            }}
+                            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                          >
+                            <Trash size={16} />
+                            Delete
                           </button>
                         </div>
                       </div>
@@ -451,13 +724,20 @@ const FarmOperatorManagement = () => {
             ) : (
               (filteredData as PendingApproval[]).map((approval) => (
                 <tr key={approval.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium" style={{ 
-                    fontFamily: 'Inter', 
-                    fontSize: '13.02px', 
-                    fontWeight: 600,
-                    color: '#101828'
-                  }}>
-                    {approval.name}
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <button
+                      onClick={() => handleViewPendingProfile(approval)}
+                      className="text-sm font-semibold hover:text-blue-600 underline"
+                      style={{ 
+                        fontFamily: 'Inter', 
+                        fontSize: '13.02px', 
+                        fontWeight: 600,
+                        color: '#101828',
+                        textDecoration: 'underline'
+                      }}
+                    >
+                      {approval.name}
+                    </button>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
                     fontFamily: 'Inter', 
@@ -519,6 +799,78 @@ const FarmOperatorManagement = () => {
           </tbody>
         </table>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      {showDeleteDialog && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-96">
+            <h2 className="text-xl font-semibold mb-4 text-center">Delete Farm Operator</h2>
+            <p className="text-gray-600 mb-6 text-center">Are you sure you want to delete this Farm Operator? This action cannot be undone.</p>
+            <div className="flex gap-4">
+              <button
+                onClick={() => setShowDeleteDialog(null)}
+                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+              >
+                No
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="flex-1 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800"
+              >
+                Yes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Approve Confirmation Dialog */}
+      {showApproveDialog && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-96">
+            <h2 className="text-xl font-semibold mb-4 text-center">Approve User</h2>
+            <p className="text-gray-600 mb-6 text-center">Are you sure you want to Approve this User</p>
+            <div className="flex gap-4">
+              <button
+                onClick={() => setShowApproveDialog(null)}
+                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+              >
+                No
+              </button>
+              <button
+                onClick={confirmApprove}
+                className="flex-1 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800"
+              >
+                Yes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Reject Confirmation Dialog */}
+      {showRejectDialog && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-96">
+            <h2 className="text-xl font-semibold mb-4 text-center">Reject User</h2>
+            <p className="text-gray-600 mb-6 text-center">Are you sure you want to Reject this User</p>
+            <div className="flex gap-4">
+              <button
+                onClick={() => setShowRejectDialog(null)}
+                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+              >
+                No
+              </button>
+              <button
+                onClick={confirmReject}
+                className="flex-1 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800"
+              >
+                Yes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

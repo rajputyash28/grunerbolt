@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
        fontFamily: {
-        sans: ['Poppins', 'sans-serif'], // 👈 override Tailwind's default
+        sans: ['Inter', 'sans-serif'], // 👈 override Tailwind's default
       },
     },
   },

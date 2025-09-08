@@ -60,53 +60,53 @@ const KisaniDidiProfile = () => {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Personal Information */}
       <div className="bg-white rounded-lg p-6 border border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4" style={{ fontFamily: 'Poppins' }}>Personal Information</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4" style={{ fontFamily: 'Inter' }}>Personal Information</h3>
         <div className="space-y-4">
           <div>
-            <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>Full Name</span>
-            <p className="font-medium text-gray-900" style={{ fontFamily: 'Poppins' }}>{kisaniDidi.personalInfo.fullName}</p>
+            <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Full Name</span>
+            <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{kisaniDidi.personalInfo.fullName}</p>
           </div>
           <div>
-            <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>Mobile Number</span>
-            <p className="font-medium text-gray-900" style={{ fontFamily: 'Poppins' }}>{kisaniDidi.personalInfo.mobileNumber}</p>
+            <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Mobile Number</span>
+            <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{kisaniDidi.personalInfo.mobileNumber}</p>
           </div>
           <div>
-            <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>Registration ID</span>
-            <p className="font-medium text-gray-900" style={{ fontFamily: 'Poppins' }}>{kisaniDidi.personalInfo.registrationId}</p>
+            <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Registration ID</span>
+            <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{kisaniDidi.personalInfo.registrationId}</p>
           </div>
           <div>
-            <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>Complete Address</span>
-            <p className="font-medium text-gray-900" style={{ fontFamily: 'Poppins' }}>{kisaniDidi.personalInfo.completeAddress}</p>
+            <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Complete Address</span>
+            <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{kisaniDidi.personalInfo.completeAddress}</p>
           </div>
         </div>
       </div>
 
       {/* Location */}
       <div className="bg-white rounded-lg p-6 border border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4" style={{ fontFamily: 'Poppins' }}>Location</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4" style={{ fontFamily: 'Inter' }}>Location</h3>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>State</span>
-            <p className="font-medium text-gray-900" style={{ fontFamily: 'Poppins' }}>{kisaniDidi.locationInfo.state}</p>
+            <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>State</span>
+            <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{kisaniDidi.locationInfo.state}</p>
           </div>
           <div>
-            <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>District</span>
-            <p className="font-medium text-gray-900" style={{ fontFamily: 'Poppins' }}>{kisaniDidi.locationInfo.district}</p>
+            <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>District</span>
+            <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{kisaniDidi.locationInfo.district}</p>
           </div>
           <div>
-            <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>Mandal</span>
-            <p className="font-medium text-gray-900" style={{ fontFamily: 'Poppins' }}>{kisaniDidi.locationInfo.mandal}</p>
+            <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Mandal</span>
+            <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{kisaniDidi.locationInfo.mandal}</p>
           </div>
           <div>
-            <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>Village</span>
-            <p className="font-medium text-gray-900" style={{ fontFamily: 'Poppins' }}>{kisaniDidi.locationInfo.village}</p>
+            <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Village</span>
+            <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{kisaniDidi.locationInfo.village}</p>
           </div>
           <div>
-            <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>Registration Date</span>
-            <p className="font-medium text-gray-900" style={{ fontFamily: 'Poppins' }}>{kisaniDidi.locationInfo.registrationDate}</p>
+            <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Registration Date</span>
+            <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{kisaniDidi.locationInfo.registrationDate}</p>
           </div>
           <div>
-            <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>Approval Status</span>
+            <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Approval Status</span>
             <span className="inline-block px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full font-medium">
               {kisaniDidi.locationInfo.approvalStatus}
             </span>
@@ -116,19 +116,19 @@ const KisaniDidiProfile = () => {
 
       {/* Bank Details */}
       <div className="bg-white rounded-lg p-6 border border-gray-200 lg:col-span-2">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4" style={{ fontFamily: 'Poppins' }}>Bank Details</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4" style={{ fontFamily: 'Inter' }}>Bank Details</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>Bank Name</span>
-            <p className="font-medium text-gray-900" style={{ fontFamily: 'Poppins' }}>{kisaniDidi.bankDetails.bankName}</p>
+            <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Bank Name</span>
+            <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{kisaniDidi.bankDetails.bankName}</p>
           </div>
           <div>
-            <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>Account Number</span>
-            <p className="font-medium text-gray-900" style={{ fontFamily: 'Poppins' }}>{kisaniDidi.bankDetails.accountNumber}</p>
+            <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Account Number</span>
+            <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{kisaniDidi.bankDetails.accountNumber}</p>
           </div>
           <div>
-            <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>IFSC Code</span>
-            <p className="font-medium text-gray-900" style={{ fontFamily: 'Poppins' }}>{kisaniDidi.bankDetails.ifscCode}</p>
+            <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>IFSC Code</span>
+            <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{kisaniDidi.bankDetails.ifscCode}</p>
           </div>
         </div>
       </div>
@@ -137,21 +137,21 @@ const KisaniDidiProfile = () => {
 
   const renderAssignedTasks = () => (
     <div className="bg-white rounded-lg p-6 border border-gray-200">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4" style={{ fontFamily: 'Poppins' }}>Assigned Tasks (3)</h3>
+      <h3 className="text-lg font-semibold text-gray-900 mb-4" style={{ fontFamily: 'Inter' }}>Assigned Tasks (3)</h3>
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-gray-200">
-              <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>Task Title</th>
-              <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>Status</th>
-              <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>Due Date</th>
-              <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>Assigned Date</th>
+              <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>Task Title</th>
+              <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>Status</th>
+              <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>Due Date</th>
+              <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>Assigned Date</th>
             </tr>
           </thead>
           <tbody>
             {kisaniDidi.assignedTasks.map((task) => (
               <tr key={task.id} className="border-b border-gray-100">
-                <td className="py-3 text-sm font-medium text-gray-900" style={{ fontFamily: 'Poppins' }}>{task.title}</td>
+                <td className="py-3 text-sm font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>{task.title}</td>
                 <td className="py-3">
                   <span className={`px-2 py-1 rounded text-xs font-medium ${
                     task.status === 'Completed' ? 'bg-green-100 text-green-800' :
@@ -161,8 +161,8 @@ const KisaniDidiProfile = () => {
                     {task.status}
                   </span>
                 </td>
-                <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>{task.dueDate}</td>
-                <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>{task.assignedDate}</td>
+                <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>{task.dueDate}</td>
+                <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>{task.assignedDate}</td>
               </tr>
             ))}
           </tbody>
@@ -173,27 +173,27 @@ const KisaniDidiProfile = () => {
 
   const renderAttendanceRecords = () => (
     <div className="bg-white rounded-lg p-6 border border-gray-200">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4" style={{ fontFamily: 'Poppins' }}>Attendance Records</h3>
+      <h3 className="text-lg font-semibold text-gray-900 mb-4" style={{ fontFamily: 'Inter' }}>Attendance Records</h3>
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-gray-200">
-              <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>Date</th>
-              <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>Location</th>
-              <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>Check In</th>
-              <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>Check Out</th>
-              <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>Work Hours</th>
-              <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>Status</th>
+              <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>Date</th>
+              <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>Location</th>
+              <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>Check In</th>
+              <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>Check Out</th>
+              <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>Work Hours</th>
+              <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>Status</th>
             </tr>
           </thead>
           <tbody>
             {kisaniDidi.attendanceRecords.map((record, index) => (
               <tr key={index} className="border-b border-gray-100">
-                <td className="py-3 text-sm text-gray-900" style={{ fontFamily: 'Poppins' }}>{record.date}</td>
-                <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>{record.location}</td>
-                <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>{record.checkIn}</td>
-                <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>{record.checkOut}</td>
-                <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>{record.workHours}</td>
+                <td className="py-3 text-sm text-gray-900" style={{ fontFamily: 'Inter' }}>{record.date}</td>
+                <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>{record.location}</td>
+                <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>{record.checkIn}</td>
+                <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>{record.checkOut}</td>
+                <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>{record.workHours}</td>
                 <td className="py-3">
                   <span className={`px-2 py-1 rounded text-xs font-medium ${
                     record.status === 'Present' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
@@ -210,7 +210,7 @@ const KisaniDidiProfile = () => {
   );
 
   return (
-    <div className="space-y-6" style={{ fontFamily: 'Poppins' }}>
+    <div className="space-y-6" style={{ fontFamily: 'Inter' }}>
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -221,13 +221,13 @@ const KisaniDidiProfile = () => {
             <ArrowLeft size={20} />
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>Kisani Didi Profile</h1>
+            <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>Kisani Didi Profile</h1>
           </div>
         </div>
         <button 
           onClick={handleEdit}
           className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2"
-          style={{ fontFamily: 'Poppins', fontSize: '13.02px', fontWeight: 600 }}
+          style={{ fontFamily: 'Inter', fontSize: '13.02px', fontWeight: 600 }}
         >
           <Edit size={18} />
           Edit Profile
@@ -243,22 +243,22 @@ const KisaniDidiProfile = () => {
             className="w-16 h-16 rounded-full object-cover"
           />
           <div className="flex-1">
-            <h2 className="text-xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>{kisaniDidi.name}</h2>
+            <h2 className="text-xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>{kisaniDidi.name}</h2>
             <div className="flex items-center gap-4 mt-2">
               <div className="flex items-center gap-1">
                 <Phone size={16} className="text-gray-400" />
-                <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>{kisaniDidi.mobile}</span>
+                <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>{kisaniDidi.mobile}</span>
               </div>
               <div className="flex items-center gap-1">
-                <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}># {kisaniDidi.registrationId}</span>
+                <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}># {kisaniDidi.registrationId}</span>
               </div>
               <div className="flex items-center gap-1">
                 <MapPin size={16} className="text-gray-400" />
-                <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>{kisaniDidi.location}</span>
+                <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>{kisaniDidi.location}</span>
               </div>
               <div className="flex items-center gap-1">
                 <Calendar size={16} className="text-gray-400" />
-                <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>Joined {kisaniDidi.joinedDate}</span>
+                <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>Joined {kisaniDidi.joinedDate}</span>
               </div>
             </div>
           </div>
@@ -278,9 +278,9 @@ const KisaniDidiProfile = () => {
               </svg>
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Poppins' }}>Total Tasks</p>
-              <p className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>{kisaniDidi.totalTasks}</p>
-              <p className="text-xs text-gray-500" style={{ fontFamily: 'Poppins' }}>{kisaniDidi.completedTasks} completed, {kisaniDidi.pendingTasks} pending</p>
+              <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Inter' }}>Total Tasks</p>
+              <p className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>{kisaniDidi.totalTasks}</p>
+              <p className="text-xs text-gray-500" style={{ fontFamily: 'Inter' }}>{kisaniDidi.completedTasks} completed, {kisaniDidi.pendingTasks} pending</p>
             </div>
           </div>
         </div>
@@ -290,9 +290,9 @@ const KisaniDidiProfile = () => {
               <CheckCircle className="w-5 h-5 text-green-600" />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Poppins' }}>Completion Rate</p>
-              <p className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>{kisaniDidi.completionRate}%</p>
-              <p className="text-xs text-gray-500" style={{ fontFamily: 'Poppins' }}>Previous tasks</p>
+              <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Inter' }}>Completion Rate</p>
+              <p className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>{kisaniDidi.completionRate}%</p>
+              <p className="text-xs text-gray-500" style={{ fontFamily: 'Inter' }}>Previous tasks</p>
             </div>
           </div>
         </div>
@@ -302,9 +302,9 @@ const KisaniDidiProfile = () => {
               <Calendar className="w-5 h-5 text-purple-600" />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Poppins' }}>Working Days</p>
-              <p className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>{kisaniDidi.workingDays}</p>
-              <p className="text-xs text-gray-500" style={{ fontFamily: 'Poppins' }}>Total days since joining</p>
+              <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Inter' }}>Working Days</p>
+              <p className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>{kisaniDidi.workingDays}</p>
+              <p className="text-xs text-gray-500" style={{ fontFamily: 'Inter' }}>Total days since joining</p>
             </div>
           </div>
         </div>
@@ -319,7 +319,7 @@ const KisaniDidiProfile = () => {
               ? 'bg-white text-gray-900 shadow-sm'
               : 'text-gray-600 hover:text-gray-900'
           }`}
-          style={{ fontFamily: 'Poppins', fontSize: '13.02px' }}
+          style={{ fontFamily: 'Inter', fontSize: '13.02px' }}
         >
           Overview
         </button>
@@ -330,7 +330,7 @@ const KisaniDidiProfile = () => {
               ? 'bg-white text-gray-900 shadow-sm'
               : 'text-gray-600 hover:text-gray-900'
           }`}
-          style={{ fontFamily: 'Poppins', fontSize: '13.02px' }}
+          style={{ fontFamily: 'Inter', fontSize: '13.02px' }}
         >
           Assigned Tasks (3)
         </button>
@@ -341,7 +341,7 @@ const KisaniDidiProfile = () => {
               ? 'bg-white text-gray-900 shadow-sm'
               : 'text-gray-600 hover:text-gray-900'
           }`}
-          style={{ fontFamily: 'Poppins', fontSize: '13.02px' }}
+          style={{ fontFamily: 'Inter', fontSize: '13.02px' }}
         >
           Attendance Records
         </button>

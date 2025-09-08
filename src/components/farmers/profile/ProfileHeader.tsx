@@ -29,7 +29,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   };
 
   return (
-    <div className="space-y-6" style={{ fontFamily: 'Inter' }}>
+    <div className="space-y-6" style={{ fontFamily: 'Poppins' }}>
       {/* Header with Back Button and Title */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -40,7 +40,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
             <ArrowLeft size={20} />
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>
+            <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>
               Farmer Profile
             </h1>
           </div>
@@ -50,7 +50,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
           <button
             onClick={handleEdit}
             className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2 transition-colors"
-            style={{ fontFamily: 'Inter', fontSize: '13.02px', fontWeight: 600 }}
+            style={{ fontFamily: 'Poppins', fontSize: '13.02px', fontWeight: 600 }}
           >
             <Edit size={18} />
             Edit Profile
@@ -85,7 +85,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
           />
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2">
-              <h2 className="text-xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>
+              <h2 className="text-xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>
                 {farmer.name}
               </h2>
               <div className="flex items-center gap-2">
@@ -114,24 +114,24 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-1">
                 <Phone size={16} className="text-gray-400" />
-                <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
+                <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>
                   {farmer.basicDetails.mobileNumber}
                 </span>
               </div>
               <div className="flex items-center gap-1">
-                <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
+                <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>
                   # {farmer.memberId}
                 </span>
               </div>
               <div className="flex items-center gap-1">
                 <MapPin size={16} className="text-gray-400" />
-                <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
+                <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>
                   {farmer.addressInfo.district}, {farmer.addressInfo.state}
                 </span>
               </div>
               <div className="flex items-center gap-1">
                 <Calendar size={16} className="text-gray-400" />
-                <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
+                <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>
                   Joined 2024-01-10
                 </span>
               </div>
@@ -139,7 +139,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
             
             {/* Assigned Kisani Didi */}
             <div className="mt-3">
-              <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
+              <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>
                 Assigned Kisani Didi
               </span>
               <div className="mt-1">

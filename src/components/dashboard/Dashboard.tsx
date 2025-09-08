@@ -68,10 +68,10 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="space-y-6" style={{ fontFamily: 'Inter' }}>
+    <div className="space-y-6" style={{ fontFamily: 'Poppins' }}>
       <div>
-        <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>Dashboard Overview</h1>
-        <p className="text-gray-600 mt-1" style={{ fontFamily: 'Inter' }}>Welcome to Gruner's Agricultural Management System</p>
+        <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>Dashboard Overview</h1>
+        <p className="text-gray-600 mt-1" style={{ fontFamily: 'Poppins' }}>Welcome to Gruner's Agricultural Management System</p>
       </div>
 
       {/* Stats Grid */}
@@ -82,15 +82,15 @@ const Dashboard = () => {
             <div key={index} className="bg-white rounded-lg p-6 border border-gray-200">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Inter' }}>{stat.title}</p>
-                  <p className="text-2xl font-bold text-gray-900 mt-2" style={{ fontFamily: 'Inter' }}>{stat.value}</p>
+                  <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Poppins' }}>{stat.title}</p>
+                  <p className="text-2xl font-bold text-gray-900 mt-2" style={{ fontFamily: 'Poppins' }}>{stat.value}</p>
                   <div className="flex items-center mt-2">
                     <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${
                       stat.changeType === 'positive' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                     }`}>
                       {stat.change}
                     </span>
-                    <span className="text-xs text-gray-500 ml-2" style={{ fontFamily: 'Inter' }}>{stat.subtitle}</span>
+                    <span className="text-xs text-gray-500 ml-2" style={{ fontFamily: 'Poppins' }}>{stat.subtitle}</span>
                   </div>
                 </div>
                 <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
@@ -106,15 +106,15 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Registrations */}
         <div className="bg-white rounded-lg p-6 border border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4" style={{ fontFamily: 'Inter' }}>Recent Registrations</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4" style={{ fontFamily: 'Poppins' }}>Recent Registrations</h3>
           <div className="space-y-4">
             {recentRegistrations.map((registration, index) => (
               <div key={index} className="flex items-center justify-between">
                 <div>
-                  <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter', fontSize: '13.02px' }}>{registration.name}</p>
-                  <p className="text-sm text-gray-600" style={{ fontFamily: 'Inter', fontSize: '12px' }}>{registration.type}</p>
+                  <p className="font-medium text-gray-900" style={{ fontFamily: 'Poppins', fontSize: '13.02px' }}>{registration.name}</p>
+                  <p className="text-sm text-gray-600" style={{ fontFamily: 'Poppins', fontSize: '12px' }}>{registration.type}</p>
                 </div>
-                <span className="text-sm text-gray-500" style={{ fontFamily: 'Inter', fontSize: '12px' }}>{registration.time}</span>
+                <span className="text-sm text-gray-500" style={{ fontFamily: 'Poppins', fontSize: '12px' }}>{registration.time}</span>
               </div>
             ))}
           </div>
@@ -122,13 +122,13 @@ const Dashboard = () => {
 
         {/* Pending Approvals */}
         <div className="bg-white rounded-lg p-6 border border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4" style={{ fontFamily: 'Inter' }}>Pending Approvals</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4" style={{ fontFamily: 'Poppins' }}>Pending Approvals</h3>
           <div className="space-y-4">
             {pendingApprovals.map((approval, index) => (
               <div key={index} className="flex items-center justify-between">
                 <div>
-                  <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter', fontSize: '13.02px' }}>{approval.name}</p>
-                  <p className="text-sm text-gray-600" style={{ fontFamily: 'Inter', fontSize: '12px' }}>{approval.type}</p>
+                  <p className="font-medium text-gray-900" style={{ fontFamily: 'Poppins', fontSize: '13.02px' }}>{approval.name}</p>
+                  <p className="text-sm text-gray-600" style={{ fontFamily: 'Poppins', fontSize: '12px' }}>{approval.type}</p>
                 </div>
                 <span className={`px-2 py-1 rounded text-xs font-medium ${
                   approval.priority === 'High' ? 'bg-red-100 text-red-800' :

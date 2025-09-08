@@ -43,10 +43,10 @@ const AttendanceSummary: React.FC<AttendanceSummaryProps> = ({
           <div key={index} className="bg-white rounded-lg border border-gray-200 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 mb-2" style={{ fontFamily: 'Inter' }}>
+                <p className="text-sm font-medium text-gray-600 mb-2" style={{ fontFamily: 'Poppins' }}>
                   {card.title}
                 </p>
-                <p className="text-3xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>
+                <p className="text-3xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>
                   {card.value}
                 </p>
               </div>

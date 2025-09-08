@@ -86,7 +86,7 @@ const ProfileOverview: React.FC<ProfileOverviewProps> = ({
 
     return (
       <div className="space-y-1">
-        <label className="text-sm font-medium text-gray-700" style={{ fontFamily: 'Inter' }}>
+        <label className="text-sm font-medium text-gray-700" style={{ fontFamily: 'Poppins' }}>
           {label}
         </label>
         {isEditMode ? (
@@ -95,10 +95,10 @@ const ProfileOverview: React.FC<ProfileOverviewProps> = ({
             value={currentValue}
             onChange={(e) => handleInputChange(field, type === 'number' ? Number(e.target.value) : e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
-            style={{ fontFamily: 'Inter' }}
+            style={{ fontFamily: 'Poppins' }}
           />
         ) : (
-          <p className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
+          <p className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>
             {value}
           </p>
         )}
@@ -107,7 +107,7 @@ const ProfileOverview: React.FC<ProfileOverviewProps> = ({
   };
 
   return (
-    <div className="space-y-6" style={{ fontFamily: 'Inter' }}>
+    <div className="space-y-6" style={{ fontFamily: 'Poppins' }}>
       {/* Two Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
@@ -115,7 +115,7 @@ const ProfileOverview: React.FC<ProfileOverviewProps> = ({
         <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
           <div className="flex items-center gap-2 mb-6">
             <Phone className="w-5 h-5 text-gray-400" />
-            <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Inter' }}>
+            <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Poppins' }}>
               Personal Information & KYC Documents
             </h3>
           </div>
@@ -137,7 +137,7 @@ const ProfileOverview: React.FC<ProfileOverviewProps> = ({
 
             {/* KYC Documents */}
             <div className="space-y-4">
-              <h4 className="text-md font-semibold text-gray-900" style={{ fontFamily: 'Inter' }}>
+              <h4 className="text-md font-semibold text-gray-900" style={{ fontFamily: 'Poppins' }}>
                 KYC Documents
               </h4>
               <div className="grid grid-cols-1 gap-4">
@@ -154,7 +154,7 @@ const ProfileOverview: React.FC<ProfileOverviewProps> = ({
           <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
             <div className="flex items-center gap-2 mb-6">
               <MapPin className="w-5 h-5 text-gray-400" />
-              <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Inter' }}>
+              <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Poppins' }}>
                 Address Information
               </h3>
             </div>
@@ -175,7 +175,7 @@ const ProfileOverview: React.FC<ProfileOverviewProps> = ({
           <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
             <div className="flex items-center gap-2 mb-6">
               <CreditCard className="w-5 h-5 text-gray-400" />
-              <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Inter' }}>
+              <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Poppins' }}>
                 Bank Details
               </h3>
             </div>

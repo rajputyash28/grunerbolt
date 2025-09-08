@@ -117,17 +117,17 @@ const KisaniDidiManagement = () => {
       );
 
   return (
-    <div className="space-y-6" style={{ fontFamily: 'Inter' }}>
+    <div className="space-y-6" style={{ fontFamily: 'Poppins' }}>
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>Kisani Didi Management</h1>
-          <p className="text-gray-600 mt-1" style={{ fontFamily: 'Inter' }}>Manage Kisani Didis, approvals, and assignments</p>
+          <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>Kisani Didi Management</h1>
+          <p className="text-gray-600 mt-1" style={{ fontFamily: 'Poppins' }}>Manage Kisani Didis, approvals, and assignments</p>
         </div>
         <button
           onClick={handleAddNew}
           className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 flex items-center gap-2 transition-colors"
-          style={{ fontFamily: 'Inter', fontSize: '13.02px', fontWeight: 600 }}
+          style={{ fontFamily: 'Poppins', fontSize: '13.02px', fontWeight: 600 }}
         >
           <Plus size={20} />
           Add New Kisani Didi
@@ -144,8 +144,8 @@ const KisaniDidiManagement = () => {
               </svg>
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Inter' }}>Total Kisani Didis</p>
-              <p className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>156</p>
+              <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Poppins' }}>Total Kisani Didis</p>
+              <p className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>156</p>
             </div>
           </div>
         </div>
@@ -157,8 +157,8 @@ const KisaniDidiManagement = () => {
               </svg>
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Inter' }}>Pending Approvals</p>
-              <p className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>8</p>
+              <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Poppins' }}>Pending Approvals</p>
+              <p className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>8</p>
             </div>
           </div>
         </div>
@@ -173,7 +173,7 @@ const KisaniDidiManagement = () => {
               ? 'bg-white text-gray-900 shadow-sm'
               : 'text-gray-600 hover:text-gray-900'
           }`}
-          style={{ fontFamily: 'Inter', fontSize: '13.02px' }}
+          style={{ fontFamily: 'Poppins', fontSize: '13.02px' }}
         >
           All KDs
         </button>
@@ -184,7 +184,7 @@ const KisaniDidiManagement = () => {
               ? 'bg-white text-gray-900 shadow-sm'
               : 'text-gray-600 hover:text-gray-900'
           }`}
-          style={{ fontFamily: 'Inter', fontSize: '13.02px' }}
+          style={{ fontFamily: 'Poppins', fontSize: '13.02px' }}
         >
           Pending Approvals (3)
         </button>
@@ -200,7 +200,7 @@ const KisaniDidiManagement = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-            style={{ fontFamily: 'Inter', fontSize: '13.02px' }}
+            style={{ fontFamily: 'Poppins', fontSize: '13.02px' }}
           />
         </div>
       </div>
@@ -211,7 +211,7 @@ const KisaniDidiManagement = () => {
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left" style={{ 
-                fontFamily: 'Inter', 
+                fontFamily: 'Poppins', 
                 fontSize: '13.56px', 
                 fontWeight: 600,
                 color: '#374151'
@@ -219,7 +219,7 @@ const KisaniDidiManagement = () => {
                 Name
               </th>
               <th className="px-6 py-3 text-left" style={{ 
-                fontFamily: 'Inter', 
+                fontFamily: 'Poppins', 
                 fontSize: '13.56px', 
                 fontWeight: 600,
                 color: '#374151'
@@ -227,7 +227,7 @@ const KisaniDidiManagement = () => {
                 Member ID
               </th>
               <th className="px-6 py-3 text-left" style={{ 
-                fontFamily: 'Inter', 
+                fontFamily: 'Poppins', 
                 fontSize: '13.56px', 
                 fontWeight: 600,
                 color: '#374151'
@@ -235,7 +235,7 @@ const KisaniDidiManagement = () => {
                 Mobile
               </th>
               <th className="px-6 py-3 text-left" style={{ 
-                fontFamily: 'Inter', 
+                fontFamily: 'Poppins', 
                 fontSize: '13.56px', 
                 fontWeight: 600,
                 color: '#374151'
@@ -244,7 +244,7 @@ const KisaniDidiManagement = () => {
               </th>
               {activeTab === 'all' && (
                 <th className="px-6 py-3 text-left" style={{ 
-                  fontFamily: 'Inter', 
+                  fontFamily: 'Poppins', 
                   fontSize: '13.56px', 
                   fontWeight: 600,
                   color: '#374151'
@@ -254,7 +254,7 @@ const KisaniDidiManagement = () => {
               )}
               {activeTab === 'pending' && (
                 <th className="px-6 py-3 text-left" style={{ 
-                  fontFamily: 'Inter', 
+                  fontFamily: 'Poppins', 
                   fontSize: '13.56px', 
                   fontWeight: 600,
                   color: '#374151'
@@ -263,7 +263,7 @@ const KisaniDidiManagement = () => {
                 </th>
               )}
               <th className="px-6 py-3 text-left" style={{ 
-                fontFamily: 'Inter', 
+                fontFamily: 'Poppins', 
                 fontSize: '13.56px', 
                 fontWeight: 600,
                 color: '#374151'
@@ -280,7 +280,7 @@ const KisaniDidiManagement = () => {
                     onClick={() => handleViewProfile(kd)}
                     className="text-sm font-semibold hover:text-blue-600 underline"
                     style={{ 
-                      fontFamily: 'Inter', 
+                      fontFamily: 'Poppins', 
                       fontSize: '13.02px', 
                       fontWeight: 600,
                       color: '#101828',
@@ -291,7 +291,7 @@ const KisaniDidiManagement = () => {
                   </button>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
-                  fontFamily: 'Inter', 
+                  fontFamily: 'Poppins', 
                   fontSize: '13.02px', 
                   fontWeight: 400,
                   color: '#4A5565'
@@ -299,7 +299,7 @@ const KisaniDidiManagement = () => {
                   {kd.memberId}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
-                  fontFamily: 'Inter', 
+                  fontFamily: 'Poppins', 
                   fontSize: '13.02px', 
                   fontWeight: 400,
                   color: '#4A5565'
@@ -307,7 +307,7 @@ const KisaniDidiManagement = () => {
                   {kd.mobile}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
-                  fontFamily: 'Inter', 
+                  fontFamily: 'Poppins', 
                   fontSize: '13.02px', 
                   fontWeight: 400,
                   color: '#4A5565'
@@ -316,7 +316,7 @@ const KisaniDidiManagement = () => {
                 </td>
                 {activeTab === 'all' && (
                   <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
-                    fontFamily: 'Inter', 
+                    fontFamily: 'Poppins', 
                     fontSize: '13.02px', 
                     fontWeight: 400,
                     color: '#4A5565'
@@ -326,7 +326,7 @@ const KisaniDidiManagement = () => {
                 )}
                 {activeTab === 'pending' && (
                   <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
-                    fontFamily: 'Inter', 
+                    fontFamily: 'Poppins', 
                     fontSize: '13.02px', 
                     fontWeight: 400,
                     color: '#4A5565'

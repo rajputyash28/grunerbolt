@@ -52,7 +52,7 @@ const TaskAssignment: React.FC<TaskAssignmentProps> = ({
   return (
     <div className="bg-white rounded-lg p-6 border border-gray-200">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Inter' }}>
+        <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Poppins' }}>
           Task Assignment History
         </h3>
         {!isPendingApproval && (
@@ -171,32 +171,32 @@ const TaskAssignment: React.FC<TaskAssignmentProps> = ({
               />
             </svg>
           </div>
-          <p className="text-gray-600" style={{ fontFamily: 'Inter' }}>
+          <p className="text-gray-600" style={{ fontFamily: 'Poppins' }}>
             Manager is not approved yet
           </p>
         </div>
       ) : (
         <>
-          <p className="text-sm text-gray-600 mb-4" style={{ fontFamily: 'Inter' }}>
+          <p className="text-sm text-gray-600 mb-4" style={{ fontFamily: 'Poppins' }}>
             Complete list of all tasks assigned to this Farm Manager
           </p>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-gray-200">
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
+                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>
                     Title
                   </th>
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
+                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>
                     Location
                   </th>
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
+                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>
                     Assigned Date
                   </th>
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
+                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>
                     Due Date
                   </th>
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
+                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>
                     Status
                   </th>
                 </tr>
@@ -206,18 +206,18 @@ const TaskAssignment: React.FC<TaskAssignmentProps> = ({
                   <tr key={task.id} className="border-b border-gray-100">
                     <td
                       className="py-3 text-sm font-medium text-blue-600 cursor-pointer hover:underline"
-                      style={{ fontFamily: 'Inter' }}
+                      style={{ fontFamily: 'Poppins' }}
                       onClick={() => openTaskModal(task)}
                     >
                       {task.title}
                     </td>
-                    <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
+                    <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>
                       {task.location}
                     </td>
-                    <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
+                    <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>
                       {task.assignedDate}
                     </td>
-                    <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
+                    <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>
                       {task.dueDate}
                     </td>
                     <td className="py-3">

@@ -23,7 +23,7 @@ const AttendanceManagement: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6" style={{ fontFamily: 'Inter' }}>
+    <div className="space-y-6" style={{ fontFamily: 'Poppins' }}>
       <AttendanceHeader />
       
       <AttendanceSummary 

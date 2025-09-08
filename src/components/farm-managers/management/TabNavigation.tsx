@@ -16,7 +16,7 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, setActiveTab, 
             ? 'bg-white text-gray-900 shadow-sm'
             : 'text-gray-600 hover:text-gray-900'
         }`}
-        style={{ fontFamily: 'Inter', fontSize: '14px', fontWeight: 500 }}
+        style={{ fontFamily: 'Poppins', fontSize: '14px', fontWeight: 500 }}
       >
         All FMs
       </button>
@@ -28,7 +28,7 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, setActiveTab, 
             ? 'bg-white text-gray-900 shadow-sm'
             : 'text-gray-600 hover:text-gray-900'
         }`}
-        style={{ fontFamily: 'Inter', fontSize: '14px', fontWeight: 500 }}
+        style={{ fontFamily: 'Poppins', fontSize: '14px', fontWeight: 500 }}
       >
         Pending Approvals ({pendingCount})
       </button>

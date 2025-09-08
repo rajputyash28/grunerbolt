@@ -39,7 +39,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ farmOperator, isPendingAp
         />
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-2">
-            <h2 className="text-xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>
+            <h2 className="text-xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>
               {farmOperator.name}
             </h2>
             {!isPendingApproval && (
@@ -73,7 +73,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ farmOperator, isPendingAp
               <button
                 onClick={onApprove}
                 className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2 transition-colors"
-                style={{ fontFamily: 'Inter', fontSize: '13.02px', fontWeight: 600 }}
+                style={{ fontFamily: 'Poppins', fontSize: '13.02px', fontWeight: 600 }}
               >
                 <CheckCircle size={18} />
                 Approve
@@ -81,7 +81,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ farmOperator, isPendingAp
               <button
                 onClick={onReject}
                 className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 flex items-center gap-2 transition-colors"
-                style={{ fontFamily: 'Inter', fontSize: '13.02px', fontWeight: 600 }}
+                style={{ fontFamily: 'Poppins', fontSize: '13.02px', fontWeight: 600 }}
               >
                 <X size={18} />
                 Reject
@@ -92,24 +92,24 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ farmOperator, isPendingAp
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1">
               <Phone size={16} className="text-gray-400" />
-              <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
+              <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>
                 {farmOperator.mobile}
               </span>
             </div>
             <div className="flex items-center gap-1">
-              <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
+              <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>
                 # {farmOperator.memberId}
               </span>
             </div>
             <div className="flex items-center gap-1">
               <MapPin size={16} className="text-gray-400" />
-              <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
+              <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>
                 {farmOperator.location}
               </span>
             </div>
             <div className="flex items-center gap-1">
               <Calendar size={16} className="text-gray-400" />
-              <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
+              <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>
                 {isPendingApproval ? 'Applied' : 'Joined'} {farmOperator.joinedDate}
               </span>
             </div>

@@ -398,16 +398,16 @@ const FarmManagerManagement = () => {
         );
 
   return (
-    <div className="space-y-6" style={{ fontFamily: 'Inter' }}>
+    <div className="space-y-6" style={{ fontFamily: 'Poppins' }}>
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>Farm Manager Management</h1>
+          <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>Farm Manager Management</h1>
         </div>
         <button
           onClick={handleAddNew}
           className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 flex items-center gap-2 transition-colors"
-          style={{ fontFamily: 'Inter', fontSize: '13.02px', fontWeight: 600 }}
+          style={{ fontFamily: 'Poppins', fontSize: '13.02px', fontWeight: 600 }}
         >
           <Plus size={20} />
           Add New Farm Manager
@@ -437,7 +437,7 @@ const FarmManagerManagement = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-[500px] pl-10 pr-4 py-2 border border-gray-300 rounded-lg"
-            style={{ fontFamily: 'Inter', fontSize: '13.02px' }}
+            style={{ fontFamily: 'Poppins', fontSize: '13.02px' }}
           />
         </div>
         

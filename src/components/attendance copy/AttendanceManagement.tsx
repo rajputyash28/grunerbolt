@@ -115,10 +115,10 @@ const AttendanceManagement: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6" style={{ fontFamily: 'Inter' }}>
+    <div className="space-y-6" style={{ fontFamily: 'Poppins' }}>
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>
+        <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>
           Attendance Management
         </h1>
       </div>
@@ -130,7 +130,7 @@ const AttendanceManagement: React.FC = () => {
           className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'all' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900'
           }`}
-          style={{ fontFamily: 'Inter', fontSize: '13.02px' }}
+          style={{ fontFamily: 'Poppins', fontSize: '13.02px' }}
         >
           All Records
         </button>
@@ -139,7 +139,7 @@ const AttendanceManagement: React.FC = () => {
           className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'present' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900'
           }`}
-          style={{ fontFamily: 'Inter', fontSize: '13.02px' }}
+          style={{ fontFamily: 'Poppins', fontSize: '13.02px' }}
         >
           Present
         </button>
@@ -148,7 +148,7 @@ const AttendanceManagement: React.FC = () => {
           className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'absent' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900'
           }`}
-          style={{ fontFamily: 'Inter', fontSize: '13.02px' }}
+          style={{ fontFamily: 'Poppins', fontSize: '13.02px' }}
         >
           Absent
         </button>
@@ -168,7 +168,7 @@ const AttendanceManagement: React.FC = () => {
               value={searchTerm}
               onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              style={{ fontFamily: 'Inter', fontSize: '14px' }}
+              style={{ fontFamily: 'Poppins', fontSize: '14px' }}
             />
           </div>
 
@@ -176,7 +176,7 @@ const AttendanceManagement: React.FC = () => {
             <button
               onClick={() => setIsRoleDropdownOpen(!isRoleDropdownOpen)}
               className="flex items-center justify-between w-full px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm"
-              style={{ fontFamily: 'Inter', fontSize: '13px' }}
+              style={{ fontFamily: 'Poppins', fontSize: '13px' }}
             >
               <span>{selectedRole}</span>
               <ChevronDown size={16} className="text-gray-400" />
@@ -191,7 +191,7 @@ const AttendanceManagement: React.FC = () => {
                       setIsRoleDropdownOpen(false);
                     }}
                     className="w-full text-left px-3 py-2 hover:bg-gray-50 text-sm first:rounded-t-lg last:rounded-b-lg"
-                    style={{ fontFamily: 'Inter', fontSize: '13px' }}
+                    style={{ fontFamily: 'Poppins', fontSize: '13px' }}
                   >
                     {role}
                   </button>
@@ -204,7 +204,7 @@ const AttendanceManagement: React.FC = () => {
             <button
               onClick={() => setIsDateDropdownOpen(!isDateDropdownOpen)}
               className="flex items-center justify-between w-full px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm"
-              style={{ fontFamily: 'Inter', fontSize: '13px' }}
+              style={{ fontFamily: 'Poppins', fontSize: '13px' }}
             >
               <span>{selectedDate || 'Filter By Dates'}</span>
               <ChevronDown size={16} className="text-gray-400" />
@@ -219,7 +219,7 @@ const AttendanceManagement: React.FC = () => {
                     setIsDateDropdownOpen(false);
                   }}
                   className="w-full px-3 py-2 text-sm border-none rounded-lg focus:outline-none"
-                  style={{ fontFamily: 'Inter', fontSize: '13px' }}
+                  style={{ fontFamily: 'Poppins', fontSize: '13px' }}
                 />
               </div>
             )}
@@ -234,19 +234,19 @@ const AttendanceManagement: React.FC = () => {
             <tr>
               <th
                 className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                style={{ fontFamily: 'Inter', fontSize: '12px', fontWeight: 500 }}
+                style={{ fontFamily: 'Poppins', fontSize: '12px', fontWeight: 500 }}
               >
                 Member ID
               </th>
               <th
                 className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                style={{ fontFamily: 'Inter', fontSize: '12px', fontWeight: 500 }}
+                style={{ fontFamily: 'Poppins', fontSize: '12px', fontWeight: 500 }}
               >
                 Name
               </th>
               <th
                 className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                style={{ fontFamily: 'Inter', fontSize: '12px', fontWeight: 500 }}
+                style={{ fontFamily: 'Poppins', fontSize: '12px', fontWeight: 500 }}
               >
                 Role
               </th>
@@ -254,13 +254,13 @@ const AttendanceManagement: React.FC = () => {
                 <>
                   <th
                     className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    style={{ fontFamily: 'Inter', fontSize: '12px', fontWeight: 500 }}
+                    style={{ fontFamily: 'Poppins', fontSize: '12px', fontWeight: 500 }}
                   >
                     Location
                   </th>
                   <th
                     className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    style={{ fontFamily: 'Inter', fontSize: '12px', fontWeight: 500 }}
+                    style={{ fontFamily: 'Poppins', fontSize: '12px', fontWeight: 500 }}
                   >
                     Date
                   </th>
@@ -268,25 +268,25 @@ const AttendanceManagement: React.FC = () => {
               )}
               <th
                 className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                style={{ fontFamily: 'Inter', fontSize: '12px', fontWeight: 500 }}
+                style={{ fontFamily: 'Poppins', fontSize: '12px', fontWeight: 500 }}
               >
                 Check In
               </th>
               <th
                 className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                style={{ fontFamily: 'Inter', fontSize: '12px', fontWeight: 500 }}
+                style={{ fontFamily: 'Poppins', fontSize: '12px', fontWeight: 500 }}
               >
                 Check Out
               </th>
               <th
                 className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                style={{ fontFamily: 'Inter', fontSize: '12px', fontWeight: 500 }}
+                style={{ fontFamily: 'Poppins', fontSize: '12px', fontWeight: 500 }}
               >
                 Work Hours
               </th>
               <th
                 className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                style={{ fontFamily: 'Inter', fontSize: '12px', fontWeight: 500 }}
+                style={{ fontFamily: 'Poppins', fontSize: '12px', fontWeight: 500 }}
               >
                 Status
               </th>
@@ -297,19 +297,19 @@ const AttendanceManagement: React.FC = () => {
               <tr key={record.id} className="hover:bg-gray-50">
                 <td
                   className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900"
-                  style={{ fontFamily: 'Inter', fontSize: '14px', fontWeight: 500 }}
+                  style={{ fontFamily: 'Poppins', fontSize: '14px', fontWeight: 500 }}
                 >
                   {record.id}
                 </td>
                 <td
                   className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 underline hover:text-blue-800 cursor-pointer"
-                  style={{ fontFamily: 'Inter', fontSize: '14px', fontWeight: 500 }}
+                  style={{ fontFamily: 'Poppins', fontSize: '14px', fontWeight: 500 }}
                 >
                   {record.name}
                 </td>
                 <td
                   className="px-4 py-3 whitespace-nowrap text-sm text-gray-700"
-                  style={{ fontFamily: 'Inter', fontSize: '14px', fontWeight: 400 }}
+                  style={{ fontFamily: 'Poppins', fontSize: '14px', fontWeight: 400 }}
                 >
                   {record.role}
                 </td>
@@ -317,13 +317,13 @@ const AttendanceManagement: React.FC = () => {
                   <>
                     <td
                       className="px-4 py-3 whitespace-nowrap text-sm text-gray-700"
-                      style={{ fontFamily: 'Inter', fontSize: '14px', fontWeight: 400 }}
+                      style={{ fontFamily: 'Poppins', fontSize: '14px', fontWeight: 400 }}
                     >
                       {record.location}
                     </td>
                     <td
                       className="px-4 py-3 whitespace-nowrap text-sm text-gray-700"
-                      style={{ fontFamily: 'Inter', fontSize: '14px', fontWeight: 400 }}
+                      style={{ fontFamily: 'Poppins', fontSize: '14px', fontWeight: 400 }}
                     >
                       {record.date}
                     </td>
@@ -331,19 +331,19 @@ const AttendanceManagement: React.FC = () => {
                 )}
                 <td
                   className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 text-center"
-                  style={{ fontFamily: 'Inter', fontSize: '14px', fontWeight: 400 }}
+                  style={{ fontFamily: 'Poppins', fontSize: '14px', fontWeight: 400 }}
                 >
                   {record.checkIn}
                 </td>
                 <td
                   className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 text-center"
-                  style={{ fontFamily: 'Inter', fontSize: '14px', fontWeight: 400 }}
+                  style={{ fontFamily: 'Poppins', fontSize: '14px', fontWeight: 400 }}
                 >
                   {record.checkOut}
                 </td>
                 <td
                   className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 text-center"
-                  style={{ fontFamily: 'Inter', fontSize: '14px', fontWeight: 400 }}
+                  style={{ fontFamily: 'Poppins', fontSize: '14px', fontWeight: 400 }}
                 >
                   {record.workHours}
                 </td>
@@ -352,7 +352,7 @@ const AttendanceManagement: React.FC = () => {
                     className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
                       record.status === 'Present' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'
                     }`}
-                    style={{ fontFamily: 'Inter' }}
+                    style={{ fontFamily: 'Poppins' }}
                   >
                     {record.status}
                   </span>
@@ -363,7 +363,7 @@ const AttendanceManagement: React.FC = () => {
         </table>
         {getFilteredRecords.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-gray-500" style={{ fontFamily: 'Inter' }}>
+            <p className="text-gray-500" style={{ fontFamily: 'Poppins' }}>
               No {activeTab === 'all' ? 'attendance' : activeTab} records found
             </p>
           </div>

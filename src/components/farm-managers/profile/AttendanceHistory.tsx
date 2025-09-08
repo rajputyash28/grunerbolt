@@ -56,7 +56,7 @@ const AttendanceHistory: React.FC<AttendanceHistoryProps> = ({
   return (
     <div className="bg-white rounded-lg p-6 border border-gray-200">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Inter' }}>
+        <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Poppins' }}>
           Attendance History
         </h3>
         {!isPendingApproval && (
@@ -229,29 +229,29 @@ const AttendanceHistory: React.FC<AttendanceHistoryProps> = ({
               />
             </svg>
           </div>
-          <p className="text-gray-600" style={{ fontFamily: 'Inter' }}>
+          <p className="text-gray-600" style={{ fontFamily: 'Poppins' }}>
             Manager is not approved yet
           </p>
         </div>
       ) : (
         <>
-          <p className="text-sm text-gray-600 mb-4" style={{ fontFamily: 'Inter' }}>
+          <p className="text-sm text-gray-600 mb-4" style={{ fontFamily: 'Poppins' }}>
             Daily attendance records with location and task details
           </p>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-gray-200">
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
+                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>
                     Date
                   </th>
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
+                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>
                     Check In
                   </th>
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
+                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>
                     Check Out
                   </th>
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
+                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>
                     Status
                   </th>
                 </tr>
@@ -261,15 +261,15 @@ const AttendanceHistory: React.FC<AttendanceHistoryProps> = ({
                   <tr key={index} className="border-b border-gray-100">
                     <td
                       className="py-3 text-sm text-blue-600 cursor-pointer underline"
-                      style={{ fontFamily: 'Inter' }}
+                      style={{ fontFamily: 'Poppins' }}
                       onClick={() => openModal(record)}
                     >
                       {record.date}
                     </td>
-                    <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
+                    <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>
                       {record.checkIn}
                     </td>
-                    <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
+                    <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>
                       {record.checkOut}
                     </td>
                     <td className="py-3">

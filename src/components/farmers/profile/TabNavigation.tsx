@@ -9,7 +9,7 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, setActiveTab }
   const tabs = ['Overview', 'Machinery & Livestock', 'Land & Crop'];
 
   return (
-    <div className="bg-green-50 rounded-lg p-1 mb-6 flex">
+    <div className="bg-green-50 rounded-lg p-1 mt-5 mb-6 flex">
       {tabs.map((tab) => (
         <button
           key={tab}

@@ -24,7 +24,7 @@ const AttendanceTabs: React.FC<AttendanceTabsProps> = ({ activeTab, onTabChange 
               ? 'bg-white text-gray-900 shadow-sm' 
               : 'text-gray-600 hover:text-gray-900'
           }`}
-          style={{ fontFamily: 'Inter', fontSize: '13.02px' }}
+          style={{ fontFamily: 'Poppins', fontSize: '13.02px' }}
         >
           {tab.label}
         </button>

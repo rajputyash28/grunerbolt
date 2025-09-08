@@ -41,7 +41,7 @@ const AttendanceFilters: React.FC<AttendanceFiltersProps> = ({
             onFiltersChange({ searchTerm: e.target.value })
           }
           className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          style={{ fontFamily: 'Inter', fontSize: '14px' }}
+          style={{ fontFamily: 'Poppins', fontSize: '14px' }}
         />
       </div>
 
@@ -50,7 +50,7 @@ const AttendanceFilters: React.FC<AttendanceFiltersProps> = ({
         <button
           onClick={onRoleDropdownToggle}
           className="flex items-center justify-between w-full px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm"
-          style={{ fontFamily: 'Inter', fontSize: '13px' }}
+          style={{ fontFamily: 'Poppins', fontSize: '13px' }}
         >
           <span>{filters.selectedRole}</span>
           <ChevronDown size={16} className="text-gray-400" />
@@ -65,7 +65,7 @@ const AttendanceFilters: React.FC<AttendanceFiltersProps> = ({
                   onRoleDropdownToggle();
                 }}
                 className="w-full text-left px-3 py-2 hover:bg-gray-50 text-sm first:rounded-t-lg last:rounded-b-lg"
-                style={{ fontFamily: 'Inter', fontSize: '13px' }}
+                style={{ fontFamily: 'Poppins', fontSize: '13px' }}
               >
                 {role}
               </button>
@@ -79,7 +79,7 @@ const AttendanceFilters: React.FC<AttendanceFiltersProps> = ({
         <button
           onClick={onDateDropdownToggle}
           className="flex items-center justify-between w-full px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm"
-          style={{ fontFamily: 'Inter', fontSize: '13px' }}
+          style={{ fontFamily: 'Poppins', fontSize: '13px' }}
         >
           <span>{filters.selectedDate || 'Filter by Date'}</span>
           <ChevronDown size={16} className="text-gray-400" />
@@ -94,7 +94,7 @@ const AttendanceFilters: React.FC<AttendanceFiltersProps> = ({
                 onDateDropdownToggle();
               }}
               className="w-full px-3 py-2 text-sm border-none rounded-lg focus:outline-none"
-              style={{ fontFamily: 'Inter', fontSize: '13px' }}
+              style={{ fontFamily: 'Poppins', fontSize: '13px' }}
             />
           </div>
         )}

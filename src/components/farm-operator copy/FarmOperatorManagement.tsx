@@ -247,16 +247,16 @@ const FarmOperatorManagement = () => {
       );
 
   return (
-    <div className="space-y-6" style={{ fontFamily: 'Inter' }}>
+    <div className="space-y-6" style={{ fontFamily: 'Poppins' }}>
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>Farm Operator Management</h1>
+          <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>Farm Operator Management</h1>
         </div>
         <button
           onClick={handleAddNew}
           className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 flex items-center gap-2 transition-colors"
-          style={{ fontFamily: 'Inter', fontSize: '13.02px', fontWeight: 600 }}
+          style={{ fontFamily: 'Poppins', fontSize: '13.02px', fontWeight: 600 }}
         >
           <Plus size={20} />
           Add New Farm Operator
@@ -277,8 +277,8 @@ const FarmOperatorManagement = () => {
               <Users className="w-6 h-6 text-gray-600" />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Inter' }}>Total Farm Operator</p>
-              <p className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>156</p>
+              <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Poppins' }}>Total Farm Operator</p>
+              <p className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>156</p>
             </div>
           </div>
         </div>
@@ -294,8 +294,8 @@ const FarmOperatorManagement = () => {
               <Clock className="w-6 h-6 text-gray-600" />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Inter' }}>Pending Approvals</p>
-              <p className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>8</p>
+              <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Poppins' }}>Pending Approvals</p>
+              <p className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>8</p>
             </div>
           </div>
         </div>
@@ -310,7 +310,7 @@ const FarmOperatorManagement = () => {
               ? 'bg-white text-gray-900 shadow-sm'
               : 'text-gray-600 hover:text-gray-900'
           }`}
-          style={{ fontFamily: 'Inter', fontSize: '14px', fontWeight: 500 }}
+          style={{ fontFamily: 'Poppins', fontSize: '14px', fontWeight: 500 }}
         >
           All FMs
         </button>
@@ -322,7 +322,7 @@ const FarmOperatorManagement = () => {
               ? 'bg-white text-gray-900 shadow-sm'
               : 'text-gray-600 hover:text-gray-900'
           }`}
-          style={{ fontFamily: 'Inter', fontSize: '14px', fontWeight: 500 }}
+          style={{ fontFamily: 'Poppins', fontSize: '14px', fontWeight: 500 }}
         >
           Pending Approvals (3)
         </button>
@@ -338,7 +338,7 @@ const FarmOperatorManagement = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-[500px] pl-10 pr-4 py-2 border border-gray-300 rounded-lg"
-            style={{ fontFamily: 'Inter', fontSize: '13.02px' }}
+            style={{ fontFamily: 'Poppins', fontSize: '13.02px' }}
           />
         </div>
         
@@ -544,7 +544,7 @@ const FarmOperatorManagement = () => {
           <thead className="border-b">
             <tr>
               <th className="px-6 py-3 text-left" style={{ 
-                fontFamily: 'Inter', 
+                fontFamily: 'Poppins', 
                 fontSize: '13.56px', 
                 fontWeight: 600,
                 color: '#374151'
@@ -552,7 +552,7 @@ const FarmOperatorManagement = () => {
                 Name
               </th>
               <th className="px-6 py-3 text-left" style={{ 
-                fontFamily: 'Inter', 
+                fontFamily: 'Poppins', 
                 fontSize: '13.56px', 
                 fontWeight: 600,
                 color: '#374151'
@@ -560,7 +560,7 @@ const FarmOperatorManagement = () => {
                 Member ID
               </th>
               <th className="px-6 py-3 text-left" style={{ 
-                fontFamily: 'Inter', 
+                fontFamily: 'Poppins', 
                 fontSize: '13.56px', 
                 fontWeight: 600,
                 color: '#374151'
@@ -568,7 +568,7 @@ const FarmOperatorManagement = () => {
                 Mobile
               </th>
               <th className="px-6 py-3 text-left" style={{ 
-                fontFamily: 'Inter', 
+                fontFamily: 'Poppins', 
                 fontSize: '13.56px', 
                 fontWeight: 600,
                 color: '#374151'
@@ -578,7 +578,7 @@ const FarmOperatorManagement = () => {
               {activeTab === 'all' && (
                 <>
                   <th className="px-6 py-3 text-left" style={{ 
-                    fontFamily: 'Inter', 
+                    fontFamily: 'Poppins', 
                     fontSize: '13.56px', 
                     fontWeight: 600,
                     color: '#374151'
@@ -586,7 +586,7 @@ const FarmOperatorManagement = () => {
                     Status
                   </th>
                   <th className="px-6 py-3 text-left" style={{ 
-                    fontFamily: 'Inter', 
+                    fontFamily: 'Poppins', 
                     fontSize: '13.56px', 
                     fontWeight: 600,
                     color: '#374151'
@@ -597,7 +597,7 @@ const FarmOperatorManagement = () => {
               )}
               {activeTab === 'pending' && (
                 <th className="px-6 py-3 text-left" style={{ 
-                  fontFamily: 'Inter', 
+                  fontFamily: 'Poppins', 
                   fontSize: '13.56px', 
                   fontWeight: 600,
                   color: '#374151'
@@ -606,7 +606,7 @@ const FarmOperatorManagement = () => {
                 </th>
               )}
               <th className="px-6 py-3 text-left w-24" style={{ 
-                fontFamily: 'Inter', 
+                fontFamily: 'Poppins', 
                 fontSize: '13.56px', 
                 fontWeight: 600,
                 color: '#374151'
@@ -624,7 +624,7 @@ const FarmOperatorManagement = () => {
                       onClick={() => handleViewProfile(operator)}
                       className="text-sm font-semibold hover:text-blue-600 underline"
                       style={{ 
-                        fontFamily: 'Inter', 
+                        fontFamily: 'Poppins', 
                         fontSize: '13.02px', 
                         fontWeight: 600,
                         color: '#101828',
@@ -635,7 +635,7 @@ const FarmOperatorManagement = () => {
                     </button>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
-                    fontFamily: 'Inter', 
+                    fontFamily: 'Poppins', 
                     fontSize: '13.02px', 
                     fontWeight: 400,
                     color: '#4A5565'
@@ -643,7 +643,7 @@ const FarmOperatorManagement = () => {
                     {operator.memberId}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
-                    fontFamily: 'Inter', 
+                    fontFamily: 'Poppins', 
                     fontSize: '13.02px', 
                     fontWeight: 400,
                     color: '#4A5565'
@@ -651,7 +651,7 @@ const FarmOperatorManagement = () => {
                     {operator.mobile}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
-                    fontFamily: 'Inter', 
+                    fontFamily: 'Poppins', 
                     fontSize: '13.02px', 
                     fontWeight: 400,
                     color: '#4A5565'
@@ -666,7 +666,7 @@ const FarmOperatorManagement = () => {
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
-                    fontFamily: 'Inter', 
+                    fontFamily: 'Poppins', 
                     fontSize: '13.02px', 
                     fontWeight: 400,
                     color: '#4A5565'
@@ -729,7 +729,7 @@ const FarmOperatorManagement = () => {
                       onClick={() => handleViewPendingProfile(approval)}
                       className="text-sm font-semibold hover:text-blue-600 underline"
                       style={{ 
-                        fontFamily: 'Inter', 
+                        fontFamily: 'Poppins', 
                         fontSize: '13.02px', 
                         fontWeight: 600,
                         color: '#101828',
@@ -740,7 +740,7 @@ const FarmOperatorManagement = () => {
                     </button>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
-                    fontFamily: 'Inter', 
+                    fontFamily: 'Poppins', 
                     fontSize: '13.02px', 
                     fontWeight: 400,
                     color: '#4A5565'
@@ -748,7 +748,7 @@ const FarmOperatorManagement = () => {
                     {approval.memberId}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
-                    fontFamily: 'Inter', 
+                    fontFamily: 'Poppins', 
                     fontSize: '13.02px', 
                     fontWeight: 400,
                     color: '#4A5565'
@@ -756,7 +756,7 @@ const FarmOperatorManagement = () => {
                     {approval.mobile}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
-                    fontFamily: 'Inter', 
+                    fontFamily: 'Poppins', 
                     fontSize: '13.02px', 
                     fontWeight: 400,
                     color: '#4A5565'
@@ -764,7 +764,7 @@ const FarmOperatorManagement = () => {
                     {approval.location}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
-                    fontFamily: 'Inter', 
+                    fontFamily: 'Poppins', 
                     fontSize: '13.02px', 
                     fontWeight: 400,
                     color: '#4A5565'

@@ -21,8 +21,8 @@ const StatsCards: React.FC<StatsCardsProps> = ({ totalFarmManagers, pendingAppro
             <Users className="w-6 h-6 text-gray-600" />
           </div>
           <div>
-            <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Inter' }}>Total Farm Manager</p>
-            <p className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>{totalFarmManagers}</p>
+            <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Poppins' }}>Total Farm Manager</p>
+            <p className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>{totalFarmManagers}</p>
           </div>
         </div>
       </div>
@@ -38,8 +38,8 @@ const StatsCards: React.FC<StatsCardsProps> = ({ totalFarmManagers, pendingAppro
             <Clock className="w-6 h-6 text-gray-600" />
           </div>
           <div>
-            <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Inter' }}>Pending Approvals</p>
-            <p className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>{pendingApprovals}</p>
+            <p className="text-sm font-medium text-gray-600" style={{ fontFamily: 'Poppins' }}>Pending Approvals</p>
+            <p className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>{pendingApprovals}</p>
           </div>
         </div>
       </div>

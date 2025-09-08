@@ -60,7 +60,7 @@ const FarmOperatorTable: React.FC<FarmOperatorTableProps> = ({
         <thead className="border-b">
           <tr>
             <th className="px-6 py-3 text-left" style={{ 
-              fontFamily: 'Inter', 
+              fontFamily: 'Poppins', 
               fontSize: '13.56px', 
               fontWeight: 600,
               color: '#374151'
@@ -68,7 +68,7 @@ const FarmOperatorTable: React.FC<FarmOperatorTableProps> = ({
               Name
             </th>
             <th className="px-6 py-3 text-left" style={{ 
-              fontFamily: 'Inter', 
+              fontFamily: 'Poppins', 
               fontSize: '13.56px', 
               fontWeight: 600,
               color: '#374151'
@@ -76,7 +76,7 @@ const FarmOperatorTable: React.FC<FarmOperatorTableProps> = ({
               Member ID
             </th>
             <th className="px-6 py-3 text-left" style={{ 
-              fontFamily: 'Inter', 
+              fontFamily: 'Poppins', 
               fontSize: '13.56px', 
               fontWeight: 600,
               color: '#374151'
@@ -84,7 +84,7 @@ const FarmOperatorTable: React.FC<FarmOperatorTableProps> = ({
               Mobile
             </th>
             <th className="px-6 py-3 text-left" style={{ 
-              fontFamily: 'Inter', 
+              fontFamily: 'Poppins', 
               fontSize: '13.56px', 
               fontWeight: 600,
               color: '#374151'
@@ -94,7 +94,7 @@ const FarmOperatorTable: React.FC<FarmOperatorTableProps> = ({
             {activeTab === 'all' && (
               <>
                 <th className="px-6 py-3 text-left" style={{ 
-                  fontFamily: 'Inter', 
+                  fontFamily: 'Poppins', 
                   fontSize: '13.56px', 
                   fontWeight: 600,
                   color: '#374151'
@@ -102,7 +102,7 @@ const FarmOperatorTable: React.FC<FarmOperatorTableProps> = ({
                   Status
                 </th>
                 <th className="px-6 py-3 text-left" style={{ 
-                  fontFamily: 'Inter', 
+                  fontFamily: 'Poppins', 
                   fontSize: '13.56px', 
                   fontWeight: 600,
                   color: '#374151'
@@ -113,7 +113,7 @@ const FarmOperatorTable: React.FC<FarmOperatorTableProps> = ({
             )}
             {activeTab === 'pending' && (
               <th className="px-6 py-3 text-left" style={{ 
-                fontFamily: 'Inter', 
+                fontFamily: 'Poppins', 
                 fontSize: '13.56px', 
                 fontWeight: 600,
                 color: '#374151'
@@ -122,7 +122,7 @@ const FarmOperatorTable: React.FC<FarmOperatorTableProps> = ({
               </th>
             )}
             <th className="px-6 py-3 text-left w-24" style={{ 
-              fontFamily: 'Inter', 
+              fontFamily: 'Poppins', 
               fontSize: '13.56px', 
               fontWeight: 600,
               color: '#374151'
@@ -140,7 +140,7 @@ const FarmOperatorTable: React.FC<FarmOperatorTableProps> = ({
                     onClick={() => handleViewProfile(operator)}
                     className="text-sm font-semibold hover:text-blue-600 underline"
                     style={{ 
-                      fontFamily: 'Inter', 
+                      fontFamily: 'Poppins', 
                       fontSize: '13.02px', 
                       fontWeight: 600,
                       color: '#101828',
@@ -151,7 +151,7 @@ const FarmOperatorTable: React.FC<FarmOperatorTableProps> = ({
                   </button>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
-                  fontFamily: 'Inter', 
+                  fontFamily: 'Poppins', 
                   fontSize: '13.02px', 
                   fontWeight: 400,
                   color: '#4A5565'
@@ -159,7 +159,7 @@ const FarmOperatorTable: React.FC<FarmOperatorTableProps> = ({
                   {operator.memberId}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
-                  fontFamily: 'Inter', 
+                  fontFamily: 'Poppins', 
                   fontSize: '13.02px', 
                   fontWeight: 400,
                   color: '#4A5565'
@@ -167,7 +167,7 @@ const FarmOperatorTable: React.FC<FarmOperatorTableProps> = ({
                   {operator.mobile}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
-                  fontFamily: 'Inter', 
+                  fontFamily: 'Poppins', 
                   fontSize: '13.02px', 
                   fontWeight: 400,
                   color: '#4A5565'
@@ -182,7 +182,7 @@ const FarmOperatorTable: React.FC<FarmOperatorTableProps> = ({
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
-                  fontFamily: 'Inter', 
+                  fontFamily: 'Poppins', 
                   fontSize: '13.02px', 
                   fontWeight: 400,
                   color: '#4A5565'
@@ -252,7 +252,7 @@ const FarmOperatorTable: React.FC<FarmOperatorTableProps> = ({
                     onClick={() => handleViewPendingProfile(approval)}
                     className="text-sm font-semibold hover:text-blue-600 underline"
                     style={{ 
-                      fontFamily: 'Inter', 
+                      fontFamily: 'Poppins', 
                       fontSize: '13.02px', 
                       fontWeight: 600,
                       color: '#101828',
@@ -263,7 +263,7 @@ const FarmOperatorTable: React.FC<FarmOperatorTableProps> = ({
                   </button>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
-                  fontFamily: 'Inter', 
+                  fontFamily: 'Poppins', 
                   fontSize: '13.02px', 
                   fontWeight: 400,
                   color: '#4A5565'
@@ -271,7 +271,7 @@ const FarmOperatorTable: React.FC<FarmOperatorTableProps> = ({
                   {approval.memberId}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
-                  fontFamily: 'Inter', 
+                  fontFamily: 'Poppins', 
                   fontSize: '13.02px', 
                   fontWeight: 400,
                   color: '#4A5565'
@@ -279,7 +279,7 @@ const FarmOperatorTable: React.FC<FarmOperatorTableProps> = ({
                   {approval.mobile}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
-                  fontFamily: 'Inter', 
+                  fontFamily: 'Poppins', 
                   fontSize: '13.02px', 
                   fontWeight: 400,
                   color: '#4A5565'
@@ -287,7 +287,7 @@ const FarmOperatorTable: React.FC<FarmOperatorTableProps> = ({
                   {approval.location}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ 
-                  fontFamily: 'Inter', 
+                  fontFamily: 'Poppins', 
                   fontSize: '13.02px', 
                   fontWeight: 400,
                   color: '#4A5565'

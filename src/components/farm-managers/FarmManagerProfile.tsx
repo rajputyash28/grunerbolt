@@ -405,7 +405,7 @@ const FarmManagerProfile: React.FC = () => {
 
 
   return (
-    <div className="" style={{ fontFamily: 'Inter' }}>
+    <div className="" style={{ fontFamily: 'Poppins' }}>
       <div className="max-w-full mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -417,7 +417,7 @@ const FarmManagerProfile: React.FC = () => {
               <ArrowLeft size={20} />
             </button>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>
+              <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>
                 {isPendingApproval ? 'Pending Farm Manager Profile' : 'Farm Manager Profile'}
               </h1>
             </div>
@@ -660,7 +660,7 @@ const FarmManagerProfile: React.FC = () => {
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="bg-white rounded-lg shadow-lg w-[800px] p-6">
               <div className="flex justify-center items-center mb-6 relative">
-                <h2 className="text-xl font-semibold" style={{ fontFamily: 'Inter' }}>
+                <h2 className="text-xl font-semibold" style={{ fontFamily: 'Poppins' }}>
                   Attendance History ({selectedRecord.date})
                 </h2>
                 <button onClick={closeModal} className="absolute right-0 text-gray-500 hover:text-gray-700 text-2xl">
@@ -672,7 +672,7 @@ const FarmManagerProfile: React.FC = () => {
                 {/* Left Column */}
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Poppins' }}>
                       Date
                     </label>
                     <input
@@ -680,12 +680,12 @@ const FarmManagerProfile: React.FC = () => {
                       value={selectedRecord.date}
                       readOnly
                       className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
-                      style={{ fontFamily: 'Inter' }}
+                      style={{ fontFamily: 'Poppins' }}
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Poppins' }}>
                       Task Title
                     </label>
                     <input
@@ -693,12 +693,12 @@ const FarmManagerProfile: React.FC = () => {
                       value={selectedRecord.taskTitle}
                       readOnly
                       className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
-                      style={{ fontFamily: 'Inter' }}
+                      style={{ fontFamily: 'Poppins' }}
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Poppins' }}>
                       Check-In Time
                     </label>
                     <input
@@ -706,12 +706,12 @@ const FarmManagerProfile: React.FC = () => {
                       value={selectedRecord.checkIn}
                       readOnly
                       className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
-                      style={{ fontFamily: 'Inter' }}
+                      style={{ fontFamily: 'Poppins' }}
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Poppins' }}>
                       Check-In Location
                     </label>
                     <input
@@ -719,12 +719,12 @@ const FarmManagerProfile: React.FC = () => {
                       value={selectedRecord.checkInLocation}
                       readOnly
                       className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
-                      style={{ fontFamily: 'Inter' }}
+                      style={{ fontFamily: 'Poppins' }}
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Poppins' }}>
                       Notes
                     </label>
                     <input
@@ -732,7 +732,7 @@ const FarmManagerProfile: React.FC = () => {
                       value={selectedRecord.notes}
                       readOnly
                       className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
-                      style={{ fontFamily: 'Inter' }}
+                      style={{ fontFamily: 'Poppins' }}
                     />
                   </div>
                 </div>
@@ -740,7 +740,7 @@ const FarmManagerProfile: React.FC = () => {
                 {/* Right Column */}
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Poppins' }}>
                       Task Description
                     </label>
                     <input
@@ -748,12 +748,12 @@ const FarmManagerProfile: React.FC = () => {
                       value={selectedRecord.taskDescription}
                       readOnly
                       className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
-                      style={{ fontFamily: 'Inter' }}
+                      style={{ fontFamily: 'Poppins' }}
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Poppins' }}>
                       Check-Out Time
                     </label>
                     <input
@@ -761,12 +761,12 @@ const FarmManagerProfile: React.FC = () => {
                       value={selectedRecord.checkOut}
                       readOnly
                       className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
-                      style={{ fontFamily: 'Inter' }}
+                      style={{ fontFamily: 'Poppins' }}
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Poppins' }}>
                       Check-Out Location
                     </label>
                     <input
@@ -774,12 +774,12 @@ const FarmManagerProfile: React.FC = () => {
                       value={selectedRecord.checkOutLocation}
                       readOnly
                       className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
-                      style={{ fontFamily: 'Inter' }}
+                      style={{ fontFamily: 'Poppins' }}
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Inter' }}>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" style={{ fontFamily: 'Poppins' }}>
                       Working Hours
                     </label>
                     <input
@@ -787,7 +787,7 @@ const FarmManagerProfile: React.FC = () => {
                       value={selectedRecord.workingHours}
                       readOnly
                       className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-600 bg-white"
-                      style={{ fontFamily: 'Inter' }}
+                      style={{ fontFamily: 'Poppins' }}
                     />
                   </div>
                 </div>
@@ -796,7 +796,7 @@ const FarmManagerProfile: React.FC = () => {
               {/* Image Placeholders - Left Side */}
               <div className="flex gap-6 mb-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2" style={{ fontFamily: 'Inter' }}>
+                  <label className="block text-sm font-medium text-gray-700 mb-2" style={{ fontFamily: 'Poppins' }}>
                     Check-In Image
                   </label>
                   <div className="w-32 h-32 border border-gray-300 rounded-lg flex items-center justify-center bg-gray-50">
@@ -807,13 +807,13 @@ const FarmManagerProfile: React.FC = () => {
                         className="w-full h-full object-cover rounded-lg"
                       />
                     ) : (
-                      <span className="text-gray-400 text-sm" style={{ fontFamily: 'Inter' }}>No Image</span>
+                      <span className="text-gray-400 text-sm" style={{ fontFamily: 'Poppins' }}>No Image</span>
                     )}
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2" style={{ fontFamily: 'Inter' }}>
+                  <label className="block text-sm font-medium text-gray-700 mb-2" style={{ fontFamily: 'Poppins' }}>
                     Check-Out Image
                   </label>
                   <div className="w-32 h-32 border border-gray-300 rounded-lg flex items-center justify-center bg-gray-50">
@@ -824,7 +824,7 @@ const FarmManagerProfile: React.FC = () => {
                         className="w-full h-full object-cover rounded-lg"
                       />
                     ) : (
-                      <span className="text-gray-400 text-sm" style={{ fontFamily: 'Inter' }}>No Image</span>
+                      <span className="text-gray-400 text-sm" style={{ fontFamily: 'Poppins' }}>No Image</span>
                     )}
                   </div>
                 </div>
@@ -838,7 +838,7 @@ const FarmManagerProfile: React.FC = () => {
                     closeModal();
                   }}
                   className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-                  style={{ fontFamily: 'Inter', fontSize: '13.02px', fontWeight: 600 }}
+                  style={{ fontFamily: 'Poppins', fontSize: '13.02px', fontWeight: 600 }}
                 >
                   Absent
                 </button>
@@ -848,7 +848,7 @@ const FarmManagerProfile: React.FC = () => {
                     closeModal();
                   }}
                   className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-                  style={{ fontFamily: 'Inter', fontSize: '13.02px', fontWeight: 600 }}
+                  style={{ fontFamily: 'Poppins', fontSize: '13.02px', fontWeight: 600 }}
                 >
                   Present
                 </button>

@@ -307,7 +307,7 @@ const FarmOperatorProfile: React.FC = () => {
 
     return (
       <div>
-        <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
+        <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>
           {label}
         </span>
         {isEditMode ? (
@@ -316,10 +316,10 @@ const FarmOperatorProfile: React.FC = () => {
             value={currentValue}
             onChange={(e) => handleInputChange(field, type === 'number' ? Number(e.target.value) : e.target.value)}
             className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
-            style={{ fontFamily: 'Inter' }}
+            style={{ fontFamily: 'Poppins' }}
           />
         ) : (
-          <p className="font-medium text-gray-900" style={{ fontFamily: 'Inter' }}>
+          <p className="font-medium text-gray-900" style={{ fontFamily: 'Poppins' }}>
             {value}
           </p>
         )}
@@ -331,7 +331,7 @@ const FarmOperatorProfile: React.FC = () => {
     <div className="bg-white rounded-lg p-6 border border-gray-200">
       <div className="flex items-center gap-2 mb-4">
         <Phone className="w-5 h-5 text-gray-400" />
-        <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Inter' }}>
+        <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Poppins' }}>
           Profile Information
         </h3>
       </div>
@@ -352,7 +352,7 @@ const FarmOperatorProfile: React.FC = () => {
   const renderAssignedTasks = () => (
     <div className="bg-white rounded-lg p-6 border border-gray-200">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Inter' }}>
+        <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Poppins' }}>
           Task Assignment History
         </h3>
         {!isPendingApproval && (
@@ -464,35 +464,35 @@ const FarmOperatorProfile: React.FC = () => {
               />
             </svg>
           </div>
-          <p className="text-gray-600" style={{ fontFamily: 'Inter' }}>
+          <p className="text-gray-600" style={{ fontFamily: 'Poppins' }}>
             No tasks assigned yet
           </p>
-          <p className="text-sm text-gray-500 mt-1" style={{ fontFamily: 'Inter' }}>
+          <p className="text-sm text-gray-500 mt-1" style={{ fontFamily: 'Poppins' }}>
             Tasks will be available after approval
           </p>
         </div>
       ) : (
         <>
-          <p className="text-sm text-gray-600 mb-4" style={{ fontFamily: 'Inter' }}>
+          <p className="text-sm text-gray-600 mb-4" style={{ fontFamily: 'Poppins' }}>
             Complete list of all tasks assigned to this Farm Operator
           </p>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-gray-200">
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
+                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>
                     Title
                   </th>
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
+                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>
                     Location
                   </th>
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
+                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>
                     Assigned Date
                   </th>
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
+                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>
                     Due Date
                   </th>
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
+                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>
                     Status
                   </th>
                 </tr>
@@ -502,18 +502,18 @@ const FarmOperatorProfile: React.FC = () => {
                   <tr key={task.id} className="border-b border-gray-100">
                     <td
                       className="py-3 text-sm font-medium text-blue-600 cursor-pointer hover:underline"
-                      style={{ fontFamily: 'Inter' }}
+                      style={{ fontFamily: 'Poppins' }}
                       onClick={() => openTaskModal(task)}
                     >
                       {task.title}
                     </td>
-                    <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
+                    <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>
                       {task.location}
                     </td>
-                    <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
+                    <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>
                       {task.assignedDate}
                     </td>
-                    <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
+                    <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>
                       {task.dueDate}
                     </td>
                     <td className="py-3">
@@ -542,7 +542,7 @@ const FarmOperatorProfile: React.FC = () => {
   const renderAttendanceRecords = () => (
     <div className="bg-white rounded-lg p-6 border border-gray-200">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Inter' }}>
+        <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Poppins' }}>
           Attendance History
         </h3>
         {!isPendingApproval && (
@@ -708,32 +708,32 @@ const FarmOperatorProfile: React.FC = () => {
               />
             </svg>
           </div>
-          <p className="text-gray-600" style={{ fontFamily: 'Inter' }}>
+          <p className="text-gray-600" style={{ fontFamily: 'Poppins' }}>
             No attendance records yet
           </p>
-          <p className="text-sm text-gray-500 mt-1" style={{ fontFamily: 'Inter' }}>
+          <p className="text-sm text-gray-500 mt-1" style={{ fontFamily: 'Poppins' }}>
             Records will be available after approval
           </p>
         </div>
       ) : (
         <>
-          <p className="text-sm text-gray-600 mb-4" style={{ fontFamily: 'Inter' }}>
+          <p className="text-sm text-gray-600 mb-4" style={{ fontFamily: 'Poppins' }}>
             Daily attendance records with location and task details
           </p>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-gray-200">
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
+                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>
                     Date
                   </th>
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
+                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>
                     Check In
                   </th>
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
+                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>
                     Check Out
                   </th>
-                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Inter' }}>
+                  <th className="text-left py-3 text-sm font-semibold text-gray-600" style={{ fontFamily: 'Poppins' }}>
                     Status
                   </th>
                 </tr>
@@ -743,15 +743,15 @@ const FarmOperatorProfile: React.FC = () => {
                   <tr key={index} className="border-b border-gray-100">
                     <td
                       className="py-3 text-sm text-blue-600 cursor-pointer underline"
-                      style={{ fontFamily: 'Inter' }}
+                      style={{ fontFamily: 'Poppins' }}
                       onClick={() => openModal(record)}
                     >
                       {record.date}
                     </td>
-                    <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
+                    <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>
                       {record.checkIn}
                     </td>
-                    <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
+                    <td className="py-3 text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>
                       {record.checkOut}
                     </td>
                     <td className="py-3">
@@ -774,7 +774,7 @@ const FarmOperatorProfile: React.FC = () => {
   );
 
   return (
-    <div className="" style={{ fontFamily: 'Inter' }}>
+    <div className="" style={{ fontFamily: 'Poppins' }}>
       <div className="max-w-full mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -786,7 +786,7 @@ const FarmOperatorProfile: React.FC = () => {
               <ArrowLeft size={20} />
             </button>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>
+              <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>
                 {isPendingApproval ? 'Pending Farm Operator Profile' : 'Farm Operator Profile'}
               </h1>
             </div>
@@ -802,30 +802,30 @@ const FarmOperatorProfile: React.FC = () => {
               className="w-16 h-16 rounded-full object-cover"
             />
             <div className="flex-1">
-              <h2 className="text-xl font-bold text-gray-900" style={{ fontFamily: 'Inter' }}>
+              <h2 className="text-xl font-bold text-gray-900" style={{ fontFamily: 'Poppins' }}>
                 {farmOperator.name}
               </h2>
               <div className="flex items-center gap-4 mt-2">
                 <div className="flex items-center gap-1">
                   <Phone size={16} className="text-gray-400" />
-                  <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
+                  <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>
                     {farmOperator.mobile}
                   </span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
+                  <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>
                     # {farmOperator.memberId}
                   </span>
                 </div>
                 <div className="flex items-center gap-1">
                   <MapPin size={16} className="text-gray-400" />
-                  <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
+                  <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>
                     {farmOperator.location}
                   </span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Calendar size={16} className="text-gray-400" />
-                  <span className="text-sm text-gray-600" style={{ fontFamily: 'Inter' }}>
+                  <span className="text-sm text-gray-600" style={{ fontFamily: 'Poppins' }}>
                     {isPendingApproval ? 'Applied' : 'Joined'} {farmOperator.joinedDate}
                   </span>
                 </div>

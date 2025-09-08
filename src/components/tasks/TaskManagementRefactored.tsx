@@ -136,11 +136,6 @@ const TaskManagement: React.FC = () => {
     console.log('Setting edit mode to prevent any interference');
     setIsEditMode(true);
     
-    // Clear location states to prevent interference with edit form
-    console.log('Clearing location states to prevent interference with edit form');
-    setDistricts([]);
-    setMandals([]);
-    
     // Set loading state
     setLoadingEditData(true);
     setEditingTask(null);
@@ -160,6 +155,24 @@ const TaskManagement: React.FC = () => {
           districtName: taskDetails.districtName,
           mandalName: taskDetails.mandalName
         });
+        
+        // Fetch location hierarchies for edit mode
+        console.log('Fetching location hierarchies for edit mode');
+        
+        // Fetch states first
+        await fetchStates();
+        
+        // If task has state, fetch districts
+        if (taskDetails.stateId) {
+          console.log('Fetching districts for stateId:', taskDetails.stateId);
+          await fetchDistricts(taskDetails.stateId);
+        }
+        
+        // If task has district, fetch mandals
+        if (taskDetails.districtId) {
+          console.log('Fetching mandals for districtId:', taskDetails.districtId);
+          await fetchMandals(taskDetails.districtId);
+        }
         
         // Store task details for direct display
         console.log('TaskManagementRefactored: Setting taskDetails:', taskDetails);

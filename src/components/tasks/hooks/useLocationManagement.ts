@@ -9,10 +9,12 @@ export const useLocationManagement = () => {
   const [loadingLocations, setLoadingLocations] = useState(false);
 
   const fetchStates = useCallback(async () => {
+    console.log('useLocationManagement: fetchStates called');
     setLoadingLocations(true);
     try {
       const result = await locationServiceMock.fetchLocations('state');
       if (result.success && result.data) {
+        console.log('useLocationManagement: States fetched:', result.data.locations);
         setStates(result.data.locations);
       }
     } catch (error) {
@@ -23,10 +25,12 @@ export const useLocationManagement = () => {
   }, []);
 
   const fetchDistricts = useCallback(async (stateId: string) => {
+    console.log('useLocationManagement: fetchDistricts called with stateId:', stateId);
     setLoadingLocations(true);
     try {
       const result = await locationServiceMock.fetchStateDistricts(stateId);
       if (result.success && result.data) {
+        console.log('useLocationManagement: Districts fetched:', result.data.locations);
         setDistricts(result.data.locations);
       }
     } catch (error) {
@@ -37,10 +41,12 @@ export const useLocationManagement = () => {
   }, []);
 
   const fetchMandals = useCallback(async (districtId: string) => {
+    console.log('useLocationManagement: fetchMandals called with districtId:', districtId);
     setLoadingLocations(true);
     try {
       const result = await locationServiceMock.fetchDistrictCities(districtId);
       if (result.success && result.data) {
+        console.log('useLocationManagement: Mandals fetched:', result.data.locations);
         setMandals(result.data.locations);
       }
     } catch (error) {

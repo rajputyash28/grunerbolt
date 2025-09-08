@@ -34,8 +34,13 @@ const EditTaskForm: React.FC<EditTaskFormProps> = ({
       setTaskDescription(taskDetails.description || "");
       // Fix date formatting
       if (taskDetails.dueDate) {
-        const date = new Date(taskDetails.dueDate);
-        const formattedDate = date.toISOString().split('T')[0];
+        // Handle both ISO date strings and simple date strings
+        let formattedDate = taskDetails.dueDate;
+        if (taskDetails.dueDate.includes('T')) {
+          // ISO date string
+          const date = new Date(taskDetails.dueDate);
+          formattedDate = date.toISOString().split('T')[0];
+        }
         setDueDate(formattedDate);
         console.log('EditTaskForm: Date formatted:', taskDetails.dueDate, '->', formattedDate);
       } else {

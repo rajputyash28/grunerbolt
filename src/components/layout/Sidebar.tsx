@@ -37,25 +37,17 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="bg-white w-80 shadow-sm border-r border-gray-200 flex flex-col">
+    <div className="bg-white w-64 shadow-sm border-r border-gray-200 flex flex-col">
       {/* Logo */}
-     <div className="p-6 border-b h-[64px] border-gray-200">
-  <div className="flex items-center justify-between h-full">
-    {/* Left Section: Logo + Text */}
-    <div className="flex items-center gap-3">
-      <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-        <Sprout className="w-8 h-8 text-gray-800" />
+      <div className="p-6 border-b border-gray-200">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
+            <Sprout className="w-5 h-5 text-white" />
+          </div>
+          <span className="text-xl font-semibold text-gray-900">Gruner's</span>
+          <ChevronLeft className="w-4 h-4 text-gray-400 ml-auto" />
+        </div>
       </div>
-      <span className="text-xl font-semibold text-gray-900">
-        Gruner's
-      </span>
-    </div>
-
-    {/* Right Section: Arrow */}
-    <ChevronLeft className="w-4 h-4 text-gray-400" />
-  </div>
-</div>
-
 
       {/* Navigation */}
       <nav className="flex-1 py-4">

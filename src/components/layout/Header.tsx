@@ -7,9 +7,9 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ onLogout }) => {
   return (
-    <header className="bg-white border-b border-gray-200 h-[64px] flex items-center justify-between px-6">
+    <header className="bg-white border-b border-gray-200 h-16 flex items-center justify-between px-6">
       <div className="flex items-center gap-4">
-        {/* <h1 className="text-lg font-semibold text-gray-900">Admin Panel</h1> */}
+        <h1 className="text-lg font-semibold text-gray-900">Admin Panel</h1>
       </div>
 
       <div className="flex items-center gap-4">
